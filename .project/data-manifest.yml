@@ -1,0 +1,29 @@
+version: 1
+datasets:
+  - id: uci-default-credit-card-clients
+    status: acquired
+    source_url: https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients
+    download_url: https://archive.ics.uci.edu/static/public/350/default+of+credit+card+clients.zip
+    citation: "Yeh, I. (2009). Default of Credit Card Clients [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C55S3H."
+    license: CC BY 4.0
+    attribution_required: true
+    acquired_on: 2026-08-01
+    archive_file: data/raw/uci-default-credit-card-clients.zip
+    archive_sha256: 56c885f84457f6680f8438f02bfcdac9579323d8a94465ee5f26e32baa727602
+    contents:
+      - default of credit card clients.xls
+    extracted_file: data/raw/default of credit card clients.xls
+    extracted_file_sha256: 30c6be3abd8dcfd3e6096c828bad8c2f011238620f5369220bd60cfc82700933
+    validation:
+      status: passed
+      rows: 30000
+      columns: 25
+      target: default payment next month
+      target_values: [0, 1]
+      missing_cells: 0
+      duplicate_ids: 0
+      observed_ranges:
+        LIMIT_BAL: [10000, 1000000]
+        AGE: [21, 79]
+        PAY_0_to_PAY_6: [-2, 8]
+    storage_boundary: local-only; raw files are ignored by Git and never publicly served

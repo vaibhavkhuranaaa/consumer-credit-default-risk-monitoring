@@ -1,0 +1,50 @@
+version: 1
+project: consumer-credit-default-risk-monitoring
+status: complete
+milestones:
+  - id: M0
+    title: Approve source, scope, and protected-attribute policy
+    status: complete
+    acceptance:
+      - Approve UCI CC BY 4.0 acquisition and attribution.
+      - Confirm demographic fields are excluded from all model inputs and decision outputs.
+      - Confirm local-only storage, no GitHub, no deployment, and no lending-decision use.
+  - id: M1
+    title: Acquire and validate the source
+    status: complete
+    acceptance:
+      - Record source URL, license, DOI, checksum, schema, row count, and acquisition date.
+      - Keep raw data ignored and outside public artifacts.
+      - Fail closed on schema drift, missing target, duplicate IDs, or invalid ranges.
+  - id: M2
+    title: Build leakage-safe data and baseline
+    status: complete
+    acceptance:
+      - Define point-in-time feature policy and reproducible train/validation/test split.
+      - Establish interpretable baseline and calibrated challenger without demographic inputs.
+  - id: M3
+    title: Evaluate model, threshold, and fairness diagnostics
+    status: complete
+    acceptance:
+      - Report AUROC, PR-AUC, Brier score, calibration error, threshold trade-offs, and confidence intervals.
+      - Perform documented fairness diagnostics only where legally and technically appropriate.
+      - Record limitations and prohibit operational credit decisions.
+  - id: M4
+    title: Build the local analyst workflow
+    status: complete
+    acceptance:
+      - Provide aggregate portfolio monitoring, model card, data-quality states, and a no-decision boundary.
+      - Verify accessible loading, empty, error, and refusal states.
+  - id: M5
+    title: Verify release readiness
+    status: complete
+    acceptance:
+      - Tests, evaluation, documentation, architecture, cost, and evidence records are current.
+      - A release decision is prepared without creating public exposure.
+  - id: M6
+    title: Provision and verify public aggregate-only showcase
+    status: blocked_by_human_approval
+    acceptance:
+      - Record repository, Neon, Cloudflare, and public-release approval with owner, rollback, and teardown decisions.
+      - Verify a protected repository, database roles, migration, aggregate release, Cloudflare preview, and public production URL.
+      - Confirm public responses contain no raw data, identifiers, protected attributes, model binaries, or decision outputs.

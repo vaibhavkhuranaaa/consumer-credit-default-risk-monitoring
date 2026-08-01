@@ -1,0 +1,7 @@
+flowchart LR
+  A[Local UCI source and evaluation] --> B[Aggregate release builder]
+  B --> C[Neon PostgreSQL: immutable evidence]
+  D[Hiring manager] --> E[Cloudflare Pages: React dashboard]
+  E --> F[Pages Function: read-only API]
+  F --> C
+  G[GitHub Actions: checks and previews] --> E

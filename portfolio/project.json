@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "slug": "consumer-credit-default-risk-monitoring",
+  "title": "Consumer Credit Default Risk & Portfolio Monitoring",
+  "status": "draft",
+  "source": {
+    "dataBoundary": "UCI Default of Credit Card Clients, CC BY 4.0, downloaded only after recorded approval. No direct identifiers. Demographic fields are excluded from model inputs and may be used only in a documented fairness audit."
+  },
+  "evidence": []
+}

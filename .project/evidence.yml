@@ -1,0 +1,22 @@
+version: 1
+evidence:
+  - id: DATA-01
+    claim: Source provenance, license, checksum, and schema are recorded.
+    status: verified
+    record: .project/data-manifest.yml
+  - id: EVAL-01
+    claim: Leakage-safe baseline and challenger performance are reproducible.
+    status: verified
+    record: artifacts/evaluation.json
+  - id: EVAL-02
+    claim: Calibration, threshold trade-offs, and fairness diagnostics are documented.
+    status: verified
+    record: artifacts/evaluation.json
+  - id: GOV-01
+    claim: The system has no automated lending-decision or public-data exposure.
+    status: verified
+    record: PRODUCT.md, web/src/App.tsx, .project/approvals.yml
+  - id: DEPLOY-01
+    claim: The public serving path permits aggregate release evidence only and has a documented least-privilege, rollback, and teardown design.
+    status: verified_locally
+    record: db/migrations/001_release_evidence.sql, web/functions, docs/DEPLOYMENT.md

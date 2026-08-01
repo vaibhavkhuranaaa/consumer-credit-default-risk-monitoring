@@ -1,0 +1,22 @@
+version: 1
+architecture: approved
+data_acquisition:
+  status: approved
+  proposed_source: UCI Default of Credit Card Clients (CC BY 4.0)
+  allowed_action: acquire and validate locally with recorded attribution, checksum, schema, row count, and acquisition date
+protected_attribute_policy: approved
+local_only_scope: approved
+repository:
+  status: approved
+  visibility: private
+  purpose: source control and Cloudflare preview deployment integration
+cloud:
+  status: approved
+  providers: [Neon Free, Cloudflare Pages and Workers Free]
+  cost_ceiling: $0
+  rollback_owner: Vaibhav Khurana
+  teardown_owner: Vaibhav Khurana
+publication:
+  status: approved
+  scope: aggregate-only retrospective benchmark evidence
+  prohibited_content: raw data, individual records, protected attributes, model binaries, lending decisions

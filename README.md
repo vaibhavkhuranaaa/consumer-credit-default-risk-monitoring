@@ -1,6 +1,6 @@
 # Consumer Credit Default Risk & Portfolio Monitoring
 
-Status: deployment implementation prepared; public provisioning is blocked pending M6 approval. This is an evidence-led retrospective benchmark workflow.
+Status: public aggregate-only showcase deployed at https://consumer-credit-default-risk-monitoring.pages.dev. This is an evidence-led retrospective benchmark workflow.
 
 ## Project
 

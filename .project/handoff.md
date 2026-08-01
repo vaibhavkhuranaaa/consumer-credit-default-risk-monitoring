@@ -2,7 +2,7 @@
 
 ## Next action
 
-M6 is approved but blocked by provider authentication. Authenticate the GitHub CLI (`gh auth login`), Neon, and Cloudflare in this environment; then create the private remote, database, Pages project, and aggregate-only release using `docs/DEPLOYMENT.md`.
+The public showcase is live at https://consumer-credit-default-risk-monitoring.pages.dev. Verify a new release locally, publish it with the publisher-only Neon role, deploy the static build through the approved release workflow, and retain the aggregate-only boundary.
 
 ## Safety boundary
 

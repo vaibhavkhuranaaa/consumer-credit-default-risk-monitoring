@@ -2,9 +2,9 @@
 
 ## Approved status
 
-- Status: `approved — local-only first release verified`
+- Status: `approved — public aggregate-only showcase deployed`
 - Initial delivery: local Python evaluation plus Cloudflare-ready React/Pages Function and Neon Postgres release-serving implementation
-- Cloud authority: none; external provisioning remains blocked pending M6 approval
+- Cloud implementation: Neon Free in `aws-us-east-2` and Cloudflare Pages/Workers Free
 
 ## Decision boundary
 
@@ -23,4 +23,4 @@ The system supports an analyst's aggregate review of retrospective benchmark ris
 
 ## Scale and cost boundary
 
-Local evaluation remains the only approved release. The implementation is prepared for Cloudflare Free plus Neon Free; repository creation, provider provisioning, public exposure, custom domains, paid capacity, and teardown require M6 approval with an owner and rollback decision.
+The deployed release uses Cloudflare Free plus Neon Free. Raw data stays local; the public API serves only an immutable aggregate release. Custom domains, paid capacity, and teardown require a new approval.

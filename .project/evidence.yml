@@ -18,5 +18,5 @@ evidence:
     record: PRODUCT.md, web/src/App.tsx, .project/approvals.yml
   - id: DEPLOY-01
     claim: The public serving path permits aggregate release evidence only and has a documented least-privilege, rollback, and teardown design.
-    status: verified_locally
-    record: db/migrations/001_release_evidence.sql, web/functions, docs/DEPLOYMENT.md
+    status: verified
+    record: https://consumer-credit-default-risk-monitoring.pages.dev/api/v1/releases/current

@@ -14,9 +14,12 @@ cloud:
   status: approved
   providers: [Neon Free, Cloudflare Pages and Workers Free]
   cost_ceiling: $0
+  neon_project_id: muddy-paper-86533562
+  cloudflare_pages_project: consumer-credit-default-risk-monitoring
   rollback_owner: Vaibhav Khurana
   teardown_owner: Vaibhav Khurana
 publication:
   status: approved
   scope: aggregate-only retrospective benchmark evidence
+  url: https://consumer-credit-default-risk-monitoring.pages.dev
   prohibited_content: raw data, individual records, protected attributes, model binaries, lending decisions

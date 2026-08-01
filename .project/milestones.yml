@@ -43,7 +43,7 @@ milestones:
       - A release decision is prepared without creating public exposure.
   - id: M6
     title: Provision and verify public aggregate-only showcase
-    status: blocked_by_human_approval
+    status: blocked_by_provider_authentication
     acceptance:
       - Record repository, Neon, Cloudflare, and public-release approval with owner, rollback, and teardown decisions.
       - Verify a protected repository, database roles, migration, aggregate release, Cloudflare preview, and public production URL.

@@ -2,7 +2,7 @@
 
 ## Next action
 
-The deployment implementation is ready for M6 approval. Build a local aggregate release with `uv run python scripts/run_evaluation.py` followed by `uv run python scripts/build_release.py --revision <immutable-git-sha>`.
+M6 is approved but blocked by provider authentication. Authenticate the GitHub CLI (`gh auth login`), Neon, and Cloudflare in this environment; then create the private remote, database, Pages project, and aggregate-only release using `docs/DEPLOYMENT.md`.
 
 ## Safety boundary
 

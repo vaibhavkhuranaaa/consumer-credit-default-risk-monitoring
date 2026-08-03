@@ -4,7 +4,7 @@ Status: public aggregate-only showcase deployed at https://consumer-credit-defau
 
 ## Project
 
-- Decision owner: define in `PROJECT.md`.
+- Decision owner: credit-risk analyst reviewing aggregate retrospective evidence; no automated decision is made.
 - Data boundary: UCI Default of Credit Card Clients, CC BY 4.0, downloaded only after recorded approval. No direct identifiers. Demographic fields are excluded from model inputs and may be used only in a documented fairness audit.
 - First demo: Load a checksum-pinned dataset release, run time-safe baseline and challenger models, review calibration, threshold trade-offs, fairness diagnostics, data-quality controls, and an aggregate portfolio-risk queue.
 
@@ -18,4 +18,4 @@ uv run python scripts/run_evaluation.py
 uv run python scripts/build_release.py --revision <immutable-git-sha>
 ```
 
-The deployed architecture uses Cloudflare Pages/Functions and Neon Postgres, serving aggregate retrospective evidence only. It does not make individual credit decisions and never exposes raw account rows. See `docs/DEPLOYMENT.md` for the approval-gated release procedure.
+The deployed architecture uses Cloudflare Pages/Functions and Neon Postgres, serving aggregate retrospective evidence only. It does not make individual credit decisions and never exposes raw account rows. See `docs/DEPLOYMENT.md` for the current release procedure and `docs/NEXT-MILESTONE-PLAN.md` for the approved next-chat roadmap.

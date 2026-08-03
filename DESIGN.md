@@ -2,7 +2,7 @@
 
 ## Visual system
 
-- **Mode:** Operate. The local analyst view is a calm evidence workspace, designed for a desk-lit review session.
+- **Mode:** Operate. The public evidence view is a calm workspace, designed for a desk-lit review session.
 - **Color:** Restrained cool graphite and paper with a single cobalt action/state accent; warning and refusal use text plus icons, never color alone.
 - **Type:** System sans stack, with a compact fixed type scale for metrics and dense evidence tables.
 - **Composition:** A wide evidence canvas with a narrow governance rail. Use simple panels with either borders or soft elevation, never both.

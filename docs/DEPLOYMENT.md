@@ -14,8 +14,8 @@ Cloudflare Pages serves the React/Vite application. Pages Functions exposes only
 2. Create Neon roles `portfolio_api` and `portfolio_publisher`, apply `db/migrations/001_release_evidence.sql`, and set a Neon branch aside for migration validation.
 3. Run `uv sync`, `uv run python scripts/run_evaluation.py`, and `uv run python scripts/build_release.py --revision <immutable-git-sha>` locally.
 4. Set `NEON_PUBLISHER_DATABASE_URL` only in the publisher shell, then run `uv run python scripts/publish_release.py`.
-5. Connect the private GitHub repository to Cloudflare Pages with root directory `web`, build command `pnpm build`, output directory `dist`, and secrets `NEON_API_DATABASE_URL` and `ALLOWED_ORIGIN`.
-6. Protect `main`; require Python, web, and migration checks before the Cloudflare production deployment. Cloudflare preview deployments are used for pull requests.
+5. Build `web` with `pnpm build`, then deploy `web/dist` directly to the approved Cloudflare Pages project. Configure only `NEON_API_DATABASE_URL` and `ALLOWED_ORIGIN` as Cloudflare secrets.
+6. Run Python and web quality checks before each release. The current private GitHub Free repository cannot enforce required branch protection; do not make it public or add billing without a new recorded approval. Git-connected pull-request previews are not configured.
 
 ## Rollback and teardown
 

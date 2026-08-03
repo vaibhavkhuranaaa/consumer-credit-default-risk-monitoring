@@ -2,9 +2,20 @@
   "version": 1,
   "slug": "consumer-credit-default-risk-monitoring",
   "title": "Consumer Credit Default Risk & Portfolio Monitoring",
-  "status": "draft",
+  "status": "live-verified",
   "source": {
     "dataBoundary": "UCI Default of Credit Card Clients, CC BY 4.0, downloaded only after recorded approval. No direct identifiers. Demographic fields are excluded from model inputs and may be used only in a documented fairness audit."
   },
-  "evidence": []
+  "evidence": [
+    {
+      "id": "DEPLOY-01",
+      "claim": "A public read-only dashboard serves aggregate retrospective evidence only.",
+      "record": "https://consumer-credit-default-risk-monitoring.pages.dev"
+    },
+    {
+      "id": "EVAL-01",
+      "claim": "The calibrated challenger achieved AUROC 0.7915, PR-AUC 0.5737, Brier score 0.1315, and 10-bin calibration error 0.0120 on the fixed stratified UCI benchmark split.",
+      "record": "artifacts/evaluation.json"
+    }
+  ]
 }

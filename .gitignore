@@ -1,6 +1,9 @@
 __pycache__/
 *.py[cod]
 .env
+.neon
+.cursor/
+graphify-out/
 .DS_Store
 data/raw/
 data/derived/

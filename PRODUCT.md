@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Credit-risk analysts reviewing an academic benchmark locally. Their job is to understand aggregate retrospective risk evidence without making a lending decision.
+Hiring managers and credit-risk analysts reviewing an academic benchmark. Their job is to understand aggregate retrospective risk evidence without making a lending decision.
 
 ## Product Purpose
 
@@ -20,7 +20,7 @@ The product makes its non-decision boundary and evaluation limitations first-cla
 
 ## Operating Context
 
-Local execution only. The analyst runs the evaluation locally, then opens a local dashboard backed only by generated aggregate evidence.
+The evaluation and release publisher run locally. A public, read-only Cloudflare Pages dashboard displays only the approved aggregate evidence fetched through a Pages Function.
 
 ## Capabilities and Constraints
 

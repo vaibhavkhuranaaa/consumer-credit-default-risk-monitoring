@@ -1,6 +1,6 @@
 version: 1
 project: consumer-credit-default-risk-monitoring
-status: complete
+status: planned
 milestones:
   - id: M0
     title: Approve source, scope, and protected-attribute policy
@@ -46,5 +46,34 @@ milestones:
     status: complete
     acceptance:
       - Record repository, Neon, Cloudflare, and public-release approval with owner, rollback, and teardown decisions.
-      - Verify a protected repository, database roles, migration, aggregate release, Cloudflare preview, and public production URL.
+      - Verify private repository, database roles, migration, aggregate release, direct Cloudflare Pages deployment, and public production URL. Record that GitHub-required branch protection is unavailable for the current private free-plan repository.
       - Confirm public responses contain no raw data, identifiers, protected attributes, model binaries, or decision outputs.
+  - id: M7
+    title: Harden the manual release control
+    status: unblocked
+    acceptance:
+      - A local pre-release gate validates tests, build, aggregate release artifact, and forbidden public fields.
+      - A release checklist and credential-free release log trace the deployed release to its source revision and aggregate artifact.
+      - The compensating control for unavailable private-repository branch protection is documented and verified.
+  - id: M8
+    title: Decide automated preview delivery
+    status: blocked_by_M7
+    acceptance:
+      - Compare direct deployment with a scoped Git-connected preview path.
+      - Implement only the separately approved preview approach, or record the decision to retain direct deployment.
+  - id: M9
+    title: Add privacy-preserving availability safeguards
+    status: blocked_by_M8
+    acceptance:
+      - Verify governed unavailable-state behavior, cache/security headers, rollback diagnostics, and ownership.
+      - Do not add monitoring services, scheduled jobs, or paid capacity without approval.
+  - id: M10
+    title: Package the verified portfolio case study
+    status: blocked_by_M9
+    acceptance:
+      - Public case-study claims link to evidence and retain the retrospective no-decision boundary.
+  - id: M11
+    title: Exercise rollback and teardown ownership
+    status: blocked_by_M10
+    acceptance:
+      - A non-destructive rollback rehearsal and precise teardown procedure are documented.

@@ -28,3 +28,7 @@ publication:
   scope: full UCI academic benchmark analyst product with individual source records
   url: https://consumer-credit-default-risk-monitoring.pages.dev
   prohibited_content: credentials, direct identity data, model binaries, automated lending decisions
+  verified_deployment:
+    source_revision: b02193103a17bdc9e14158aecec10d9aba11cc08
+    verified_at: 2026-08-05T04:55:52Z
+    release_id: 4cd50ffb-5cae-4812-aaad-f7631821feb1

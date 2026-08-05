@@ -33,6 +33,8 @@ Acceptance: the local workspace loads all 30,000 approved UCI rows, filters and 
 
 Approval: recorded 2026-08-04 in `.project/approvals.yml` as `public_individual_record_scope`. Deployment remains subject to the passing release gate and GitHub Actions quality run.
 
+**Completed 2026-08-05:** The full-record artifact was generated for all 30,000 source rows, the responsive Fluent UI workspace passed local and GitHub Actions quality gates, and the verified production deployment replaced the aggregate-only view. Source revision: `b02193103a17bdc9e14158aecec10d9aba11cc08`.
+
 ## M9 — Observability and availability safeguards
 
 **Objective:** Add lightweight, privacy-preserving evidence that the public read-only service is available and fails closed.

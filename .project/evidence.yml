@@ -17,9 +17,9 @@ evidence:
     status: verified
     record: PRODUCT.md, web/src/App.tsx, .project/approvals.yml
   - id: PRODUCT-01
-    claim: The local analyst workspace provides full-record search, filtering, pagination, and complete source-field inspection for all 30,000 UCI rows.
+    claim: The deployed analyst workspace provides full-record search, filtering, pagination, and complete source-field inspection for all 30,000 UCI rows.
     status: verified
-    record: scripts/build_public_dataset.py, web/src/App.tsx, web/public/data/uci-credit-records.json
+    record: https://consumer-credit-default-risk-monitoring.pages.dev, https://consumer-credit-default-risk-monitoring.pages.dev/data/uci-credit-records.json
   - id: DEPLOY-01
     claim: The public serving path permits aggregate release evidence only and has a documented least-privilege, rollback, and teardown design.
     status: verified

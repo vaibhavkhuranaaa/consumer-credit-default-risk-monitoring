@@ -57,14 +57,14 @@ milestones:
       - The compensating control for unavailable private-repository branch protection is documented and verified.
   - id: M8
     title: Build the authorized full-record analyst product
-    status: in_progress
+    status: complete
     acceptance:
       - Generate a checksum-traceable public artifact containing all licensed UCI source rows.
       - Provide a responsive analyst workspace with full-record search, filtering, pagination, and record inspection.
       - Retain the academic-benchmark and no-automated-decision boundaries.
   - id: M9
     title: Add privacy-preserving availability safeguards
-    status: blocked_by_M8
+    status: unblocked
     acceptance:
       - Verify governed unavailable-state behavior, cache/security headers, rollback diagnostics, and ownership.
       - Do not add monitoring services, scheduled jobs, or paid capacity without approval.

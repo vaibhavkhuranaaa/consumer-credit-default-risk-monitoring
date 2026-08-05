@@ -35,3 +35,19 @@ This credential-free log traces an approved public aggregate release to the loca
 | GitHub Actions quality | Green quality run required before deployment; existing deployment record notes the quality checks passed |
 
 The current release is historical evidence only. This entry does not authorize redeployment or rollback.
+
+## Verified full-record analyst workspace
+
+| Field | Record |
+| --- | --- |
+| Release ID | `4cd50ffb-5cae-4812-aaad-f7631821feb1` |
+| Source revision | `b02193103a17bdc9e14158aecec10d9aba11cc08` |
+| Evaluation artifact hash | `sha256:65e0b277155a198a5b36176e64124944780c715ddaeb34d694777a4c0b0c5b7b` |
+| Aggregate release artifact hash | `sha256:8030d484efb362d328a8b52ff3ee9c18677ee41d11847e2877e64ec6dad2978c` |
+| Full-record public artifact hash | `sha256:0d5b2a2640e8c6c142c7979a8ade06bb28826d983bf1372d5eaccbe3a06859ca` |
+| Publisher identity | Vaibhav Khurana (approved release owner) |
+| Deployment URL | https://consumer-credit-default-risk-monitoring.pages.dev |
+| Verification timestamp | `2026-08-05T04:55:52Z` |
+| Rollback target | Immediately preceding approved Cloudflare Pages deployment, selected from the Pages deployment history |
+| Local gate | Passed from a clean worktree before deployment |
+| GitHub Actions quality | Green: https://github.com/vaibhavkhuranaaa/consumer-credit-default-risk-monitoring/actions/runs/30976446944 |

@@ -2,7 +2,7 @@
 
 ## Approved status
 
-- Status: `approved — full-record analyst product authorized`
+- Status: `verified — full-record analyst product deployed`
 - Initial delivery: local Python evaluation plus React full-record analyst workspace and Cloudflare-ready aggregate evidence serving
 - Cloud implementation: Neon Free in `aws-us-east-2` and Cloudflare Pages/Workers Free
 
@@ -32,3 +32,5 @@ The system supports an analyst's aggregate review of retrospective benchmark ris
 ## Scale and cost boundary
 
 The deployed release uses Cloudflare Free plus Neon Free. Raw data stays local; the public API serves only an immutable aggregate release. Custom domains, paid capacity, and teardown require a new approval.
+
+The full-record workspace is served as a generated static artifact from Cloudflare Pages. Its verified deployment is tied to source revision `b02193103a17bdc9e14158aecec10d9aba11cc08` and release log entry `4cd50ffb-5cae-4812-aaad-f7631821feb1`.

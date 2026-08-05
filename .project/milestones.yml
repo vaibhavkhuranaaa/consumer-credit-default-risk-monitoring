@@ -50,17 +50,18 @@ milestones:
       - Confirm public responses contain no raw data, identifiers, protected attributes, model binaries, or decision outputs.
   - id: M7
     title: Harden the manual release control
-    status: unblocked
+    status: complete
     acceptance:
       - A local pre-release gate validates tests, build, aggregate release artifact, and forbidden public fields.
       - A release checklist and credential-free release log trace the deployed release to its source revision and aggregate artifact.
       - The compensating control for unavailable private-repository branch protection is documented and verified.
   - id: M8
-    title: Decide automated preview delivery
-    status: blocked_by_M7
+    title: Build the authorized full-record analyst product
+    status: in_progress
     acceptance:
-      - Compare direct deployment with a scoped Git-connected preview path.
-      - Implement only the separately approved preview approach, or record the decision to retain direct deployment.
+      - Generate a checksum-traceable public artifact containing all licensed UCI source rows.
+      - Provide a responsive analyst workspace with full-record search, filtering, pagination, and record inspection.
+      - Retain the academic-benchmark and no-automated-decision boundaries.
   - id: M9
     title: Add privacy-preserving availability safeguards
     status: blocked_by_M8

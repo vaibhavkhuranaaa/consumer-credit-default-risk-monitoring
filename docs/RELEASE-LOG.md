@@ -1,0 +1,37 @@
+# Release log
+
+This credential-free log traces an approved public aggregate release to the local artifact and its immutable source revision. Never enter secrets, connection strings, raw data, individual records, protected-attribute values, predictions, or model binaries.
+
+## Template
+
+| Field | Record |
+| --- | --- |
+| Release ID | `<UUID from artifacts/release.json>` |
+| Source revision | `<full immutable Git SHA>` |
+| Evaluation artifact hash | `<SHA-256 of artifacts/evaluation.json>` |
+| Aggregate release artifact hash | `<SHA-256 of artifacts/release.json>` |
+| Full-record public artifact hash | `<SHA-256 of web/public/data/uci-credit-records.json>` |
+| Publisher identity | `<named human; never a credential or role secret>` |
+| Deployment URL | `<approved public URL>` |
+| Verification timestamp | `<UTC ISO-8601 timestamp>` |
+| Rollback target | `<exact prior approved Cloudflare Pages deployment>` |
+| Local gate | `<pass/fail and timestamp>` |
+| GitHub Actions quality | `<green run URL for the same SHA>` |
+
+## Verified current public release
+
+| Field | Record |
+| --- | --- |
+| Release ID | `7e667054-cb2a-406f-b843-d458b87ad68c` |
+| Source revision | `6e10495a76be508b1e912161397111b57612bae1` |
+| Evaluation artifact hash | `sha256:65e0b277155a198a5b36176e64124944780c715ddaeb34d694777a4c0b0c5b7b` |
+| Aggregate release artifact hash | `sha256:177f36810238cdeed7a9f9d6b1ae73dde41170dad3d45b9d27b257d679a764ee` |
+| Full-record public artifact hash | Not applicable to the historical aggregate-only release |
+| Publisher identity | Vaibhav Khurana (approved release owner) |
+| Deployment URL | https://consumer-credit-default-risk-monitoring.pages.dev |
+| Verification timestamp | `2026-08-01T21:38:26Z` (deployment record commit time) |
+| Rollback target | Immediately preceding approved Cloudflare Pages deployment, selected from the Pages deployment history |
+| Local gate | Passed in M7 audit mode at `2026-08-05T04:17:57Z`; no deployment performed |
+| GitHub Actions quality | Green quality run required before deployment; existing deployment record notes the quality checks passed |
+
+The current release is historical evidence only. This entry does not authorize redeployment or rollback.

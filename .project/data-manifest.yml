@@ -26,4 +26,4 @@ datasets:
         LIMIT_BAL: [10000, 1000000]
         AGE: [21, 79]
         PAY_0_to_PAY_6: [-2, 8]
-    storage_boundary: local-only; raw files are ignored by Git and never publicly served
+    storage_boundary: raw workbook remains local and ignored by Git; a generated public artifact may contain the full licensed UCI rows under approval `public_individual_record_scope`

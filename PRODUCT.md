@@ -8,11 +8,11 @@ web
 
 ## Users
 
-Hiring managers and credit-risk analysts reviewing an academic benchmark. Their job is to understand aggregate retrospective risk evidence without making a lending decision.
+Hiring managers and credit-risk analysts reviewing a public academic benchmark. Their job is to explore full source records and retrospective evidence without making a lending decision.
 
 ## Product Purpose
 
-Provide a reproducible, governed view of benchmark model quality, review-capacity trade-offs, and aggregate fairness diagnostics.
+Provide a reproducible analyst workspace for full UCI source-record exploration alongside benchmark model-quality evidence.
 
 ## Positioning
 
@@ -20,11 +20,11 @@ The product makes its non-decision boundary and evaluation limitations first-cla
 
 ## Operating Context
 
-The evaluation and release publisher run locally. A public, read-only Cloudflare Pages dashboard displays only the approved aggregate evidence fetched through a Pages Function.
+The evaluation and release publisher run locally. A generated static artifact contains the approved full UCI source records for the public read-only analyst workspace; aggregate model evidence remains available through the Pages Function.
 
 ## Capabilities and Constraints
 
-The dashboard shows no individual accounts, IDs, demographic values, approvals, denials, pricing, or lending recommendations. Sex and age appear only as aggregate diagnostic group labels. The source has a single target horizon, so evaluation is retrospective and not out-of-time.
+The dashboard may show all approved UCI source fields, including source row IDs and demographic values. It shows no credentials, direct identity data, model binaries, approval, denial, pricing, or lending recommendation. The source has a single target horizon, so evaluation is retrospective and not out-of-time.
 
 ## Evidence on Hand
 
@@ -33,7 +33,7 @@ UCI CC BY 4.0 source provenance is recorded in `.project/data-manifest.yml`; loc
 ## Product Principles
 
 - Governed evidence before prediction.
-- Aggregate review, never automated consumer-credit decisions.
+- Full-record exploration, never automated consumer-credit decisions.
 - Reproducibility and limitations are visible in the workflow.
 - Accessible operational clarity over visual flourish.
 

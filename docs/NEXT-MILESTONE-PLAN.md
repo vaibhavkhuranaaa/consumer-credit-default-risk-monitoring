@@ -19,17 +19,19 @@ Acceptance: a dry-run checklist and validation command succeed from a clean loca
 
 Approval needed: none, provided this remains local documentation and validation only. Approval is required before publishing a new public release.
 
-## M8 — Automated preview delivery decision
+**Completed 2026-08-05:** `scripts/pre_release_gate.py`, `docs/RELEASE-CHECKLIST.md`, and `docs/RELEASE-LOG.md` now provide the required local control and release lineage. The audit-mode gate passed without deployment.
 
-**Objective:** Decide whether pull-request previews are worth adding while keeping the private/$0 constraints explicit.
+## M8 — Full-record analyst product
 
-- Compare direct Wrangler deployment with Git-connected Cloudflare Pages previews and GitHub Actions deployment using a scoped Cloudflare API token.
-- Document the lowest-risk option, exact required secret inventory, and rollback behavior.
-- Implement only the approved option; otherwise retain direct deployment and record the decision.
+**Objective:** Build the owner-approved, full-record academic UCI analyst workspace while retaining the retrospective no-decision boundary.
 
-Acceptance: the chosen workflow has a tested non-production preview path or a documented decision not to automate; production remains explicitly approved and aggregate-only.
+- Generate a checksum-traceable static artifact for all 30,000 licensed UCI source records.
+- Support source-ID search, outcome and demographic filters, pagination, and complete field inspection.
+- Keep the workbook, credentials, and model binaries local. Do not turn observed labels into an automated credit decision.
 
-Approval needed before implementation: authorization to connect the private GitHub repository to Cloudflare Pages and/or add a scoped deployment secret.
+Acceptance: the local workspace loads all 30,000 approved UCI rows, filters and record inspection work, and the public artifact is rebuilt by the release gate.
+
+Approval: recorded 2026-08-04 in `.project/approvals.yml` as `public_individual_record_scope`. Deployment remains subject to the passing release gate and GitHub Actions quality run.
 
 ## M9 — Observability and availability safeguards
 

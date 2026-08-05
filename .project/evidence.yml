@@ -13,10 +13,18 @@ evidence:
     status: verified
     record: artifacts/evaluation.json
   - id: GOV-01
-    claim: The system has no automated lending-decision or public-data exposure.
+    claim: The system has no automated lending decision. The owner-approved public analyst workspace exposes the full licensed UCI academic source records only.
     status: verified
     record: PRODUCT.md, web/src/App.tsx, .project/approvals.yml
+  - id: PRODUCT-01
+    claim: The local analyst workspace provides full-record search, filtering, pagination, and complete source-field inspection for all 30,000 UCI rows.
+    status: verified
+    record: scripts/build_public_dataset.py, web/src/App.tsx, web/public/data/uci-credit-records.json
   - id: DEPLOY-01
     claim: The public serving path permits aggregate release evidence only and has a documented least-privilege, rollback, and teardown design.
     status: verified
     record: https://consumer-credit-default-risk-monitoring.pages.dev/api/v1/releases/current
+  - id: RELCTRL-01
+    claim: The manual release path requires a local aggregate-only pre-release gate and a green GitHub Actions quality run before deployment.
+    status: verified
+    record: scripts/pre_release_gate.py, docs/RELEASE-CHECKLIST.md, docs/RELEASE-LOG.md

@@ -4,12 +4,12 @@
   "title": "Consumer Credit Default Risk & Portfolio Monitoring",
   "status": "live-verified",
   "source": {
-    "dataBoundary": "UCI Default of Credit Card Clients, CC BY 4.0, downloaded only after recorded approval. No direct identifiers. Demographic fields are excluded from model inputs and may be used only in a documented fairness audit."
+    "dataBoundary": "UCI Default of Credit Card Clients, CC BY 4.0. The full licensed source rows are owner-approved for the public read-only analyst workspace; demographics remain excluded from model inputs and recommendations."
   },
   "evidence": [
     {
       "id": "DEPLOY-01",
-      "claim": "A public read-only dashboard serves aggregate retrospective evidence only.",
+      "claim": "The existing deployed dashboard serves aggregate retrospective evidence only; the verified full-record replacement is not yet deployed.",
       "record": "https://consumer-credit-default-risk-monitoring.pages.dev"
     },
     {

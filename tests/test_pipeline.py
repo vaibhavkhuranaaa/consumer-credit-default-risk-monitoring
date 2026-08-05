@@ -40,3 +40,10 @@ def test_public_release_allows_only_aggregate_evidence() -> None:
     release["models"]["logistic_baseline"]["raw_rows"] = [{"ID": 1}]
     with pytest.raises(ValueError):
         validate_release(release)
+
+
+def test_public_release_rejects_credentials_and_identifiers() -> None:
+    release = _release()
+    release["models"]["logistic_baseline"]["token"] = "must-not-be-public"
+    with pytest.raises(ValueError):
+        validate_release(release)

@@ -11,6 +11,26 @@ from typing import Any
 RELEASE_VERSION = 1
 REQUIRED_MODELS = {"logistic_baseline", "calibrated_hist_gradient_boosting"}
 REQUIRED_METRICS = {"auroc", "pr_auc", "brier", "ece_10_bin"}
+FORBIDDEN_PUBLIC_KEYS = {
+    "raw_rows",
+    "raw_data",
+    "accounts",
+    "account_id",
+    "customer_id",
+    "customer_name",
+    "email",
+    "phone",
+    "address",
+    "ssn",
+    "predictions",
+    "individual_scores",
+    "model_binary",
+    "model_path",
+    "credential",
+    "password",
+    "secret",
+    "token",
+}
 
 
 def build_release(evaluation: dict[str, Any], manifest: dict[str, Any], code_revision: str) -> dict[str, Any]:
@@ -67,8 +87,7 @@ def validate_release(payload: dict[str, Any]) -> None:
             raise ValueError("Unexpected model content.")
         if set(model["metrics"]) != REQUIRED_METRICS:
             raise ValueError("Required metrics are missing.")
-    forbidden_keys = {"raw_rows", "accounts", "account_id", "customer_id", "predictions", "individual_scores", "model_binary"}
-    if forbidden_keys.intersection(_all_keys(payload)):
+    if FORBIDDEN_PUBLIC_KEYS.intersection(_all_keys(payload)):
         raise ValueError("Public release contains forbidden individual-level content.")
 
 

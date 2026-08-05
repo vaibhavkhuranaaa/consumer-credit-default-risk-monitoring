@@ -5,7 +5,12 @@ data_acquisition:
   proposed_source: UCI Default of Credit Card Clients (CC BY 4.0)
   allowed_action: acquire and validate locally with recorded attribution, checksum, schema, row count, and acquisition date
 protected_attribute_policy: approved
-local_only_scope: approved
+public_individual_record_scope:
+  status: approved
+  approved_on: 2026-08-04
+  authority: project owner
+  allowed_content: full UCI Default of Credit Card Clients source rows, including source row ID and demographic fields
+  boundary: academic benchmark records only; no credentials, direct identity data, or model binaries
 repository:
   status: approved
   visibility: private
@@ -20,6 +25,6 @@ cloud:
   teardown_owner: Vaibhav Khurana
 publication:
   status: approved
-  scope: aggregate-only retrospective benchmark evidence
+  scope: full UCI academic benchmark analyst product with individual source records
   url: https://consumer-credit-default-risk-monitoring.pages.dev
-  prohibited_content: raw data, individual records, protected attributes, model binaries, lending decisions
+  prohibited_content: credentials, direct identity data, model binaries, automated lending decisions

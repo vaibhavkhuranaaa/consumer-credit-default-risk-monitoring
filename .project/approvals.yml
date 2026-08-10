@@ -20,6 +20,15 @@ m10_deployment_candidate_preparation:
   authority: project owner
   allowed_action: remove verified stale deployment payloads and unused frontend dependencies, repair release-control records, create and push an immutable M10 deployment candidate, and obtain a matching GitHub Actions quality result
   boundary: no aggregate release publication, Cloudflare deployment, merge, visibility change, paid resource, provider change, rollback, or secret transmission
+m10_release_and_deployment:
+  status: approved
+  approved_on: 2026-08-10
+  authority: project owner
+  candidate_revision: d3e5b103b63a8e222d36084c85eed302f6b35398
+  release_id: f7c0c305-caf8-4003-9f1b-4aeacb37ec63
+  matching_quality_run: https://github.com/vaibhavkhuranaaa/consumer-credit-default-risk-monitoring/actions/runs/31397767371
+  allowed_action: publish the validated aggregate release to the existing Neon Free project, deploy the exact candidate to the existing consumer-credit-risk-workbench Cloudflare Pages Free project, verify live lineage and availability, and record credential-free release evidence
+  boundary: no merge, visibility change, paid resource, custom domain, provider change, rollback, teardown, scheduled monitoring, or secret transmission beyond the already approved read-only Cloudflare runtime credential
 data_acquisition:
   status: approved
   proposed_source: UCI Default of Credit Card Clients (CC BY 4.0)

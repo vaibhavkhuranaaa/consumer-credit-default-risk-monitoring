@@ -1,5 +1,7 @@
 # User-facing design rules
 
+> **Status: rejected and stale as of 2026-08-10.** The project owner rejected the live dashboard as generic, analytically shallow, and unsuitable for non-technical stakeholders. Do not treat the rules below or the current implementation as an approved target. M10 must replace this document with a stakeholder decision map, information architecture, KPI glossary, chart grammar, interaction contract, and owner-approved visual direction before public deployment. The current text is retained only to explain the design that produced the stale release.
+
 ## Visual system
 
 - **Mode:** Operate. The public analyst workspace supports dense, evidence-led source-record review in a desk-lit session.

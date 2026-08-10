@@ -42,7 +42,7 @@ The verifier checks the site, health endpoint, aggregate release, and analyst ar
 
 ## Rollback diagnostic
 
-The recovery target is the most recent Cloudflare Pages deployment whose application revision, aggregate release ID, and artifact hashes all appear in `docs/RELEASE-LOG.md`. The replacement project currently has one verified deployment, `7b840f48-b262-40aa-8298-86deb84e6de3`; the preceding `c02d27b2-613b-475f-88d0-d74f3cb2f62f` deployment failed health verification and is not an eligible rollback target. Before any rollback, identify an eligible immutable Pages deployment ID and record explicit rollback approval in `.project/approvals.yml`. A rollback changes application/static assets only; it must not mutate Neon release history.
+The recovery target is the most recent prior Cloudflare Pages deployment whose application revision, aggregate release ID, and artifact hashes all appear in `docs/RELEASE-LOG.md`. Current verified deployment `bfd5f35a-86b2-40cb-b260-4f8967703236` may use verified M9 deployment `7b840f48-b262-40aa-8298-86deb84e6de3` as a diagnostic rollback target only after separate approval. Deployment `c02d27b2-613b-475f-88d0-d74f3cb2f62f` failed health verification and remains ineligible. A rollback changes application/static assets only; it must not mutate Neon release history.
 
 ## Teardown ownership
 

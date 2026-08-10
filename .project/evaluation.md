@@ -43,7 +43,7 @@ Every approved capacity point reports queue size, captured observed defaults, ob
 
 Evaluation schema version `2` records UTC generation time, extracted-source SHA-256, evaluated Git revision, exact command, Python/NumPy/pandas/scikit-learn versions, train/validation/development/holdout row counts and ID checksums, baseline definitions, repeated split identities, uncertainty, and limitations. `artifacts/evaluation.json` is the machine-readable local source. The governed analyst artifact binds it by SHA-256 and removes local aggregate fairness diagnostics before public serving.
 
-The refreshed local approval candidate was generated at `2026-08-10T13:39:08.437643+00:00` from evaluated revision `543dc446c48b2cc2208f2e6362863563a0f7514d`. Its evaluation SHA-256 is `89e518d29368cced94a64f8261ee51ba74647f676c3717a499007a081fb37063`; analyst artifact v4 SHA-256 is `2107393a06617da72bb388837cb3464e3701dc9fd7d94873d190ee3ce607ff19`.
+The verified public evaluation was generated at `2026-08-10T14:20:10.827594+00:00` from evaluated revision `d3e5b103b63a8e222d36084c85eed302f6b35398`. Its evaluation SHA-256 is `4d284b8f47fcf32ee599e1652a0ac0d09914784a5e5fd69f7fae8d6283c35fff`; analyst artifact v4 SHA-256 is `fb9ba15d059471904c8b982243aee6d36e69eb982b98a861b5b1b8478ec0247b`.
 
 ## Safe record-level simulation
 

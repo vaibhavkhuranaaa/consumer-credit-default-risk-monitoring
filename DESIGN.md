@@ -2,7 +2,7 @@
 
 ## Status and boundary
 
-Status: M10 evaluation strengthening is verified, and corrected visual candidate `a92a913573f7352bb95640c9c3ce368468bbe5b3` is owner-approved. The earlier editorial cream/serif/teal treatment, oversized question headings, repeated eyebrow labels, bordered KPI-card grids, and report-like explanation panels remain superseded and must not be reused. Public deployment remains separately prohibited.
+Status: M10 evaluation strengthening and the corrected visual system are verified in production at application revision `d3e5b103b63a8e222d36084c85eed302f6b35398`. The earlier editorial cream/serif/teal treatment, oversized question headings, repeated eyebrow labels, bordered KPI-card grids, and report-like explanation panels remain superseded and must not be reused. Future deployments remain separately approval-gated.
 
 This product is a retrospective academic research workbench built from the licensed UCI Default of Credit Card Clients dataset. It supports portfolio posture, review-capacity planning, cohort comparison, model validation, governance review, and restricted record simulation. It never approves, denies, determines eligibility, prices, supplies adverse-action reasons, or recommends credit. Protected attributes are excluded from model inputs and public individual analytics.
 

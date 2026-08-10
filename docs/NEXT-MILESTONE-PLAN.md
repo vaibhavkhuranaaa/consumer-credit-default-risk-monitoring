@@ -2,9 +2,9 @@
 
 ## Starting point
 
-M0–M10 are complete. The owner approved corrected M10 visual candidate `a92a913573f7352bb95640c9c3ce368468bbe5b3` on 2026-08-10. The public M9 site remains technically verified and unchanged; visual approval did not authorize an M10 deployment.
+M0–M10 are complete. The owner-approved M10 application revision `d3e5b103b63a8e222d36084c85eed302f6b35398` is live and verified at `https://consumer-credit-risk-workbench.pages.dev` with immutable release `f7c0c305-caf8-4003-9f1b-4aeacb37ec63`.
 
-Complete milestones in order. The next task must work only on M11 and must not deploy or publish.
+Complete milestones in order. The next task must work only on M11 and must not change the verified deployment or publish the case study without new approval.
 
 ## M10 — Evidence-led model validation and BI decision dashboard
 
@@ -52,16 +52,16 @@ All seven corrective steps are implemented, locally verified, and owner-approved
 - The production build and repository gate pass from the exact candidate revision.
 - New desktop, tablet, and mobile screenshots show the strengthened evidence and record inspector without overflow or browser warnings.
 - Graphify, Git, GitHub, project records, and handoff describe the same revision and status.
-- Stop before deployment, merge, visibility changes, paid resources, rollback, or publication. Obtain explicit visual approval and separate deployment approval.
+- Obtain explicit visual approval and separate deployment approval before publication; both gates passed for the recorded M10 production release. Future mutations remain separately gated.
 
-The implementation uses evaluation schema version 2, analyst artifact version 4, and aggregate release schema version 2. M10 is complete. Deployment, merge, publication, visibility, billing, rollback, and provider changes remain separately prohibited.
+The implementation uses evaluation schema version 2, analyst artifact version 4, and aggregate release schema version 2. M10 is complete and its approved application is verified in production. Future deployment, merge, case-study publication, visibility, billing, rollback, and provider changes remain separately prohibited.
 
 ## M11 — Package the verified portfolio case study
 
 **Next unblocked milestone.** Package the approved project as an evidence-linked portfolio case study without changing the product or publishing it.
 
 1. Audit `CASE-STUDY.md`, `portfolio/project.json`, and the case-study standard against the final M10 evidence.
-2. Distinguish the academic source vintage, evaluation generation time, evaluated revision, visual candidate revision, and currently deployed M9 revision.
+2. Distinguish the academic source vintage, evaluation generation time, evaluated revision, visual approval revision, and currently deployed M10 application revision.
 3. Use only verified model, calibration, robustness, capacity, accessibility, performance, and lineage claims with adjacent limitations.
 4. Use the owner-approved replacement screenshots; exclude the rejected `.jpg` candidate from presentation evidence.
 5. Preserve the retrospective research-only, no-lending-decision, privacy, and local aggregate-fairness boundaries.
@@ -70,4 +70,4 @@ The implementation uses evaluation schema version 2, analyst artifact version 4,
 
 ## M12 — Exercise rollback and teardown ownership
 
-Blocked by M11 and separately approval-gated. The failed replacement deployment remains ineligible as a rollback target.
+Blocked by M11 and separately approval-gated. Failed deployment `c02d27b2-613b-475f-88d0-d74f3cb2f62f` remains ineligible as a rollback target.

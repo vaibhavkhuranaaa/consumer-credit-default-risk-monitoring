@@ -4,20 +4,20 @@
 
 - Repository: private `https://github.com/vaibhavkhuranaaa/consumer-credit-default-risk-monitoring`.
 - Hosted research demo: `https://consumer-credit-risk-workbench.pages.dev`.
-- Current verified application revision: `142462ab74d0a2e3eb7cce131830b9eff71b1a86`.
-- Current verified Cloudflare deployment: `7b840f48-b262-40aa-8298-86deb84e6de3`.
-- Immutable aggregate release: `753cba75-e986-4128-a353-6ed2d7c411d9` from evaluated revision `7f602e4977b824d9bc3ecb61a65a08e88adf5b67`.
+- Current verified application revision: `d3e5b103b63a8e222d36084c85eed302f6b35398`.
+- Current verified Cloudflare deployment: `bfd5f35a-86b2-40cb-b260-4f8967703236`.
+- Immutable aggregate release: `f7c0c305-caf8-4003-9f1b-4aeacb37ec63` from evaluated revision `d3e5b103b63a8e222d36084c85eed302f6b35398`.
 
-The current public service remains technically verified but its M9 user experience is rejected and stale. Do not describe it as the accepted M10 portfolio design.
+The public service now runs the owner-approved M10 Credit Risk Model Validation & Review-Capacity Lab and passed exact live lineage, availability, security-header, cache, artifact, and privacy verification on 2026-08-10.
 
-## M10 publication gate
+## M10 verified publication
 
-M10 visual candidate `a92a913573f7352bb95640c9c3ce368468bbe5b3` is owner-approved and remains local. The earlier `.jpg` set remains rejected and cannot support publication. This visual approval does not authorize deployment. Deployment must be separately authorized, with a matching green GitHub Actions quality run for the exact candidate, while preserving the current Cloudflare Free, Neon Free, read-only, non-demographic, research-only boundary.
+M10 application candidate `d3e5b103b63a8e222d36084c85eed302f6b35398` was separately approved, published, deployed, and verified after matching green GitHub Actions quality run `31397767371`. The earlier `.jpg` set remains rejected and cannot support publication. The verified deployment preserves the Cloudflare Free, Neon Free, read-only, non-demographic, research-only boundary.
 
 ## Prohibited actions and claims
 
-No deployment, merge, visibility change, paid capacity, custom domain, rollback, teardown, scheduled monitoring, provider change, or portfolio publication is authorized by local implementation. The owner separately approved one project-scoped Graphify semantic refresh on 2026-08-10; it does not expand publication authority. Never publish protected attributes, credentials, model binaries, automated decisions, forecasts, financial loss/exposure claims, or production-lending language. Record-level output is limited to retrospective score, band, rank, and simulated review-set placement.
+The verified M10 deployment does not authorize any future deployment, merge, visibility change, paid capacity, custom domain, rollback, teardown, scheduled monitoring, provider change, or portfolio publication. The owner separately approved one project-scoped Graphify semantic refresh on 2026-08-10; it does not expand publication authority. Never publish protected attributes, credentials, model binaries, automated decisions, forecasts, financial loss/exposure claims, or production-lending language. Record-level output is limited to retrospective score, band, rank, and simulated review-set placement.
 
 ## Rollback boundary
 
-The replacement project has no eligible prior rollback target. Deployment `c02d27b2-613b-475f-88d0-d74f3cb2f62f` failed health verification and must not be selected. Any future rollback requires a separate explicit approval.
+Verified M9 deployment `7b840f48-b262-40aa-8298-86deb84e6de3` is the only eligible diagnostic rollback target for the current M10 deployment. Deployment `c02d27b2-613b-475f-88d0-d74f3cb2f62f` failed health verification and must not be selected. Any actual rollback requires a separate explicit approval.

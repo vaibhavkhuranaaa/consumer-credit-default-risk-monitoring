@@ -96,6 +96,10 @@ evidence:
     claim: The corrected candidate passed governed regeneration and artifact validation, 17 Python tests, TypeScript lint, 15 web tests, production build, project-kit check, and rendered browser verification at 1440x1000, 834x1112, and 390x844 with no document overflow, console/page errors, or automated WCAG A/AA violations. Desktop SVG text contrast remains automated-incomplete because axe cannot infer the background behind SVG text.
     status: verified_local
     record: scripts/pre_release_gate.py, docs/screenshots/m10/desktop-validation-workstation.png, docs/screenshots/m10/desktop-record-review.png, docs/screenshots/m10/tablet-validation-workstation.png, docs/screenshots/m10/mobile-record-review.png
+  - id: M10-DEPLOY-01
+    claim: Exact candidate d3e5b103b63a8e222d36084c85eed302f6b35398 and immutable release f7c0c305-caf8-4003-9f1b-4aeacb37ec63 were separately approved, published to Neon Free, deployed to Cloudflare Pages Free, and verified live for health, lineage, headers, cache policy, 30,000-row artifact contract, and demographic exclusions.
+    status: verified_public
+    record: .project/approvals.yml, docs/RELEASE-LOG.md, docs/AVAILABILITY-RUNBOOK.md, https://consumer-credit-risk-workbench.pages.dev
   - id: GRAPH-01
     claim: The owner approved and Graphify completed a project-scoped semantic refresh with a passing endpoint-integrity diagnostic; the unverified workspace node, initial missing-source-file edge warnings, and skill/runtime version mismatch remain disclosed.
     status: verified_local_with_limitations

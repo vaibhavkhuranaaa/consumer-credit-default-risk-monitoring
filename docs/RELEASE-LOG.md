@@ -70,3 +70,21 @@ The current release is historical evidence only. This entry does not authorize r
 | Local gate | Passed from a clean worktree for application revision `142462ab74d0a2e3eb7cce131830b9eff71b1a86` |
 | GitHub Actions quality | Green: https://github.com/vaibhavkhuranaaa/consumer-credit-default-risk-monitoring/actions/runs/31356386184 |
 | Live verification | Availability, security headers, cache policy, exact aggregate lineage, 30,000-row contract, and demographic-field exclusion passed |
+
+## Verified M10 model-validation and review-capacity lab
+
+| Field | Record |
+| --- | --- |
+| Release ID | `f7c0c305-caf8-4003-9f1b-4aeacb37ec63` |
+| Source and application revision | `d3e5b103b63a8e222d36084c85eed302f6b35398` |
+| Evaluation artifact hash | `sha256:4d284b8f47fcf32ee599e1652a0ac0d09914784a5e5fd69f7fae8d6283c35fff` |
+| Published aggregate artifact hash | `sha256:346e5e1687d7803a0f38b6656cd11f05ba2130fed80701f5d9630564733b8c71` |
+| Analyst artifact hash | `sha256:fb9ba15d059471904c8b982243aee6d36e69eb982b98a861b5b1b8478ec0247b` |
+| Publisher identity | Vaibhav Khurana (approved release owner) |
+| Deployment URL | https://consumer-credit-risk-workbench.pages.dev |
+| Cloudflare deployment ID | `bfd5f35a-86b2-40cb-b260-4f8967703236` |
+| Verification timestamp | `2026-08-10T14:53:18Z` |
+| Rollback target | Verified M9 deployment `7b840f48-b262-40aa-8298-86deb84e6de3`, diagnostic only until separately approved |
+| Local gate | Passed from clean exact candidate: 19 Python tests, TypeScript lint, 15 web tests, production build, artifact validators, and project records |
+| GitHub Actions quality | Green: https://github.com/vaibhavkhuranaaa/consumer-credit-default-risk-monitoring/actions/runs/31397767371 |
+| Live verification | Availability, database health, security headers, cache policy, exact release/revision lineage, 30,000-row version-4 contract, and demographic-field exclusion passed |

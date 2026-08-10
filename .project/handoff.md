@@ -2,23 +2,23 @@
 
 ## Executive status
 
-M0–M10 are complete. The owner approved corrected visual candidate `a92a913573f7352bb95640c9c3ce368468bbe5b3` on 2026-08-10. The rejected earlier candidate remains historical evidence only. The verified public M9 service is unchanged; no M10 deployment, merge, publication, visibility, provider, billing, or rollback action occurred.
+M0–M10 are complete. Owner-approved M10 application revision `d3e5b103b63a8e222d36084c85eed302f6b35398` and release `f7c0c305-caf8-4003-9f1b-4aeacb37ec63` are live and verified at `https://consumer-credit-risk-workbench.pages.dev`. The rejected earlier candidate remains historical evidence only. No merge, visibility, provider, billing, rollback, teardown, scheduled monitoring, or custom-domain action occurred.
 
-The immutable evaluated implementation revision is `543dc446c48b2cc2208f2e6362863563a0f7514d`. Final governance, screenshot, and Graphify evidence follows that candidate and is carried by the branch tip; it does not change the evaluated code.
+The immutable evaluated and deployed application revision is `d3e5b103b63a8e222d36084c85eed302f6b35398`. Deployment approval and final credential-free publication records follow that candidate on the branch tip; they do not change the evaluated application.
 
 ## Governed evidence lineage
 
 - Evaluation schema: `2`
-- Evaluation generated UTC: `2026-08-10T13:39:08.437643+00:00`
-- Evaluation SHA-256: `89e518d29368cced94a64f8261ee51ba74647f676c3717a499007a081fb37063`
+- Evaluation generated UTC: `2026-08-10T14:20:10.827594+00:00`
+- Evaluation SHA-256: `4d284b8f47fcf32ee599e1652a0ac0d09914784a5e5fd69f7fae8d6283c35fff`
 - Analyst artifact schema: `4`
-- Analyst artifact SHA-256: `2107393a06617da72bb388837cb3464e3701dc9fd7d94873d190ee3ce607ff19`
+- Analyst artifact SHA-256: `fb9ba15d059471904c8b982243aee6d36e69eb982b98a861b5b1b8478ec0247b`
 - Aggregate release schema: `2`
-- Local aggregate release ID: `af219ccd-7018-4666-8867-6c5ef239e129`
-- Local aggregate release SHA-256: `b70ac6299eaad91658ab61ea12e3cf3c277655cf5d01280a016f4f5a4d233e84`
+- Published aggregate release ID: `f7c0c305-caf8-4003-9f1b-4aeacb37ec63`
+- Published aggregate release SHA-256: `346e5e1687d7803a0f38b6656cd11f05ba2130fed80701f5d9630564733b8c71`
 - Frozen holdout: 6,000 rows; ID SHA-256 `df4a7f48dc14f491d592e858e1b128cb975ad83e1281de330876eb307cef2215`
 - Source archive SHA-256: `30c6be3abd8dcfd3e6096c828bad8c2f011238620f5369220bd60cfc82700933`
-- Evaluation command: `uv run python scripts/run_evaluation.py --revision 543dc446c48b2cc2208f2e6362863563a0f7514d`
+- Evaluation command: `uv run python scripts/run_evaluation.py --revision d3e5b103b63a8e222d36084c85eed302f6b35398`
 
 ## Evaluation judgment
 
@@ -42,10 +42,10 @@ Sex, education, marriage, and age remain excluded from model inputs and public i
 
 ## Verification evidence
 
-The credential-free pre-release gate passed from candidate `543dc446c48b2cc2208f2e6362863563a0f7514d`:
+The credential-free pre-release gate passed from exact deployed candidate `d3e5b103b63a8e222d36084c85eed302f6b35398`:
 
 - evaluation regeneration and governed artifact validation;
-- 17 Python tests;
+- 19 Python tests;
 - TypeScript lint;
 - 15 web tests;
 - production build;
@@ -55,7 +55,7 @@ Production assets are 260.83 kB JavaScript / 78.05 kB gzip and 31.39 kB CSS / 6.
 
 Browser verification passed at 1440×1000, 834×1112, and 390×844 with no document-level overflow, console errors, or page errors. The automated WCAG A/AA audit reported zero violations and one incomplete contrast rule because sticky/overlapping elements obscured background detection.
 
-Deployment-readiness cleanup is separately owner-approved. Local checks pass 19 Python tests, TypeScript lint, 15 web tests, production build, and `project-kit check`. The pre-release gate now fails closed if `web/public/data/` contains anything other than `analyst-workspace.json`. The obsolete ignored record payload was removed, reducing `web/dist` from approximately 26 MB to 16 MB, and the unused Fluent UI dependency tree was removed without changing production JavaScript or CSS assets. No release was published and no deployment occurred.
+Deployment-readiness cleanup and publication were separately owner-approved. Exact candidate `d3e5b103b63a8e222d36084c85eed302f6b35398` passed 19 Python tests, TypeScript lint, 15 web tests, production build, `project-kit check`, and matching GitHub quality run `31397767371`. Cloudflare deployment `bfd5f35a-86b2-40cb-b260-4f8967703236` passed live availability, security-header, cache, exact lineage, 30,000-row artifact, and demographic-exclusion verification at `2026-08-10T14:53:18Z`. The one-use local publisher credential handoff file was deleted immediately after publication.
 
 Replacement visual evidence for owner review:
 
@@ -73,12 +73,12 @@ Rejected historical visual evidence, retained only as history:
 
 ## Graphify freshness
 
-Graphify's local deterministic code-only update completed after the corrective implementation without transmitting repository content. It records 397 nodes, 662 edges, and 43 communities. The read-only multigraph diagnostic found zero missing/dangling endpoints, self-loops, exact duplicate edges, or directed/undirected endpoint collapse. `graphify-out/manifest.json` has SHA-256 `75a64110abbbaa370fa55ce77dd170c76f257c0d09475e3845e5d1cb5933cf26`, bound in `.project/graph-source.sha256`.
+Graphify's last local deterministic code-only update completed after the corrective implementation without transmitting repository content. It records 397 nodes, 662 edges, and 43 communities. The read-only multigraph diagnostic found zero missing/dangling endpoints, self-loops, exact duplicate edges, or directed/undirected endpoint collapse. `graphify-out/manifest.json` has SHA-256 `75a64110abbbaa370fa55ce77dd170c76f257c0d09475e3845e5d1cb5933cf26`, bound in `.project/graph-source.sha256`. It predates the deployment-readiness gate/test and these final publication records.
 
-The approval reviewer blocked the Gemini semantic-doc refresh because it would transmit this private repository corpus to an external destination without a more payload-and-destination-specific approval. No workaround was attempted. Therefore the code graph is fresh, but final documentation semantics are not. Other disclosed limitations are one unverified node, one zero-node `project.json`, unavailable optional SQL extraction because `tree_sitter_sql` is not installed, 25 communities renamed by their hub after the code update, and installed skill text `0.9.23` versus runtime `0.9.31`.
+The approval reviewer blocked the Gemini semantic-doc refresh because it would transmit this private repository corpus to an external destination without a more payload-and-destination-specific approval. No workaround was attempted. Therefore the graph remains valid for the approved visual implementation but is not exact for the later release-control and publication-record changes. Other disclosed limitations are one unverified node, one zero-node `project.json`, unavailable optional SQL extraction because `tree_sitter_sql` is not installed, 25 communities renamed by their hub after the code update, and installed skill text `0.9.23` versus runtime `0.9.31`.
 
 ## Remaining limitations and next action
 
-This is one historical academic population with one target horizon. There is no calendar-time, out-of-time, external, geographic, prospective, drift, operational, causal, loss, pricing, or lending-decision validation. Repeated folds are correlated views of the same development population. Capacity intervals describe the frozen audit sample, not staffing or business benefit. The approximately 15 MB governed data artifact remains the dominant transfer/load cost. Automated accessibility checks do not replace manual keyboard, zoom, screen-reader, and contrast review. Graphify's final documentation semantics remain pending a more specific external-transmission approval.
+This is one historical academic population with one target horizon. There is no calendar-time, out-of-time, external, geographic, prospective, drift, operational, causal, loss, pricing, or lending-decision validation. Repeated folds are correlated views of the same development population. Capacity intervals describe the frozen audit sample, not staffing or business benefit. The approximately 15 MB governed data artifact remains the dominant transfer/load cost. Automated accessibility checks do not replace manual keyboard, zoom, screen-reader, and contrast review. GitHub quality is green, but third-party Actions emit non-blocking Node.js 20 deprecation warnings. Graphify's final documentation semantics remain pending a more specific external-transmission approval.
 
-Next action is to commit and push the approved deployment-readiness cleanup, run the complete gate and matching GitHub Actions quality workflow for the exact immutable candidate, then stop for separate public-deployment approval. M11 remains the first unblocked product milestone and is not started by this release hygiene work.
+Next action is M11: package the verified portfolio case study from the deployed M10 evidence. Do not change the verified deployment or publish the case study without new approval.

@@ -25,9 +25,9 @@ The system supports an analyst's aggregate review of retrospective benchmark ris
 
 `manual verification → database-backed health and release lineage → fail-closed analyst state → Cloudflare rollback diagnostic`
 
-## M10 local presentation architecture
+## M10 deployed presentation architecture
 
-The M10 candidate advances the static analyst artifact to version 4 and preserves the read-only aggregate/health APIs. It adds no database field, model endpoint, write path, paid service, or analytics tracker.
+The verified M10 deployment advances the static analyst artifact to version 4 and preserves the read-only aggregate/health APIs. It adds no database field, model endpoint, write path, paid service, or analytics tracker.
 
 `version-4 non-demographic artifact → typed client validation → memoized cohort filters and deterministic aggregates → native accessible SVG charts + tabular alternatives → linked portfolio/cohort/record views`
 

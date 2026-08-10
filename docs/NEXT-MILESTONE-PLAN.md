@@ -10,7 +10,7 @@ Complete milestones in order. The next task must work only on M10 and must not d
 
 **Objective:** make the dashboard answer whether the research model is meaningfully and stably better than simple alternatives, what a score-ranked review simulation includes, and why the evidence is not an individual lending decision.
 
-### Visual corrective pass — active
+### Visual corrective pass — implemented locally; owner review pending
 
 Preserve all verified evaluation, artifact, API, privacy, availability, filtering, and record-simulation behavior. Do not restart the product or change its data contract.
 
@@ -21,6 +21,8 @@ Preserve all verified evaluation, artifact, API, privacy, availability, filterin
 5. Rebuild Record simulation as a mobile-capable review workflow whose essential columns and inspector are usable without treating a clipped desktop table as the main experience.
 6. Preserve semantic HTML, keyboard behavior, chart alternatives, loading/empty/error/refusal states, and all decision-language refusals.
 7. Capture a wholly new desktop/tablet/mobile screenshot set. The rejected 2026-08-10 screenshots are historical evidence only and must not be presented for approval again.
+
+All seven corrective steps are implemented and locally verified. The replacement evidence is `desktop-validation-workstation.png`, `desktop-record-review.png`, `tablet-validation-workstation.png`, and `mobile-record-review.png`. M10 remains `changes_requested` until the owner explicitly accepts or rejects this new set.
 
 ### Evaluation work — implemented locally
 
@@ -52,7 +54,7 @@ Preserve all verified evaluation, artifact, API, privacy, availability, filterin
 - Graphify, Git, GitHub, project records, and handoff describe the same revision and status.
 - Stop before deployment, merge, visibility changes, paid resources, rollback, or publication. Obtain explicit visual approval and separate deployment approval.
 
-The implementation uses evaluation schema version 2, analyst artifact version 4, and aggregate release schema version 2. The active goal is the visual corrective pass above. Deployment, merge, publication, visibility, billing, rollback, and provider changes remain prohibited.
+The implementation uses evaluation schema version 2, analyst artifact version 4, and aggregate release schema version 2. The active next step is owner visual review of the corrected candidate. Deployment, merge, publication, visibility, billing, rollback, and provider changes remain prohibited.
 
 ## M11 — Package the verified portfolio case study
 

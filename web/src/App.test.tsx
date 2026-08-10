@@ -56,31 +56,31 @@ beforeEach(() => {
 
 it("loads the decision hierarchy and cross-filters to an empty governed cohort", async () => {
   render(<App />);
-  expect(await screen.findByText("Where is historical risk concentrated?")).toBeInTheDocument();
+  expect(await screen.findByText("Portfolio overview")).toBeInTheDocument();
   expect(screen.getByText("50%", { selector: ".primary-kpi strong" })).toBeInTheDocument();
   fireEvent.change(screen.getByLabelText("Research-risk band"), { target: { value: "Elevated" } });
   expect(await screen.findByText("No records match this cohort")).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Reset cohort filters" }));
-  expect(await screen.findByText("Where is historical risk concentrated?")).toBeInTheDocument();
+  expect(await screen.findByText("Portfolio overview")).toBeInTheDocument();
 });
 
 it("preserves review, governance refusal, and constrained record simulation workflows", async () => {
   const { container } = render(<App />);
-  await screen.findByText("Where is historical risk concentrated?");
-  fireEvent.click(screen.getByRole("button", { name: /Review planning/ }));
-  expect(screen.getByText("What workload buys the strongest historical capture?")).toBeInTheDocument();
+  await screen.findByText("Portfolio overview");
+  fireEvent.click(screen.getByRole("button", { name: "Capacity" }));
+  expect(screen.getByText("Review-capacity analysis")).toBeInTheDocument();
   expect(screen.getByText("Capture lift vs random")).toBeInTheDocument();
-  fireEvent.click(screen.getByRole("button", { name: /Model validation/ }));
+  fireEvent.click(screen.getByRole("button", { name: "Validation" }));
   expect(screen.getByText("Tie", { selector: "td" })).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "View governed refusal" }));
   expect(screen.getByText("Request refused by design")).toBeInTheDocument();
-  fireEvent.click(screen.getByRole("button", { name: /Record simulation/ }));
+  fireEvent.click(screen.getByRole("button", { name: "Records" }));
   const recordLayout = container.querySelector<HTMLElement>(".record-layout")!;
   expect(within(recordLayout).queryByText("Reported limit")).not.toBeInTheDocument();
   expect(within(recordLayout).queryByText("Payment / bill")).not.toBeInTheDocument();
-  const row = screen.getByText("#2").closest("tr")!;
+  const row = within(recordLayout.querySelector<HTMLElement>(".desktop-record-table")!).getByText("#2").closest("tr")!;
   fireEvent.click(within(row).getByRole("button", { name: "Inspect research simulation for source record 2" }));
-  expect(screen.getByText("High research band")).toBeInTheDocument();
+  expect(screen.getByText("High research band", { selector: ".record-inspector span" })).toBeInTheDocument();
   expect(screen.getByText("Inside simulated review set", { selector: "h3" })).toBeInTheDocument();
   expect(screen.getByText(/Retrospective research simulation only — not an approval/)).toBeInTheDocument();
 });
@@ -91,5 +91,5 @@ it("fails closed and recovers through the governed retry", async () => {
   expect(await screen.findByText("Analyst evidence is unavailable")).toBeInTheDocument();
   expect(screen.getByText(/No record data was exposed/)).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Retry evidence load" }));
-  expect(await screen.findByText("Where is historical risk concentrated?")).toBeInTheDocument();
+  expect(await screen.findByText("Portfolio overview")).toBeInTheDocument();
 });

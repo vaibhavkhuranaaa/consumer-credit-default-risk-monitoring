@@ -21,15 +21,13 @@ type ChartFrameProps = {
 export function ChartFrame({ title, eyebrow, subtitle, meaning, decision, limitation, children, table, className = "" }: ChartFrameProps) {
   return <article className={`analysis-block ${className}`.trim()}>
     <header className="analysis-heading">
-      <div><p className="section-label">{eyebrow}</p><h2>{title}</h2><p>{subtitle}</p></div>
+      <div><h2>{title}</h2><p><span>{eyebrow}</span>{subtitle}</p></div>
     </header>
     <div className="chart-region">{children}</div>
-    <dl className="chart-notes">
-      <div><dt>What this means</dt><dd>{meaning}</dd></div>
-      <div><dt>Decision supported</dt><dd>{decision}</dd></div>
-      <div><dt>Limitation</dt><dd>{limitation}</dd></div>
-    </dl>
-    <details className="chart-table"><summary>View accessible data table</summary>{table}</details>
+    <footer className="analysis-footer">
+      <details className="metric-context"><summary>Metric context</summary><dl><div><dt>Reading</dt><dd>{meaning}</dd></div><div><dt>Permitted use</dt><dd>{decision}</dd></div><div><dt>Constraint</dt><dd>{limitation}</dd></div></dl></details>
+      <details className="chart-table"><summary>Data table</summary>{table}</details>
+    </footer>
   </article>;
 }
 
@@ -157,5 +155,5 @@ export function ProfileLines({ bills, payments }: { bills: { label: string; valu
 }
 
 export function SimpleTable({ headers, rows }: { headers: string[]; rows: (string | number)[][] }) {
-  return <div className="table-scroll"><table className="data-table compact"><thead><tr>{headers.map((header)=><th key={header}>{header}</th>)}</tr></thead><tbody>{rows.map((row,index)=><tr key={index}>{row.map((cell,cellIndex)=><td key={cellIndex}>{cell}</td>)}</tr>)}</tbody></table></div>;
+  return <div className="table-scroll" tabIndex={0} role="region" aria-label="Scrollable evidence table"><table className="data-table compact"><thead><tr>{headers.map((header)=><th key={header}>{header}</th>)}</tr></thead><tbody>{rows.map((row,index)=><tr key={index}>{row.map((cell,cellIndex)=><td key={cellIndex}>{cell}</td>)}</tr>)}</tbody></table></div>;
 }

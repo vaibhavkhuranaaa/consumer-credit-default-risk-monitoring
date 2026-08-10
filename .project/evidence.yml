@@ -53,7 +53,7 @@ evidence:
     status: superseded_local
     record: docs/screenshots/m10/desktop-portfolio.jpg, docs/screenshots/m10/desktop-review-planning.jpg, docs/screenshots/m10/tablet-portfolio.jpg, docs/screenshots/m10/mobile-portfolio.jpg
   - id: M10-PERF-01
-    claim: The strengthened local production bundle builds to 261.33 kB JavaScript (78.47 kB gzip) plus 31.89 kB CSS (6.88 kB gzip), adding 2.18 kB or 2.6% combined gzip versus the verified visual rebuild without adding a runtime dependency; local preview measured 1 ms TTFB, 96 ms FCP, 196 ms LCP, and CLS 0.
+    claim: The replacement local production bundle builds to 260.83 kB JavaScript (78.05 kB gzip) plus 31.39 kB CSS (6.66 kB gzip), 0.64 kB smaller combined gzip than the rejected candidate without adding a runtime dependency; local preview measured 1.5 ms TTFB, 88 ms FCP, 188 ms LCP, and CLS 0.
     status: verified_local
     record: web/package.json, web/src/App.tsx, web/dist/assets
   - id: M10-EVAL-AUDIT-01
@@ -84,11 +84,19 @@ evidence:
     claim: The owner rejected the 2026-08-10 M10 visual candidate because its cream/serif/teal editorial system, oversized question hierarchy, bordered KPI grid, repeated eyebrow labels, and report-card composition made the generated design language visibly recognizable. Verified evaluation and product behavior remain reusable; the screenshot set is historical evidence only.
     status: changes_requested
     record: DESIGN.md, docs/NEXT-MILESTONE-PLAN.md, .project/state.md, .project/handoff.md
+  - id: M10-DESIGN-CORRECTION-01
+    claim: The rejected editorial visual language was replaced in place with a cool-neutral internal validation workstation, compact functional hierarchy, continuous evidence ledgers, progressive metric context, and a mobile-specific governed record-review flow while preserving verified product behavior.
+    status: verified_local_pending_owner_visual_review
+    record: DESIGN.md, web/src/App.tsx, web/src/charts.tsx, web/src/styles.css, docs/screenshots/m10/desktop-validation-workstation.png, docs/screenshots/m10/desktop-record-review.png, docs/screenshots/m10/tablet-validation-workstation.png, docs/screenshots/m10/mobile-record-review.png
+  - id: M10-VERIFY-03
+    claim: The corrected candidate passed governed regeneration and artifact validation, 17 Python tests, TypeScript lint, 15 web tests, production build, project-kit check, and rendered browser verification at 1440x1000, 834x1112, and 390x844 with no document overflow, console/page errors, or automated WCAG A/AA violations. Desktop SVG text contrast remains automated-incomplete because axe cannot infer the background behind SVG text.
+    status: verified_local_pending_owner_visual_review
+    record: scripts/pre_release_gate.py, docs/screenshots/m10/desktop-validation-workstation.png, docs/screenshots/m10/desktop-record-review.png, docs/screenshots/m10/tablet-validation-workstation.png, docs/screenshots/m10/mobile-record-review.png
   - id: GRAPH-01
     claim: The owner approved and Graphify completed a project-scoped semantic refresh with a passing endpoint-integrity diagnostic; the unverified workspace node, initial missing-source-file edge warnings, and skill/runtime version mismatch remain disclosed.
     status: verified_local_with_limitations
     record: .project/approvals.yml, graphify-out/manifest.json, graphify-out/GRAPH_REPORT.md
   - id: GRAPH-02
-    claim: The final local deterministic Graphify code update produced 397 nodes, 684 edges, and 41 communities; the multigraph diagnostic found no endpoint, loop, duplicate, or collapse defects, and manifest SHA-256 8219a20bbd2a3f8b89ec28e9b64e4fd61a6fdabc0e07426e0447c5ae2710c48d is recorded. The external Gemini documentation-semantic refresh was approval-blocked and remains explicitly incomplete.
+    claim: The final local deterministic Graphify code update produced 397 nodes, 662 edges, and 43 communities; the multigraph diagnostic found no endpoint, loop, duplicate, or collapse defects, and manifest SHA-256 75a64110abbbaa370fa55ce77dd170c76f257c0d09475e3845e5d1cb5933cf26 is recorded. The external Gemini documentation-semantic refresh was approval-blocked and remains explicitly incomplete.
     status: verified_local_code_graph_semantic_docs_blocked
     record: .project/graph-source.sha256, graphify-out/manifest.json, graphify-out/graph.json, graphify-out/GRAPH_REPORT.md, .project/handoff.md

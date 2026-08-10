@@ -12,7 +12,7 @@ The current public service remains technically verified but its M9 user experien
 
 ## M10 publication gate
 
-M10 remains local with changes requested. Candidate `543dc446c48b2cc2208f2e6362863563a0f7514d` passed the local evidence gate, but its associated desktop, tablet, and mobile visual evidence was owner-rejected and cannot support publication. A replacement visual candidate must pass the same gates and receive explicit screenshot approval. Deployment must then be separately authorized, with a matching green GitHub Actions quality run, while preserving the current Cloudflare Free, Neon Free, read-only, non-demographic, research-only boundary.
+M10 remains local with changes requested. Evaluated revision `543dc446c48b2cc2208f2e6362863563a0f7514d` and the corrected visual candidate passed the local evidence gate. The wholly new desktop, tablet, and mobile screenshot set now awaits explicit owner visual review. The earlier `.jpg` set remains rejected and cannot support publication. Deployment must then be separately authorized, with a matching green GitHub Actions quality run, while preserving the current Cloudflare Free, Neon Free, read-only, non-demographic, research-only boundary.
 
 ## Prohibited actions and claims
 

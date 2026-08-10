@@ -61,9 +61,11 @@ def main() -> int:
     if not args.allow_dirty and git_output("status", "--porcelain"):
         raise ValueError("Worktree is not clean. Commit or discard changes before a release gate.")
 
-    validate_artifact((ROOT / args.release_file).resolve(), args.revision)
-    run(["uv", "run", "python", "scripts/run_evaluation.py"])
+    expected_revision = git_output("rev-parse", "--verify", f"{args.revision}^{{commit}}")
+    run(["uv", "run", "python", "scripts/run_evaluation.py", "--revision", expected_revision])
+    run(["uv", "run", "python", "scripts/build_release.py", "--revision", expected_revision, "--output", str(args.release_file)])
     run(["uv", "run", "python", "scripts/build_public_dataset.py"])
+    validate_artifact((ROOT / args.release_file).resolve(), expected_revision)
     run(["uv", "run", "python", "scripts/validate_public_artifact.py"])
     run(["uv", "run", "pytest", "-q"])
     run(["pnpm", "lint"], cwd=ROOT / "web")

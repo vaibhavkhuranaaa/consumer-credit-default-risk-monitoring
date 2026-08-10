@@ -2,7 +2,7 @@
 
 ## Starting point
 
-M0–M6 are complete. The public, aggregate-only showcase is live at https://consumer-credit-default-risk-monitoring.pages.dev. The repository remains private. GitHub required branch protection is unavailable on the current private plan; no visibility or billing change is approved.
+M0–M9 are complete. The privacy-preserving analyst workspace is live and verified at https://consumer-credit-risk-workbench.pages.dev. The repository remains private. GitHub required branch protection is unavailable on the current private plan; no visibility or billing change is approved.
 
 Run milestones in order. Complete one acceptance gate before starting the next.
 
@@ -47,7 +47,7 @@ Acceptance: a documented simulated unavailable state is correctly rendered; the 
 
 Approval needed: approval for any third-party uptime monitor, scheduled job, or paid service. Local/manual verification needs no new approval.
 
-**Implemented locally 2026-08-09:** Database-backed health, fail-closed retry UX, structured Function failure events, static and Function security/cache headers, public-artifact privacy validation, and the manual availability runbook pass local tests. The Pages configuration excludes the unsupported Workers-only `observability` block. Production verification and milestone closure remain pending an explicitly approved deployment and `scripts/verify_live_release.py` pass.
+**Completed 2026-08-10:** Database-backed health, fail-closed retry UX, structured Function failure events, static and Function security/cache headers, public-artifact privacy validation, and the manual availability runbook passed local and GitHub quality gates. Cloudflare Pages deployment `7b840f48-b262-40aa-8298-86deb84e6de3` then passed `scripts/verify_live_release.py` against the production URL.
 
 ## M10 — Portfolio-quality case-study package
 

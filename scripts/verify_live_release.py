@@ -67,7 +67,7 @@ def validate_payloads(
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--base-url", default="https://consumer-credit-default-risk-monitoring.pages.dev")
+    parser.add_argument("--base-url", default="https://consumer-credit-risk-workbench.pages.dev")
     parser.add_argument("--expected-release-id", required=True)
     parser.add_argument("--expected-revision", required=True)
     args = parser.parse_args()

@@ -6,9 +6,10 @@
 - **Industry question:** Which approved consumer-credit accounts show elevated next-period repayment-default risk, and what evidence supports a governed portfolio review?
 - **Owner-facing user and decision:** Credit-risk analyst prioritizes a bounded review queue; no automated approval, denial, pricing, or lending decision is made.
 - **Data classification:** UCI Default of Credit Card Clients, CC BY 4.0, downloaded after recorded approval. The public analyst artifact may serve licensed non-demographic source fields, derived measures, and retrospective research scores. Demographic fields remain local and are used only in the documented aggregate fairness audit.
-- **Demo status:** A 30,000-row, non-demographic read-only analyst product is implemented locally. It presents an academic benchmark and accepts no viewer writes or lending actions.
+- **Demo status:** A 30,000-row, non-demographic read-only analyst product is deployed at `https://consumer-credit-risk-workbench.pages.dev`. It presents an academic benchmark and accepts no viewer writes or lending actions.
 - **First-demo workflow:** Build a checksum-traceable 30,000-row research artifact, search and filter non-demographic source fields, inspect derived evidence, and review aggregate evaluation and fairness evidence separately.
 - **Public URL target:** `/projects/consumer-credit-default-risk-monitoring`
+- **Hosted demo:** `https://consumer-credit-risk-workbench.pages.dev`
 - **GitHub repository:** Private repository approved for source control and quality checks: `vaibhavkhuranaaa/consumer-credit-default-risk-monitoring`.
 
 ## Success criteria

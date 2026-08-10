@@ -64,13 +64,13 @@ milestones:
       - Retain the academic-benchmark and no-automated-decision boundaries.
   - id: M9
     title: Add privacy-preserving availability safeguards
-    status: in_progress
+    status: complete
     acceptance:
       - Verify governed unavailable-state behavior, cache/security headers, rollback diagnostics, and ownership.
       - Do not add monitoring services, scheduled jobs, or paid capacity without approval.
   - id: M10
     title: Package the verified portfolio case study
-    status: blocked_by_M9
+    status: planned
     acceptance:
       - Public case-study claims link to evidence and retain the retrospective no-decision boundary.
   - id: M11

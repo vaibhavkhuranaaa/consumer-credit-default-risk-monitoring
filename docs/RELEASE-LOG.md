@@ -51,3 +51,22 @@ The current release is historical evidence only. This entry does not authorize r
 | Rollback target | Immediately preceding approved Cloudflare Pages deployment, selected from the Pages deployment history |
 | Local gate | Passed from a clean worktree before deployment |
 | GitHub Actions quality | Green: https://github.com/vaibhavkhuranaaa/consumer-credit-default-risk-monitoring/actions/runs/30976446944 |
+
+## Verified privacy-preserving analyst workspace
+
+| Field | Record |
+| --- | --- |
+| Release ID | `753cba75-e986-4128-a353-6ed2d7c411d9` |
+| Aggregate release revision | `7f602e4977b824d9bc3ecb61a65a08e88adf5b67` |
+| Application revision | `142462ab74d0a2e3eb7cce131830b9eff71b1a86` |
+| Evaluation artifact hash | `sha256:5b72d29dbc5b43375f185035f6c76654fd70b79dd69ac60708cf2ffa32b76eda` |
+| Published aggregate artifact hash | `sha256:353d03a21c41b33b83699f4c536f742f75aa2e5b8691d61aa1394ea31c0abdd1` |
+| Analyst artifact hash | `sha256:31bb91f3a4dafcedeb55c31fc8e9f712cbe39da8369d8f8265bff29d3e4d696f` |
+| Publisher identity | Vaibhav Khurana (approved release owner) |
+| Deployment URL | https://consumer-credit-risk-workbench.pages.dev |
+| Cloudflare deployment ID | `7b840f48-b262-40aa-8298-86deb84e6de3` |
+| Verification timestamp | `2026-08-10T04:45:15Z` |
+| Rollback target | None in the replacement project; preceding deployment `c02d27b2-613b-475f-88d0-d74f3cb2f62f` failed health verification |
+| Local gate | Passed from a clean worktree for application revision `142462ab74d0a2e3eb7cce131830b9eff71b1a86` |
+| GitHub Actions quality | Green: https://github.com/vaibhavkhuranaaa/consumer-credit-default-risk-monitoring/actions/runs/31356386184 |
+| Live verification | Availability, security headers, cache policy, exact aggregate lineage, 30,000-row contract, and demographic-field exclusion passed |

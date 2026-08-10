@@ -2,7 +2,7 @@
 
 ## Approved status
 
-- Status: `verified — full-record analyst product deployed`
+- Status: `verified — privacy-preserving analyst product deployed`
 - Initial delivery: local Python evaluation plus React full-record analyst workspace and Cloudflare-ready aggregate evidence serving
 - Cloud implementation: Neon Free in `aws-us-east-2` and Cloudflare Pages/Workers Free
 
@@ -35,4 +35,6 @@ The system supports an analyst's aggregate review of retrospective benchmark ris
 
 The deployed release uses Cloudflare Free plus Neon Free. Raw data stays local; the public API serves only an immutable aggregate release. Custom domains, paid capacity, and teardown require a new approval.
 
-The analyst workspace is served as a generated static artifact from Cloudflare Pages. The local successor publishes non-demographic research rows and retrospective scores, never a model binary or consumer-credit recommendation. Static and Function responses carry explicit cache/security contracts, and Functions emit structured failure events without visitor analytics. Pages does not accept the Workers-only `observability` configuration block; operational review uses the existing Cloudflare deployment and Function logs without a scheduled or third-party monitor. Deployment remains approval-gated.
+The analyst workspace is served as a generated static artifact from Cloudflare Pages. The deployed product publishes non-demographic research rows and retrospective scores, never a model binary or consumer-credit recommendation. Static and Function responses carry explicit cache/security contracts, and Functions emit structured failure events without visitor analytics. Pages does not accept the Workers-only `observability` configuration block; operational review uses the existing Cloudflare deployment and Function logs without a scheduled or third-party monitor. Deployment remains approval-gated.
+
+The verified replacement deployment is Cloudflare Pages deployment `7b840f48-b262-40aa-8298-86deb84e6de3` at `https://consumer-credit-risk-workbench.pages.dev`. Application revision `142462ab74d0a2e3eb7cce131830b9eff71b1a86` serves immutable aggregate release `753cba75-e986-4128-a353-6ed2d7c411d9`, whose model/data revision is `7f602e4977b824d9bc3ecb61a65a08e88adf5b67`. This separates application health fixes from the immutable evaluated release lineage without rewriting release history.

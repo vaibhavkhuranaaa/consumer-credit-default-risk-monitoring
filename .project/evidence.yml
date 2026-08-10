@@ -13,30 +13,30 @@ evidence:
     status: verified
     record: artifacts/evaluation.json
   - id: GOV-01
-    claim: The system has no automated lending decision. The local successor publishes no demographic fields in individual records and retains demographics only for aggregate fairness diagnostics.
-    status: verified-local
-    record: PRODUCT.md, scripts/validate_public_artifact.py, .project/approvals.yml
-  - id: PRODUCT-01
-    claim: The deployed analyst workspace provides full-record search, filtering, pagination, and complete source-field inspection for all 30,000 UCI rows.
+    claim: The system has no automated lending decision. The deployed product publishes no demographic fields in individual records and retains demographics only for aggregate fairness diagnostics.
     status: verified
-    record: https://consumer-credit-default-risk-monitoring.pages.dev, https://consumer-credit-default-risk-monitoring.pages.dev/data/uci-credit-records.json
+    record: PRODUCT.md, scripts/validate_public_artifact.py, .project/approvals.yml, https://consumer-credit-risk-workbench.pages.dev/data/analyst-workspace.json
+  - id: PRODUCT-01
+    claim: The deployed analyst workspace provides non-demographic search, filtering, pagination, and evidence inspection for all 30,000 UCI rows.
+    status: verified
+    record: https://consumer-credit-risk-workbench.pages.dev, https://consumer-credit-risk-workbench.pages.dev/data/analyst-workspace.json
   - id: DEPLOY-01
     claim: The public serving path permits aggregate release evidence only and has a documented least-privilege, rollback, and teardown design.
     status: verified
-    record: https://consumer-credit-default-risk-monitoring.pages.dev/api/v1/releases/current
+    record: https://consumer-credit-risk-workbench.pages.dev/api/v1/releases/current, docs/RELEASE-LOG.md, docs/AVAILABILITY-RUNBOOK.md
   - id: PRODUCT-02
-    claim: The local analyst artifact contains 30,000 non-demographic UCI research rows, deterministic derived measures, and out-of-fold retrospective research scores without credentials or model binaries.
+    claim: The deployed analyst artifact contains 30,000 non-demographic UCI research rows, deterministic derived measures, and out-of-fold retrospective research scores without credentials or model binaries.
     status: verified
-    record: scripts/build_public_dataset.py, web/public/data/analyst-workspace.json
+    record: scripts/build_public_dataset.py, web/public/data/analyst-workspace.json, https://consumer-credit-risk-workbench.pages.dev/data/analyst-workspace.json
   - id: RELCTRL-01
     claim: The manual release path requires a local analyst-artifact pre-release gate and a green GitHub Actions quality run before deployment.
     status: verified
     record: scripts/pre_release_gate.py, docs/RELEASE-CHECKLIST.md, docs/RELEASE-LOG.md
   - id: AVAIL-01
-    claim: The local release candidate fails closed on missing or invalid artifacts, verifies database-backed health and release lineage, and applies explicit cache and security-header contracts without third-party monitoring.
-    status: verified-local
-    record: web/functions/api/v1/health.ts, web/public/_headers, web/src/App.tsx, scripts/verify_live_release.py, docs/AVAILABILITY-RUNBOOK.md
+    claim: The deployed product fails closed on missing or invalid artifacts, verifies database-backed health and release lineage, and applies explicit cache and security-header contracts without third-party monitoring.
+    status: verified
+    record: web/functions/api/v1/health.ts, web/public/_headers, web/src/App.tsx, scripts/verify_live_release.py, docs/AVAILABILITY-RUNBOOK.md, https://consumer-credit-risk-workbench.pages.dev/api/v1/health
   - id: PRIVACY-01
-    claim: The local version-3 analyst artifact excludes sex, education, marriage, and age from public individual records and binds embedded evaluation evidence to a SHA-256 lineage hash.
-    status: verified-local
-    record: scripts/build_public_dataset.py, scripts/validate_public_artifact.py
+    claim: The deployed version-3 analyst artifact excludes sex, education, marriage, and age from public individual records and binds embedded evaluation evidence to a SHA-256 lineage hash.
+    status: verified
+    record: scripts/build_public_dataset.py, scripts/validate_public_artifact.py, scripts/verify_live_release.py, https://consumer-credit-risk-workbench.pages.dev/data/analyst-workspace.json

@@ -4,17 +4,17 @@
   "title": "Consumer Credit Default Risk & Portfolio Monitoring",
   "status": "live-verified",
   "source": {
-    "dataBoundary": "UCI Default of Credit Card Clients, CC BY 4.0. The local release candidate publishes non-demographic research fields; demographics remain local and audit-only."
+    "dataBoundary": "UCI Default of Credit Card Clients, CC BY 4.0. The deployed product publishes non-demographic research fields; demographics remain local and audit-only."
   },
   "evidence": [
     {
       "id": "DEPLOY-01",
-      "claim": "The deployed dashboard is the prior full-record explorer; the fail-closed, non-demographic successor remains a local release candidate pending approval and live verification.",
-      "record": "https://consumer-credit-default-risk-monitoring.pages.dev"
+      "claim": "The deployed non-demographic analyst workspace passes database health, release-lineage, security-header, cache-policy, 30,000-row integrity, and protected-field exclusion checks.",
+      "record": "https://consumer-credit-risk-workbench.pages.dev"
     },
     {
       "id": "EVAL-01",
-      "claim": "The calibrated challenger achieved AUROC 0.7915, PR-AUC 0.5737, Brier score 0.1315, and 10-bin calibration error 0.0120 on the fixed stratified UCI benchmark split.",
+      "claim": "The calibrated challenger achieved AUROC 0.7916, PR-AUC 0.5764, Brier score 0.1314, and 10-bin calibration error 0.0124 on the fixed stratified UCI benchmark split.",
       "record": "artifacts/evaluation.json"
     }
   ]

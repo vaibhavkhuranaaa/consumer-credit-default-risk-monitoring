@@ -1,6 +1,6 @@
 # Consumer Credit Default Risk & Portfolio Monitoring
 
-Status: a governed academic analyst workspace is built locally. The currently deployed site remains the prior full-record explorer until a separately approved and verified deployment replaces it.
+Status: a governed academic analyst workspace is live and verified at https://consumer-credit-risk-workbench.pages.dev.
 
 ## Project
 
@@ -21,4 +21,4 @@ uv run python scripts/build_public_dataset.py
 
 Before an approved deployment, follow [the pre-release checklist](docs/RELEASE-CHECKLIST.md): the local gate and a green GitHub Actions quality run for the same SHA are both mandatory.
 
-The local workspace serves the approved non-demographic UCI research artifact and does not make individual credit decisions. See `docs/DEPLOYMENT.md` for the current release procedure and `docs/NEXT-MILESTONE-PLAN.md` for the approved roadmap.
+The deployed workspace serves the approved non-demographic UCI research artifact and does not make individual credit decisions. See `docs/DEPLOYMENT.md` for the current release procedure and `docs/NEXT-MILESTONE-PLAN.md` for the approved roadmap.

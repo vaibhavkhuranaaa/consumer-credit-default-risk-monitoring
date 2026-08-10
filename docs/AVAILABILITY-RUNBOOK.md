@@ -11,7 +11,7 @@ Owner: Vaibhav Khurana. Manual check cadence: before and after every approved de
 Run the bounded, read-only health request:
 
 ```sh
-curl -fsS https://consumer-credit-default-risk-monitoring.pages.dev/api/v1/health
+curl -fsS -A 'consumer-credit-release-verifier/1.0' https://consumer-credit-risk-workbench.pages.dev/api/v1/health
 ```
 
 A healthy response reports `status: ready`, database connectivity, current-release availability, release ID, and code revision. It reveals no credentials or visitor information. `configured` alone is not healthy.
@@ -33,6 +33,7 @@ After deployment, run:
 
 ```sh
 uv run python scripts/verify_live_release.py \
+  --base-url https://consumer-credit-risk-workbench.pages.dev \
   --expected-release-id <approved-release-id> \
   --expected-revision <full-git-sha>
 ```
@@ -41,7 +42,7 @@ The verifier checks the site, health endpoint, aggregate release, and analyst ar
 
 ## Rollback diagnostic
 
-The recovery target is the most recent Cloudflare Pages deployment whose source revision, release ID, and artifact hashes all appear in `docs/RELEASE-LOG.md`. Before any rollback, identify its immutable Pages deployment ID in the Cloudflare deployment history and record explicit rollback approval in `.project/approvals.yml`. A rollback changes application/static assets only; it must not mutate Neon release history.
+The recovery target is the most recent Cloudflare Pages deployment whose application revision, aggregate release ID, and artifact hashes all appear in `docs/RELEASE-LOG.md`. The replacement project currently has one verified deployment, `7b840f48-b262-40aa-8298-86deb84e6de3`; the preceding `c02d27b2-613b-475f-88d0-d74f3cb2f62f` deployment failed health verification and is not an eligible rollback target. Before any rollback, identify an eligible immutable Pages deployment ID and record explicit rollback approval in `.project/approvals.yml`. A rollback changes application/static assets only; it must not mutate Neon release history.
 
 ## Teardown ownership
 

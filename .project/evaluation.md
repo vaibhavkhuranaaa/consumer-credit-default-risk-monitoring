@@ -43,6 +43,8 @@ Every approved capacity point reports queue size, captured observed defaults, ob
 
 Evaluation schema version `2` records UTC generation time, extracted-source SHA-256, evaluated Git revision, exact command, Python/NumPy/pandas/scikit-learn versions, train/validation/development/holdout row counts and ID checksums, baseline definitions, repeated split identities, uncertainty, and limitations. `artifacts/evaluation.json` is the machine-readable local source. The governed analyst artifact binds it by SHA-256 and removes local aggregate fairness diagnostics before public serving.
 
+The final local approval candidate was generated at `2026-08-10T07:27:21.801899+00:00` from evaluated revision `543dc446c48b2cc2208f2e6362863563a0f7514d`. Its evaluation SHA-256 is `15f8b499c4978e061b96cc0b0cdfeac394cefde970373959ae625f07808ab83b`; analyst artifact v4 SHA-256 is `06c3355aa09d3814dedb2660e5eec31db08e630971c524f529638b7beff8057a`.
+
 ## Safe record-level simulation
 
 For a selected capacity, a public record may show only its academic source ID, out-of-fold retrospective score, score band, deterministic rank/denominator, selected capacity, historical outcome, and `Inside simulated review set` or `Outside simulated review set`. Rank uses the published six-decimal score descending with source ID ascending as the tie-breaker.

@@ -12,7 +12,7 @@ The current public service remains technically verified but its M9 user experien
 
 ## M10 publication gate
 
-M10 remains local with changes requested. Before any deployment, the strengthened evaluation evidence and record-level simulated-review language must pass repository gates, the owner must explicitly approve refreshed desktop/tablet/mobile screenshots, and deployment must be separately authorized. A clean pre-release gate and matching green GitHub Actions quality run must bind the candidate commit to generated artifacts. Deployment must preserve the current Cloudflare Free, Neon Free, read-only, non-demographic, research-only boundary.
+M10 remains local with changes requested. Candidate `543dc446c48b2cc2208f2e6362863563a0f7514d` passed the local pre-release gate and is bound to evaluation SHA-256 `15f8b499c4978e061b96cc0b0cdfeac394cefde970373959ae625f07808ab83b` and analyst artifact SHA-256 `06c3355aa09d3814dedb2660e5eec31db08e630971c524f529638b7beff8057a`. Refreshed desktop, tablet, and mobile evidence exists locally. Before any deployment, the owner must explicitly approve those screenshots, deployment must be separately authorized, and a matching green GitHub Actions quality run must bind the candidate commit to generated artifacts. Deployment must preserve the current Cloudflare Free, Neon Free, read-only, non-demographic, research-only boundary.
 
 ## Prohibited actions and claims
 

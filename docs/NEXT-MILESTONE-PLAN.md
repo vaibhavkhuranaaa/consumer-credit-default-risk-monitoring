@@ -2,7 +2,7 @@
 
 ## Starting point
 
-M0–M9 are complete. M10's analyst-style visual rebuild and the approved evaluation-strengthening contract are implemented locally on `feature/m10-bi-dashboard`. The public M9 site remains technically verified and unchanged. M10 still requires refreshed screenshot review and explicit human visual approval before any separately approved deployment.
+M0–M9 are complete. M10's analyst-style visual rebuild and the approved evaluation-strengthening contract are implemented and locally verified on `feature/m10-bi-dashboard` at evaluated candidate `543dc446c48b2cc2208f2e6362863563a0f7514d`. The public M9 site remains technically verified and unchanged. M10 now awaits explicit human review of the refreshed desktop, tablet, and mobile evidence before any separately approved deployment.
 
 Complete milestones in order. The next task must work only on M10 and must not deploy.
 

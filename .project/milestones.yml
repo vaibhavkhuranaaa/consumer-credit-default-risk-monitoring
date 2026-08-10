@@ -71,7 +71,7 @@ milestones:
   - id: M10
     title: Rebuild and strengthen the non-technical BI decision dashboard
     status: changes_requested
-    evidence: [M10-DESIGN-01, M10-PRODUCT-01, M10-VERIFY-01, M10-PERF-01]
+    evidence: [M10-DESIGN-01, M10-PRODUCT-01, M10-EVAL-02, M10-SCHEMA-01, M10-PRIVACY-02, M10-VERIFY-02, M10-PERF-01, GRAPH-01, GRAPH-02]
     acceptance:
       - Replace the rejected design contract with an owner-approved stakeholder decision map, information architecture, visual system, KPI glossary, and chart specification before public deployment.
       - Support portfolio posture, review-capacity planning, cohort concentration, model assurance, data quality, and governance decisions with verified KPIs and linked analytical visuals rather than prose or decorative cards.

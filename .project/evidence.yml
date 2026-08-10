@@ -53,7 +53,7 @@ evidence:
     status: superseded_local
     record: docs/screenshots/m10/desktop-portfolio.jpg, docs/screenshots/m10/desktop-review-planning.jpg, docs/screenshots/m10/tablet-portfolio.jpg, docs/screenshots/m10/mobile-portfolio.jpg
   - id: M10-PERF-01
-    claim: The strengthened local production bundle builds to 261.33 kB JavaScript (78.47 kB gzip) plus 31.64 kB CSS (6.86 kB gzip), adding 2.16 kB or 2.6% combined gzip versus the verified visual rebuild without adding a runtime dependency.
+    claim: The strengthened local production bundle builds to 261.33 kB JavaScript (78.47 kB gzip) plus 31.89 kB CSS (6.88 kB gzip), adding 2.18 kB or 2.6% combined gzip versus the verified visual rebuild without adding a runtime dependency; local preview measured 1 ms TTFB, 96 ms FCP, 196 ms LCP, and CLS 0.
     status: verified_local
     record: web/package.json, web/src/App.tsx, web/dist/assets
   - id: M10-EVAL-AUDIT-01
@@ -76,7 +76,15 @@ evidence:
     claim: Sex, education, marriage, and age remain excluded from model inputs and public individual records; aggregate fairness evidence remains local and is removed from generated analyst and aggregate-release payloads.
     status: verified_local
     record: scripts/build_public_dataset.py, src/credit_risk/release_contract.py, scripts/validate_public_artifact.py, tests/test_pipeline.py
+  - id: M10-VERIFY-02
+    claim: Exact evaluated revision 543dc446c48b2cc2208f2e6362863563a0f7514d passed the full credential-free pre-release gate: governed evaluation and artifact regeneration, artifact validation, 17 Python tests, TypeScript lint, 15 web tests, production build, and project-kit check. Production browser verification passed at 1440x1000, 834x1112, and 390x844 with no document overflow, console errors, page errors, or automated WCAG A/AA violations.
+    status: verified_local_awaiting_human_visual_approval
+    record: docs/screenshots/m10/desktop-assurance.jpg, docs/screenshots/m10/desktop-records.jpg, docs/screenshots/m10/tablet-assurance.jpg, docs/screenshots/m10/mobile-records.jpg, scripts/pre_release_gate.py
   - id: GRAPH-01
     claim: The owner approved and Graphify completed a project-scoped semantic refresh with a passing endpoint-integrity diagnostic; the unverified workspace node, initial missing-source-file edge warnings, and skill/runtime version mismatch remain disclosed.
     status: verified_local_with_limitations
     record: .project/approvals.yml, graphify-out/manifest.json, graphify-out/GRAPH_REPORT.md
+  - id: GRAPH-02
+    claim: The final local deterministic Graphify code update produced 397 nodes, 684 edges, and 41 communities; the multigraph diagnostic found no endpoint, loop, duplicate, or collapse defects, and manifest SHA-256 8219a20bbd2a3f8b89ec28e9b64e4fd61a6fdabc0e07426e0447c5ae2710c48d is recorded. The external Gemini documentation-semantic refresh was approval-blocked and remains explicitly incomplete.
+    status: verified_local_code_graph_semantic_docs_blocked
+    record: .project/graph-source.sha256, graphify-out/manifest.json, graphify-out/graph.json, graphify-out/GRAPH_REPORT.md, .project/handoff.md

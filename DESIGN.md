@@ -13,7 +13,7 @@ This product is a retrospective academic research workbench built from the licen
 | Portfolio executive | Where are observed defaults, elevated research scores, repayment delays, and reported limits concentrated? | Full governed artifact, filtered cohort metrics, score-band and limit distributions | Select a cohort for further retrospective analysis | No forecast, loss estimate, exposure value, or causal claim |
 | Review operations lead | What historical workload and capture trade-off appears at 5%, 10%, 20%, 35%, or 50% capacity? | Held-out evaluation threshold table | Compare queue size, captured defaults, non-default reviews, precision, recall, and lift | Simulation is evaluated on 6,000 holdout rows, not a production queue |
 | Risk governance reviewer | Does the model outperform simple baselines consistently, and where does the evidence stop being usable? | Frozen holdout, repeated development-split stability, paired uncertainty, calibration, robustness, ablations, lineage, and validation status | Assign a research-readiness verdict and document gaps | Single target horizon; no out-of-time or operational validation |
-| Analyst | Why is a record inside or outside the selected simulated review set? | Source repayment, bill, payment, limit fields, deterministic derived measures, out-of-fold score, rank, capacity, and lineage | Inspect and compare retrospective research evidence | Review placement is not an approval, denial, price, adverse-action reason, or recommendation |
+| Analyst | Why is a record inside or outside the selected simulated review set? | Out-of-fold score, score band, deterministic rank/denominator, selected capacity, historical outcome, and simulated placement | Inspect one bounded retrospective ranking result | Review placement is not an approval, denial, price, adverse-action reason, or recommendation |
 
 ## Information architecture
 
@@ -81,7 +81,7 @@ Every KPI displays its filter context and exposes a plain-language definition, u
 - Review capacity is restricted to verified 5%, 10%, 20%, 35%, and 50% points.
 - Changing review capacity updates each record's deterministic simulated-review placement and visibly states the rank denominator. It must not imply that the model made a lending decision.
 - Tables support source-ID search, sortable columns, 20-row pagination, visible sort direction, and keyboard-operable inspection.
-- The inspector groups evidence rather than dumping field names. It explains each derived measure, labels six-value arrays as historical statement positions, shows score/rank/capacity/placement lineage, and repeats: `Retrospective research simulation only — not an approval, denial, price, adverse-action reason, or lending recommendation.`
+- The inspector shows only the retrospective score, score band, deterministic rank/denominator, selected capacity, historical outcome, and simulated placement, and repeats: `Retrospective research simulation only — not an approval, denial, price, adverse-action reason, or lending recommendation.`
 
 ## Accessibility and states
 

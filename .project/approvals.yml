@@ -67,6 +67,13 @@ graphify_semantic_sync:
   authority: project owner
   allowed_action: transmit repository source and governance content to the configured Gemini-backed Graphify semantic service solely to refresh project freshness
   boundary: one project-scoped semantic refresh only; no unrelated repository content, credentials, raw ignored data, deployment, publication, or paid resource
+m10_final_graphify_sync:
+  status: approved
+  requested_on: 2026-08-10
+  approved_on: 2026-08-10
+  authority: project owner
+  allowed_action: perform one additional project-scoped Graphify semantic refresh after the final M10 documentation state so the graph reflects the exact local approval candidate
+  boundary: repository source and governance content only; no unrelated content, credentials, raw ignored data, deployment, publication, provider change, or paid resource
 m10_evaluation_strengthening:
   status: approved_for_local_implementation
   approved_on: 2026-08-10

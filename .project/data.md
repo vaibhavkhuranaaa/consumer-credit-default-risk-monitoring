@@ -14,7 +14,7 @@ The acquired workbook contains 30,000 rows and 25 source columns. Validation rec
 
 ## Privacy and feature policy
 
-Raw data remains local and ignored by Git. Sex, education, marriage, and age are excluded from model inputs, thresholds, public records, and individual analysis. They may be used only in the documented local aggregate fairness audit. The public version-3 analyst artifact contains licensed non-demographic fields, deterministic derived measures, and out-of-fold retrospective research scores. It contains no credentials, direct identifiers, or model binary.
+Raw data remains local and ignored by Git. Sex, education, marriage, and age are excluded from model inputs, thresholds, public records, and individual analysis. They may be used only in the documented local aggregate fairness audit. The public version-4 analyst artifact contains licensed non-demographic fields, deterministic derived measures, out-of-fold retrospective research scores, deterministic ranks, and strengthened evaluation evidence. It contains no credentials, direct identifiers, or model binary.
 
 ## Demo rights and limitations
 

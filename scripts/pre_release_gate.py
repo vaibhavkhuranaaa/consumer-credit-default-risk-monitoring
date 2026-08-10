@@ -13,6 +13,7 @@ from credit_risk.release_contract import read_json, validate_release
 
 
 ROOT = Path(__file__).resolve().parents[1]
+EXPECTED_PUBLIC_DATA_FILES = {"analyst-workspace.json"}
 
 
 def run(command: list[str], *, cwd: Path = ROOT) -> None:
@@ -45,6 +46,20 @@ def validate_artifact(release_file: Path, revision: str) -> str:
     return artifact_hash
 
 
+def validate_public_data_directory() -> None:
+    public_data = ROOT / "web/public/data"
+    actual_files = {path.name for path in public_data.iterdir() if path.is_file()}
+    unexpected_files = sorted(actual_files - EXPECTED_PUBLIC_DATA_FILES)
+    if unexpected_files:
+        raise ValueError(
+            "Unexpected public data payloads would be included in the deployment: "
+            + ", ".join(unexpected_files)
+        )
+    if actual_files != EXPECTED_PUBLIC_DATA_FILES:
+        raise ValueError("Governed analyst artifact is missing from web/public/data")
+    print("Public deployment payload: pass (analyst-workspace.json only)")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Validate a release artifact and run all required local quality checks."
@@ -65,6 +80,7 @@ def main() -> int:
     run(["uv", "run", "python", "scripts/run_evaluation.py", "--revision", expected_revision])
     run(["uv", "run", "python", "scripts/build_release.py", "--revision", expected_revision, "--output", str(args.release_file)])
     run(["uv", "run", "python", "scripts/build_public_dataset.py"])
+    validate_public_data_directory()
     validate_artifact((ROOT / args.release_file).resolve(), expected_revision)
     run(["uv", "run", "python", "scripts/validate_public_artifact.py"])
     run(["uv", "run", "pytest", "-q"])

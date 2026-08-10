@@ -32,6 +32,10 @@ evidence:
     claim: The manual release path requires a local analyst-artifact pre-release gate and a green GitHub Actions quality run before deployment.
     status: verified
     record: scripts/pre_release_gate.py, docs/RELEASE-CHECKLIST.md, docs/RELEASE-LOG.md
+  - id: RELCTRL-02
+    claim: Deployment-candidate preparation removes the obsolete full-record payload, rejects unexpected files in the public data directory, and removes unused Fluent UI dependencies without changing the production application bundle.
+    status: verified_local
+    record: scripts/pre_release_gate.py, tests/test_pre_release_gate.py, web/package.json, web/pnpm-lock.yaml, docs/DEPLOYMENT.md, docs/RELEASE-CHECKLIST.md
   - id: AVAIL-01
     claim: The deployed product fails closed on missing or invalid artifacts, verifies database-backed health and release lineage, and applies explicit cache and security-header contracts without third-party monitoring.
     status: verified

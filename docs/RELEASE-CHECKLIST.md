@@ -14,6 +14,7 @@ Use this checklist for every public release. It is a local control only; do not 
   ```
 
 - [ ] Record the SHA-256 hash of `artifacts/evaluation.json`, the gate-validated `artifacts/release.json`, and `web/public/data/analyst-workspace.json`.
+- [ ] Confirm `web/public/data/` contains only `analyst-workspace.json`; the gate rejects obsolete or unexpected payloads before building `web/dist`.
 - [ ] Confirm `scripts/validate_public_artifact.py` passes and the version-4 artifact contains no demographic fields, local fairness evidence, forbidden decision fields, or incomplete deterministic ranks.
 - [ ] Confirm the most recent GitHub Actions `quality` workflow for the same source revision is green.
 - [ ] Confirm `.project/approvals.yml` still authorizes the effective non-demographic record and retrospective-score public scope. A new deployment needs explicit approval; this checklist does not grant it.
@@ -26,15 +27,6 @@ Use this checklist for every public release. It is a local control only; do not 
 - [ ] Record the verification timestamp and the exact rollback target in the release log.
 - [ ] Do not publish if the local gate or GitHub Actions quality run is not green.
 
-## Current-release dry run
+## Candidate boundary
 
-The current local artifact was built for a prior deployed revision, so use its recorded revision rather than `HEAD` for an audit-only dry run:
-
-```sh
-uv run python scripts/pre_release_gate.py \
-  --allow-dirty \
-  --revision 6e10495a76be508b1e912161397111b57612bae1 \
-  --release-file artifacts/release.json
-```
-
-`--allow-dirty` is only for this documentation audit. It must not be used to publish a release.
+The gate must run from a clean worktree against the exact immutable candidate SHA. `--allow-dirty` remains available only for explicitly documented audits and must never support publication or deployment.

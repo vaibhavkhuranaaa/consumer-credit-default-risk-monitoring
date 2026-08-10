@@ -10,8 +10,6 @@
     "lint": "tsc -b --pretty false"
   },
   "dependencies": {
-    "@fluentui/react-components": "^9.74.4",
-    "@fluentui/react-icons": "^2.0.334",
     "@neondatabase/serverless": "^1.0.2",
     "@vitejs/plugin-react": "^5.0.4",
     "react": "^19.1.1",

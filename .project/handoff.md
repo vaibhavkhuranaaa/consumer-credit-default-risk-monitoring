@@ -55,6 +55,8 @@ Production assets are 260.83 kB JavaScript / 78.05 kB gzip and 31.39 kB CSS / 6.
 
 Browser verification passed at 1440×1000, 834×1112, and 390×844 with no document-level overflow, console errors, or page errors. The automated WCAG A/AA audit reported zero violations and one incomplete contrast rule because sticky/overlapping elements obscured background detection.
 
+Deployment-readiness cleanup is separately owner-approved. Local checks pass 19 Python tests, TypeScript lint, 15 web tests, production build, and `project-kit check`. The pre-release gate now fails closed if `web/public/data/` contains anything other than `analyst-workspace.json`. The obsolete ignored record payload was removed, reducing `web/dist` from approximately 26 MB to 16 MB, and the unused Fluent UI dependency tree was removed without changing production JavaScript or CSS assets. No release was published and no deployment occurred.
+
 Replacement visual evidence for owner review:
 
 - `docs/screenshots/m10/desktop-validation-workstation.png`
@@ -79,4 +81,4 @@ The approval reviewer blocked the Gemini semantic-doc refresh because it would t
 
 This is one historical academic population with one target horizon. There is no calendar-time, out-of-time, external, geographic, prospective, drift, operational, causal, loss, pricing, or lending-decision validation. Repeated folds are correlated views of the same development population. Capacity intervals describe the frozen audit sample, not staffing or business benefit. The approximately 15 MB governed data artifact remains the dominant transfer/load cost. Automated accessibility checks do not replace manual keyboard, zoom, screen-reader, and contrast review. Graphify's final documentation semantics remain pending a more specific external-transmission approval.
 
-Next action is M11: package the verified portfolio case study using the approved visual candidate and existing governed evidence. Visual approval does not authorize deployment; any deployment still requires a separate explicit approval and a matching green GitHub Actions quality run for the future exact candidate revision.
+Next action is to commit and push the approved deployment-readiness cleanup, run the complete gate and matching GitHub Actions quality workflow for the exact immutable candidate, then stop for separate public-deployment approval. M11 remains the first unblocked product milestone and is not started by this release hygiene work.

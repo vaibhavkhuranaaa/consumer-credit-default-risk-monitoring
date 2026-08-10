@@ -14,6 +14,12 @@ m10_visual_and_deployment:
   authority: project owner
   required_action: separately approve or reject public deployment after a matching green GitHub Actions quality run for the exact deployment candidate
   boundary: visual approval closes the M10 design gate but does not authorize deployment, merge, publication, visibility change, paid resources, provider change, rollback, or secret transmission
+m10_deployment_candidate_preparation:
+  status: approved
+  approved_on: 2026-08-10
+  authority: project owner
+  allowed_action: remove verified stale deployment payloads and unused frontend dependencies, repair release-control records, create and push an immutable M10 deployment candidate, and obtain a matching GitHub Actions quality result
+  boundary: no aggregate release publication, Cloudflare deployment, merge, visibility change, paid resource, provider change, rollback, or secret transmission
 data_acquisition:
   status: approved
   proposed_source: UCI Default of Credit Card Clients (CC BY 4.0)

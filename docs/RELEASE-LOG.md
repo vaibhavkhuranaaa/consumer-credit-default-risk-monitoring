@@ -10,7 +10,7 @@ This credential-free log traces an approved public aggregate release to the loca
 | Source revision | `<full immutable Git SHA>` |
 | Evaluation artifact hash | `<SHA-256 of artifacts/evaluation.json>` |
 | Aggregate release artifact hash | `<SHA-256 of artifacts/release.json>` |
-| Full-record public artifact hash | `<SHA-256 of web/public/data/uci-credit-records.json>` |
+| Analyst artifact hash | `<SHA-256 of web/public/data/analyst-workspace.json>` |
 | Publisher identity | `<named human; never a credential or role secret>` |
 | Deployment URL | `<approved public URL>` |
 | Verification timestamp | `<UTC ISO-8601 timestamp>` |

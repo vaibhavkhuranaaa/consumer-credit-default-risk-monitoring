@@ -27,9 +27,9 @@ The system supports an analyst's aggregate review of retrospective benchmark ris
 
 ## M10 local presentation architecture
 
-The M10 candidate preserves the version-3 static analyst artifact and read-only aggregate/health APIs. It adds no database field, model endpoint, write path, paid service, or analytics tracker.
+The M10 candidate advances the static analyst artifact to version 4 and preserves the read-only aggregate/health APIs. It adds no database field, model endpoint, write path, paid service, or analytics tracker.
 
-`version-3 non-demographic artifact → typed client validation → memoized cohort filters and deterministic aggregates → native accessible SVG charts + tabular alternatives → linked portfolio/cohort/record views`
+`version-4 non-demographic artifact → typed client validation → memoized cohort filters and deterministic aggregates → native accessible SVG charts + tabular alternatives → linked portfolio/cohort/record views`
 
 `immutable evaluation evidence → fixed holdout capacity, gains, calibration, model comparison → plain-language assurance and limitation views`
 

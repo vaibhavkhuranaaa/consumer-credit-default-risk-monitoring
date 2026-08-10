@@ -27,14 +27,21 @@ cloud:
   providers: [Neon Free, Cloudflare Pages and Workers Free]
   cost_ceiling: $0
   neon_project_id: muddy-paper-86533562
-  cloudflare_pages_project: consumer-credit-default-risk-monitoring
+  cloudflare_pages_project: consumer-credit-risk-workbench
+  previous_cloudflare_pages_project: consumer-credit-default-risk-monitoring
   rollback_owner: Vaibhav Khurana
   teardown_owner: Vaibhav Khurana
+cloudflare_reprovision:
+  status: approved
+  approved_on: 2026-08-09
+  authority: project owner
+  allowed_action: create and deploy to the consumer-credit-risk-workbench Cloudflare Pages Free project in the currently authenticated account
+  boundary: zero-dollar Pages project only; no custom domain, paid capacity, scheduled monitoring, repository visibility change, or deletion of the prior deployment
 m9_release:
   status: approved
   approved_on: 2026-08-09
   authority: project owner
-  allowed_action: commit and push the M9 release candidate, publish its aggregate release, deploy it to the existing Cloudflare Pages Free project, and verify the exact live revision after the clean local gate and matching green GitHub Actions quality run
+  allowed_action: commit and push the M9 release candidate, publish its aggregate release, deploy it to the approved Cloudflare Pages Free project, and verify the exact live revision after the clean local gate and matching green GitHub Actions quality run
   boundary: no provider changes, paid capacity, repository visibility change, scheduled monitoring, or expansion beyond the non-demographic retrospective analyst product
 graphify_semantic_sync:
   status: pending_explicit_confirmation

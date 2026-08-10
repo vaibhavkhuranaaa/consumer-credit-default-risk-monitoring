@@ -80,6 +80,12 @@ m10_evaluation_strengthening:
   authority: project owner
   allowed_action: strengthen the retrospective evaluation with stability, baseline, uncertainty, calibration, robustness, and feature-group evidence and expose safe per-record simulated review placement
   boundary: use only the approved UCI source; no approval, denial, pricing, adverse-action, automated lending decision, protected-attribute individual analysis, deployment, or publication
+m10_visual_correction:
+  status: approved_for_local_implementation
+  approved_on: 2026-08-10
+  authority: project owner
+  allowed_action: redesign the existing M10 presentation in place to remove the rejected generated/editorial visual language while preserving verified evaluation, contracts, privacy, accessibility, and functionality
+  boundary: local code, tests, documentation, and screenshots only; no deployment, merge, publication, visibility change, paid resource, provider change, rollback, or external repository transmission
 publication:
   status: approved
   scope: full UCI academic benchmark analyst product with individual source records

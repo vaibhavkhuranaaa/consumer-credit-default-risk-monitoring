@@ -2,7 +2,7 @@
 
 ## Executive status
 
-M0–M9 remain complete. M10's Credit Risk Model Validation & Review-Capacity Lab is implemented and fully verified locally on `feature/m10-bi-dashboard`. M10 remains `changes_requested` only because human visual approval has not yet been granted. The verified public M9 service is unchanged; no deployment, merge, publication, visibility, provider, billing, or rollback action occurred.
+M0–M9 remain complete. M10's evaluation and governed product behavior are verified locally on `feature/m10-bi-dashboard`, but the owner rejected the 2026-08-10 visual candidate as recognizably generated/editorial. M10 remains `changes_requested`; this is an explicit design rejection, not merely missing approval. The verified public M9 service is unchanged; no deployment, merge, publication, visibility, provider, billing, or rollback action occurred.
 
 The immutable evaluated implementation revision is `543dc446c48b2cc2208f2e6362863563a0f7514d`. Final governance, screenshot, and Graphify evidence follows that candidate and is carried by the branch tip; it does not change the evaluated code.
 
@@ -34,7 +34,7 @@ Readiness remains: **usable for retrospective research simulation; not validated
 
 ## Product and record boundary
 
-The existing analyst-style rebuild was preserved and extended, not restarted. Model validation now leads with readiness, baselines, paired uncertainty, stability, calibration, robustness, feature-group reliance, freshness, supported uses, prohibited uses, and refusal behavior.
+The existing analyst-style rebuild was preserved and extended, not restarted. Its functional scope remains valid, but its warm cream canvas, serif display hierarchy, teal accent, oversized question headings, ordinal eyebrow labels, bordered KPI grids, and repeated report panels are rejected and must not be reused. The corrective plan is recorded in `DESIGN.md` and `docs/NEXT-MILESTONE-PLAN.md`.
 
 Record simulation shows only academic source ID, retrospective out-of-fold score, score band, deterministic rank/denominator, selected capacity, historical outcome, and `Inside simulated review set` or `Outside simulated review set`. It displays exactly: `Retrospective research simulation only — not an approval, denial, price, adverse-action reason, or lending recommendation.` Lending-decision, eligibility, pricing, adverse-action, recommendation, and “the model decided” language is refused.
 
@@ -55,7 +55,7 @@ Production assets are 261.33 kB JavaScript / 78.47 kB gzip and 31.89 kB CSS / 6.
 
 Browser verification passed at 1440×1000, 834×1112, and 390×844 with no document-level overflow, console errors, or page errors. The automated WCAG A/AA audit reported zero violations and one incomplete contrast rule because sticky/overlapping elements obscured background detection.
 
-Exact-lineage visual evidence:
+Rejected historical visual evidence:
 
 - `docs/screenshots/m10/desktop-assurance.jpg`
 - `docs/screenshots/m10/desktop-records.jpg`
@@ -72,4 +72,4 @@ The approval reviewer blocked the Gemini semantic-doc refresh because it would t
 
 This is one historical academic population with one target horizon. There is no calendar-time, out-of-time, external, geographic, prospective, drift, operational, causal, loss, pricing, or lending-decision validation. Repeated folds are correlated views of the same development population. Capacity intervals describe the frozen audit sample, not staffing or business benefit. The approximately 15 MB governed data artifact remains the dominant transfer/load cost. Automated accessibility checks do not replace manual keyboard, zoom, screen-reader, and contrast review. Graphify's final documentation semantics remain pending a more specific external-transmission approval.
 
-Next action is human review of the four refreshed screenshots and an explicit approve/changes-requested decision. Visual approval does not authorize deployment. Any deployment still requires a separate explicit approval and a matching green GitHub Actions quality run for the exact candidate revision.
+Next action is an in-place visual correction that preserves verified behavior and produces a wholly new screenshot set. Do not present the four rejected screenshots for approval again. Visual approval will not authorize deployment; any deployment still requires a separate explicit approval and a matching green GitHub Actions quality run for the future exact candidate revision.

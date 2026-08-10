@@ -2,9 +2,15 @@
 
 ## Status and boundary
 
-Status: M10 local visual rebuild and evaluation-strengthening contract are implemented on 2026-08-10. Refreshed visual evidence and owner approval remain required; public deployment is pending and prohibited.
+Status: M10 evaluation strengthening is verified, but the 2026-08-10 visual candidate is owner-rejected. Its editorial cream/serif/teal treatment, oversized question headings, repeated eyebrow labels, bordered KPI-card grids, and report-like explanation panels are superseded and must not be reused. Public deployment remains prohibited.
 
 This product is a retrospective academic research workbench built from the licensed UCI Default of Credit Card Clients dataset. It supports portfolio posture, review-capacity planning, cohort comparison, model validation, governance review, and restricted record simulation. It never approves, denies, determines eligibility, prices, supplies adverse-action reasons, or recommends credit. Protected attributes are excluded from model inputs and public individual analytics.
+
+## Owner rejection and corrective objective
+
+The next M10 pass must look like purpose-built model-validation software used by an internal credit-risk team, not an editorial portfolio page or a recognizable generated dashboard template. Preserve the verified evaluation, contracts, interactions, privacy boundary, accessibility states, and record restrictions; redesign only the presentation and information hierarchy.
+
+The rejected candidate's screenshots remain historical evidence only. They are not a visual baseline, approval candidate, or source of reusable style tokens.
 
 ## Stakeholder decision map
 
@@ -27,16 +33,28 @@ This product is a retrospective academic research workbench built from the licen
 
 Navigation uses a compact top rail with five question-led views: Portfolio, Review planning, Cohorts, Model validation, and Record simulation. Desktop favors analytical density; tablet wraps two-column structures; mobile stacks sections, keeps filters usable, and converts wide tables to contained horizontal scrolling.
 
-## Visual direction
+## Replacement visual direction
 
-- **Character:** sober financial research desk; editorial hierarchy with the density and alignment of a mature BI product.
-- **Mode:** stable light presentation only. Canvas is warm paper (`#f4f1ea`); work surfaces use off-white (`#fbfaf6`); ink is deep graphite (`#18201f`).
-- **Accent:** one restrained teal (`#176b66`) for selected state and evidence lines. Observed default uses rust (`#a94f36`); neutral comparison uses slate (`#66736f`). These semantic colors never carry meaning alone.
-- **Typography:** Georgia for display headings to distinguish question hierarchy; Arial/Helvetica for controls and prose; tabular system monospace for metrics and identifiers. No external font request is allowed.
-- **Spacing:** 4, 8, 12, 16, 24, 32, and 48px rhythm. Sections use rules and whitespace instead of repeated floating cards.
-- **Shape:** square or 2-6px radii for controls and inner elements; 10px only for major bounded surfaces. No pills except compact status indicators.
-- **Elevation:** borders and tonal surface changes, not generic shadows. Sticky controls may use a single warm tinted shadow.
-- **Motion:** 160-220ms color, opacity, and transform transitions only. Respect `prefers-reduced-motion`.
+- **Character:** internal credit-risk validation workstation. It should feel operational, compact, sober, and specific to model review—not editorial, cinematic, lifestyle, or portfolio-marketing oriented.
+- **Shell:** use a cool neutral application canvas, white or near-white data surfaces, charcoal text, and one muted navy/steel interaction color. Amber and red are reserved for warnings and limitations. Do not reuse cream paper, dark-teal accents, or warm editorial contrast.
+- **Typography:** use one restrained UI sans-serif stack with medium and semibold hierarchy plus tabular figures for metrics. No display serif, oversized hero type, decorative tracking, or mixed editorial typography.
+- **Hierarchy:** the product name is a compact utility header. Page titles are 20–28px functional labels such as `Model validation`, `Capacity analysis`, and `Record simulation`; never multi-line rhetorical questions. Remove ordinal eyebrows such as `04 / Model validation`.
+- **Composition:** prefer continuous work surfaces, dense ledgers, comparison tables, aligned chart-and-table pairs, and one contextual detail rail. Do not arrange the page as equal bordered KPI cards or repeated explanation panels.
+- **Content density:** keep definitions and limitations close to the relevant metric through concise inline notes, tooltips, or a stable context rail. Remove repeated `what this means / decision supported / limitation` triptychs and prose that restates the chart.
+- **Navigation:** retain a compact top-level application navigation and filter workspace, but style it as product chrome rather than a magazine index. Active state must be obvious without an ornamental underline motif.
+- **Shape and depth:** use square or 2–4px controls and subtle tonal grouping. Avoid uniform card radii, decorative shadows, paper rules, badges, and ornamental framing.
+- **Responsive behavior:** mobile is a purpose-built review flow: summary first, then essential evidence, then a compact record list and inspector. Wide tables may scroll locally, but the viewport must not present a clipped desktop table as the primary experience.
+- **Motion:** use only short state transitions for focus, hover, selection, loading, and disclosure. No entrance choreography, scroll reveals, parallax, or decorative motion.
+
+### Explicitly prohibited visual fingerprints
+
+- warm cream canvas plus Georgia/serif headlines plus teal accents;
+- giant question-led hero headings and numbered eyebrow labels;
+- a sea of equal bordered KPI cards;
+- repeated `section label + serif heading + paragraph` panel headers;
+- report-like full-page stacking where every evidence type becomes another card;
+- generic generated-dashboard copy, ornamental status chips, and duplicated explanatory prose;
+- using the rejected screenshots as a visual target.
 
 ## KPI glossary and presentation contract
 

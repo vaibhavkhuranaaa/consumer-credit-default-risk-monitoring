@@ -2,13 +2,25 @@
 
 ## Starting point
 
-M0–M9 are complete. M10's analyst-style visual rebuild and the approved evaluation-strengthening contract are implemented and locally verified on `feature/m10-bi-dashboard` at evaluated candidate `543dc446c48b2cc2208f2e6362863563a0f7514d`. The public M9 site remains technically verified and unchanged. M10 now awaits explicit human review of the refreshed desktop, tablet, and mobile evidence before any separately approved deployment.
+M0–M9 are complete. M10's evaluation-strengthening contract is implemented and locally verified on `feature/m10-bi-dashboard`, but the 2026-08-10 visual candidate is owner-rejected as recognizably generated/editorial. The public M9 site remains technically verified and unchanged. M10 requires a focused visual correction before another approval request.
 
 Complete milestones in order. The next task must work only on M10 and must not deploy.
 
 ## M10 — Evidence-led model validation and BI decision dashboard
 
 **Objective:** make the dashboard answer whether the research model is meaningfully and stably better than simple alternatives, what a score-ranked review simulation includes, and why the evidence is not an individual lending decision.
+
+### Visual corrective pass — active
+
+Preserve all verified evaluation, artifact, API, privacy, availability, filtering, and record-simulation behavior. Do not restart the product or change its data contract.
+
+1. Audit the current React/CSS implementation against the rejected visual fingerprints in `DESIGN.md`.
+2. Replace the cream/serif/teal editorial system with a cool-neutral, sans-serif, compact internal-risk-workstation system.
+3. Remove oversized rhetorical headings, ordinal eyebrows, equal KPI-card grids, repeated panel-header formulas, and redundant explanatory prose.
+4. Rebuild Model validation around a comparison ledger, capacity evidence, calibration/robustness detail, and one persistent limitations context—not a long sequence of cards.
+5. Rebuild Record simulation as a mobile-capable review workflow whose essential columns and inspector are usable without treating a clipped desktop table as the main experience.
+6. Preserve semantic HTML, keyboard behavior, chart alternatives, loading/empty/error/refusal states, and all decision-language refusals.
+7. Capture a wholly new desktop/tablet/mobile screenshot set. The rejected 2026-08-10 screenshots are historical evidence only and must not be presented for approval again.
 
 ### Evaluation work — implemented locally
 
@@ -40,7 +52,7 @@ Complete milestones in order. The next task must work only on M10 and must not d
 - Graphify, Git, GitHub, project records, and handoff describe the same revision and status.
 - Stop before deployment, merge, visibility changes, paid resources, rollback, or publication. Obtain explicit visual approval and separate deployment approval.
 
-The implementation now uses evaluation schema version 2, analyst artifact version 4, and aggregate release schema version 2. The next authorized action after final local gates and screenshots is human visual review only. Deployment, merge, publication, visibility, billing, rollback, and provider changes remain prohibited.
+The implementation uses evaluation schema version 2, analyst artifact version 4, and aggregate release schema version 2. The active goal is the visual corrective pass above. Deployment, merge, publication, visibility, billing, rollback, and provider changes remain prohibited.
 
 ## M11 — Package the verified portfolio case study
 

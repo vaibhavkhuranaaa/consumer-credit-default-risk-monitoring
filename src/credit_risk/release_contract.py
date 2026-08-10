@@ -11,6 +11,7 @@ from typing import Any
 RELEASE_VERSION = 1
 REQUIRED_MODELS = {"logistic_baseline", "calibrated_hist_gradient_boosting", "calibrated_extra_trees"}
 REQUIRED_METRICS = {"auroc", "pr_auc", "brier", "ece_10_bin"}
+REQUIRED_TRADEOFF_FIELDS = {"capacity", "review_rate", "precision", "recall", "captured_defaults"}
 FORBIDDEN_PUBLIC_KEYS = {
     "raw_rows",
     "raw_data",
@@ -88,6 +89,16 @@ def validate_release(payload: dict[str, Any]) -> None:
             raise ValueError("Unexpected model content.")
         if set(model["metrics"]) != REQUIRED_METRICS:
             raise ValueError("Required metrics are missing.")
+        tradeoffs = model.get("threshold_tradeoffs")
+        if not isinstance(tradeoffs, list) or not tradeoffs:
+            raise ValueError("Review-capacity evidence is missing.")
+        for row in tradeoffs:
+            if not isinstance(row, dict) or set(row) != REQUIRED_TRADEOFF_FIELDS:
+                raise ValueError("Review-capacity evidence is malformed.")
+            if any(not isinstance(row[key], (int, float)) for key in REQUIRED_TRADEOFF_FIELDS):
+                raise ValueError("Review-capacity evidence must be numeric.")
+            if any(not 0 <= float(row[key]) <= 1 for key in ("capacity", "review_rate", "precision", "recall")) or int(row["captured_defaults"]) < 0:
+                raise ValueError("Review-capacity evidence is outside its valid range.")
     if FORBIDDEN_PUBLIC_KEYS.intersection(_all_keys(payload)):
         raise ValueError("Public release contains forbidden individual-level content.")
 

@@ -12,6 +12,16 @@ import psycopg
 from credit_risk.release_contract import validate_release
 
 
+def legacy_tradeoff_values(row: dict[str, float | int]) -> tuple[float, float, float, float]:
+    """Map the capacity contract onto the original evidence-table key.
+
+    The immutable production schema predates the capacity-based product language and
+    names this numeric key ``threshold``. Public evidence remains explicit about the
+    value being a review-capacity fraction.
+    """
+    return (float(row["capacity"]), float(row["review_rate"]), float(row["precision"]), float(row["recall"]))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--file", type=Path, default=Path("artifacts/release.json"))
@@ -30,7 +40,8 @@ def main() -> None:
             for metric_name, value in model["metrics"].items():
                 cursor.execute("INSERT INTO evaluation_metrics (release_id, model_name, metric_name, value, confidence_interval) VALUES (%s, %s, %s, %s, %s)", (release["release_id"], model_name, metric_name, value, json.dumps(model["confidence_intervals_95"].get(metric_name))))
             for row in model["threshold_tradeoffs"]:
-                cursor.execute("INSERT INTO threshold_tradeoffs (release_id, model_name, threshold, review_rate, precision, recall) VALUES (%s, %s, %s, %s, %s, %s)", (release["release_id"], model_name, row["threshold"], row["review_rate"], row["precision"], row["recall"]))
+                capacity, review_rate, precision, recall = legacy_tradeoff_values(row)
+                cursor.execute("INSERT INTO threshold_tradeoffs (release_id, model_name, threshold, review_rate, precision, recall) VALUES (%s, %s, %s, %s, %s, %s)", (release["release_id"], model_name, capacity, review_rate, precision, recall))
             for audit_name, groups in model.get("aggregate_fairness_diagnostics", {}).items():
                 for group in groups:
                     cursor.execute("INSERT INTO fairness_diagnostics (release_id, model_name, diagnostic_name, group_label, sample_size, default_rate, auroc, mean_score) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (release["release_id"], model_name, audit_name, group["group"], group["n"], group["default_rate"], group["auroc"], group["mean_score"]))

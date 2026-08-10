@@ -11,6 +11,13 @@ public_individual_record_scope:
   authority: project owner
   allowed_content: full UCI Default of Credit Card Clients source rows, including source row ID and demographic fields
   boundary: academic benchmark records only; no credentials, direct identity data, or model binaries
+  effective_implementation_boundary: public artifacts are deliberately narrower; sex, education, marriage, and age remain local and audit-only under AGENTS.md
+public_research_score_scope:
+  status: approved
+  approved_on: 2026-08-05
+  authority: project owner
+  allowed_content: deterministic out-of-fold retrospective research scores and derived portfolio measures for authorized UCI records
+  boundary: validated academic simulation only; no approval, denial, pricing, or lending recommendation
 repository:
   status: approved
   visibility: private
@@ -23,6 +30,17 @@ cloud:
   cloudflare_pages_project: consumer-credit-default-risk-monitoring
   rollback_owner: Vaibhav Khurana
   teardown_owner: Vaibhav Khurana
+m9_release:
+  status: approved
+  approved_on: 2026-08-09
+  authority: project owner
+  allowed_action: commit and push the M9 release candidate, publish its aggregate release, deploy it to the existing Cloudflare Pages Free project, and verify the exact live revision after the clean local gate and matching green GitHub Actions quality run
+  boundary: no provider changes, paid capacity, repository visibility change, scheduled monitoring, or expansion beyond the non-demographic retrospective analyst product
+graphify_semantic_sync:
+  status: pending_explicit_confirmation
+  requested_on: 2026-08-09
+  requested_action: transmit repository source and governance content to the configured Gemini-backed Graphify semantic service solely to refresh project-delivery graph freshness
+  boundary: the external-policy reviewer rejected the contextual approval as insufficiently specific; no transmission occurred
 publication:
   status: approved
   scope: full UCI academic benchmark analyst product with individual source records

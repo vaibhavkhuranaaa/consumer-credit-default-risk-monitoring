@@ -1,7 +1,11 @@
 flowchart LR
-  A[Local UCI source and evaluation] --> B[Aggregate release builder]
-  B --> C[Neon PostgreSQL: immutable evidence]
-  D[Hiring manager] --> E[Cloudflare Pages: React dashboard]
-  E --> F[Pages Function: read-only API]
-  F --> C
-  G[GitHub Actions: quality checks] --> E
+  A[Local checksum-pinned UCI source] --> B[Schema and range validation]
+  B --> C[Evaluation and non-demographic artifact]
+  C --> D[Local release gate and lineage hashes]
+  D --> E[Neon immutable aggregate evidence]
+  D --> F[Cloudflare Pages analyst workspace]
+  G[Hiring manager or analyst] --> F
+  F --> H[Read-only release and health Functions]
+  H --> E
+  H --> I[Fail-closed unavailable state]
+  J[GitHub Actions quality checks] --> F

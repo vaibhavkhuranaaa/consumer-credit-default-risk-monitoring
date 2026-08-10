@@ -47,6 +47,8 @@ Acceptance: a documented simulated unavailable state is correctly rendered; the 
 
 Approval needed: approval for any third-party uptime monitor, scheduled job, or paid service. Local/manual verification needs no new approval.
 
+**Implemented locally 2026-08-09:** Database-backed health, fail-closed retry UX, bounded native observability, static and Function security/cache headers, public-artifact privacy validation, and the manual availability runbook pass local tests. Production verification and milestone closure remain pending an explicitly approved deployment and `scripts/verify_live_release.py` pass.
+
 ## M10 — Portfolio-quality case-study package
 
 **Objective:** Turn verified implementation evidence into a recruiter-ready narrative without overstating benchmark results.

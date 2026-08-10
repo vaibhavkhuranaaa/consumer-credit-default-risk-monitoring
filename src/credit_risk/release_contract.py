@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 RELEASE_VERSION = 1
-REQUIRED_MODELS = {"logistic_baseline", "calibrated_hist_gradient_boosting"}
+REQUIRED_MODELS = {"logistic_baseline", "calibrated_hist_gradient_boosting", "calibrated_extra_trees"}
 REQUIRED_METRICS = {"auroc", "pr_auc", "brier", "ece_10_bin"}
 FORBIDDEN_PUBLIC_KEYS = {
     "raw_rows",
@@ -22,8 +22,6 @@ FORBIDDEN_PUBLIC_KEYS = {
     "phone",
     "address",
     "ssn",
-    "predictions",
-    "individual_scores",
     "model_binary",
     "model_path",
     "credential",
@@ -52,6 +50,7 @@ def build_release(evaluation: dict[str, Any], manifest: dict[str, Any], code_rev
         },
         "split": evaluation["split"],
         "feature_policy": evaluation["feature_policy"],
+        "selection": evaluation["selection"],
         "models": evaluation["models"],
     }
     validate_release(payload)
@@ -60,7 +59,7 @@ def build_release(evaluation: dict[str, Any], manifest: dict[str, Any], code_rev
 
 def validate_release(payload: dict[str, Any]) -> None:
     """Fail closed unless a payload matches the narrow public aggregate contract."""
-    expected = {"version", "release_id", "released_at", "code_revision", "scope", "source", "split", "feature_policy", "models"}
+    expected = {"version", "release_id", "released_at", "code_revision", "scope", "source", "split", "feature_policy", "selection", "models"}
     if set(payload) != expected or payload["version"] != RELEASE_VERSION:
         raise ValueError("Invalid release envelope.")
     try:
@@ -77,13 +76,15 @@ def validate_release(payload: dict[str, Any]) -> None:
         raise ValueError("Source provenance is incomplete.")
     if set(payload["feature_policy"]) != {"included_count", "excluded"}:
         raise ValueError("Feature policy is malformed.")
+    if set(payload["selection"]) != {"selected_model", "gate", "eligible_models", "status"}:
+        raise ValueError("Model-selection evidence is malformed.")
     excluded = {str(value).lower() for value in payload["feature_policy"]["excluded"]}
     if not {"id", "sex", "education", "marriage", "age"}.issubset(excluded):
         raise ValueError("Protected attributes and identifiers must be excluded.")
     if set(payload["models"]) != REQUIRED_MODELS:
         raise ValueError("Unexpected public model set.")
     for model in payload["models"].values():
-        if set(model).difference({"metrics", "confidence_intervals_95", "threshold_tradeoffs", "aggregate_fairness_diagnostics"}):
+        if set(model).difference({"metrics", "confidence_intervals_95", "threshold_tradeoffs", "lift_by_decile", "calibration_curve", "aggregate_fairness_diagnostics"}):
             raise ValueError("Unexpected model content.")
         if set(model["metrics"]) != REQUIRED_METRICS:
             raise ValueError("Required metrics are missing.")

@@ -13,15 +13,17 @@ The system supports an analyst's aggregate review of retrospective benchmark ris
 ## Data and feature policy
 
 - Source: UCI Default of Credit Card Clients (CC BY 4.0), acquired and checksum-pinned in `.project/data-manifest.yml`.
-- Raw source is checksum-pinned and ignored by Git. A generated public artifact may contain all licensed UCI records under the recorded owner approval.
-- Sex, education, marriage, and age are excluded from training and thresholds. They are visible as source fields in the authorized analyst product, never model inputs or recommendations.
+- Raw source is checksum-pinned and ignored by Git. A generated public artifact contains licensed non-demographic UCI fields under a deliberately narrower implementation boundary.
+- Sex, education, marriage, and age are excluded from training, thresholds, and public individual records. They remain local and are used only for documented aggregate fairness diagnostics.
 - Features use only pre-target repayment-history and financial values; ID and demographic fields are excluded. The benchmark has a single target horizon, so its fixed stratified evaluation is not an out-of-time test.
 
 ## Release architecture
 
-`local source manifest → schema/range validation → generated full-record public artifact → browser analyst workspace`
+`local source manifest → schema/range validation → evaluation-selected out-of-fold scores + derived measures → generated analyst artifact → executive overview / portfolio workbench / model lab`
 
 `local source manifest → schema/range validation → leakage-safe features → baseline/challenger → aggregate release contract → Neon immutable evidence → Cloudflare read-only API → evaluation evidence`
+
+`manual verification → database-backed health and release lineage → fail-closed analyst state → Cloudflare rollback diagnostic`
 
 ## Release control
 
@@ -33,4 +35,4 @@ The system supports an analyst's aggregate review of retrospective benchmark ris
 
 The deployed release uses Cloudflare Free plus Neon Free. Raw data stays local; the public API serves only an immutable aggregate release. Custom domains, paid capacity, and teardown require a new approval.
 
-The full-record workspace is served as a generated static artifact from Cloudflare Pages. Its verified deployment is tied to source revision `b02193103a17bdc9e14158aecec10d9aba11cc08` and release log entry `4cd50ffb-5cae-4812-aaad-f7631821feb1`.
+The analyst workspace is served as a generated static artifact from Cloudflare Pages. The local successor publishes non-demographic research rows and retrospective scores, never a model binary or consumer-credit recommendation. Static and Function responses carry explicit cache/security contracts; bounded native logs sample operational failures without visitor analytics. Deployment remains approval-gated.

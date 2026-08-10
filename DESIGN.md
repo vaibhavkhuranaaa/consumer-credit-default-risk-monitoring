@@ -11,6 +11,6 @@
 ## Product constraints
 
 - The dashboard must lead with its retrospective academic-benchmark and no-decision boundary.
-- Full licensed UCI source rows, including source IDs and demographic fields, may be shown under approval `public_individual_record_scope`. Do not show credentials, direct identity data, model binaries, or an automated lending decision.
-- Charts must explain evaluation or review-capacity trade-offs, not decorate the page.
+- Licensed non-demographic UCI source fields, derived measures, and retrospective research scores may be shown. Demographics remain local and aggregate-only in the fairness audit. Do not show credentials, direct identity data, model binaries, or an automated lending decision.
+- Use three linked views: executive overview, portfolio workbench, and technical model lab. Charts must explain evaluation or review-capacity trade-offs, not decorate the page.
 - Build responsive, keyboard-accessible interfaces; never hide essential meaning behind color alone.

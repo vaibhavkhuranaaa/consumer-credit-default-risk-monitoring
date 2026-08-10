@@ -8,7 +8,26 @@ export async function getCurrentRelease(signal?: AbortSignal): Promise<Release> 
 }
 
 export async function getPublicDataset(signal?: AbortSignal): Promise<PublicDataset> {
-  const response = await fetch("/data/uci-credit-records.json", { signal, headers: { Accept: "application/json" } });
-  if (!response.ok) throw new Error("The full UCI source-record artifact is temporarily unavailable.");
-  return response.json() as Promise<PublicDataset>;
+  const response = await fetch("/data/analyst-workspace.json", { signal, headers: { Accept: "application/json" } });
+  if (!response.ok) throw new Error("The governed UCI research artifact is temporarily unavailable.");
+  const payload: unknown = await response.json();
+  if (!isPublicDataset(payload)) throw new Error("The analyst artifact failed its public contract.");
+  return payload;
+}
+
+function isPublicDataset(value: unknown): value is PublicDataset {
+  if (!value || typeof value !== "object") return false;
+  const payload = value as Record<string, unknown>;
+  const source = payload.source;
+  const evidence = payload.evidence;
+  const records = payload.records;
+  if (payload.version !== 3 || !source || typeof source !== "object" || !evidence || typeof evidence !== "object" || !Array.isArray(records) || records.length === 0) return false;
+  const sourceObject = source as Record<string, unknown>;
+  const evidenceObject = evidence as Record<string, unknown>;
+  const selection = evidenceObject.selection;
+  const forbidden = new Set(["SEX", "EDUCATION", "MARRIAGE", "AGE"]);
+  return sourceObject.protected_attribute_boundary === "local fairness audit only"
+    && typeof sourceObject.evaluation_sha256 === "string"
+    && Boolean(selection && typeof selection === "object")
+    && records.every(record => Boolean(record && typeof record === "object") && !Object.keys(record as object).some(key => forbidden.has(key)));
 }

@@ -1,23 +1,32 @@
 import { neon } from "@neondatabase/serverless";
+import { jsonResponse, logFailure, originAllowed, type Bindings } from "../http";
 
-interface Env { NEON_API_DATABASE_URL: string; ALLOWED_ORIGIN?: string; }
-type PagesContext<T> = { env: T; request: Request };
+type PublicReleaseRow = { public_payload: Record<string, unknown> };
 
-export const onRequestGet = async ({ env, request }: PagesContext<Env>) => {
-  const origin = request.headers.get("Origin");
-  if (origin && env.ALLOWED_ORIGIN && origin !== env.ALLOWED_ORIGIN) return new Response("Origin not allowed", { status: 403 });
+function isPublicReleaseRow(value: unknown): value is PublicReleaseRow {
+  if (!value || typeof value !== "object") return false;
+  const row = value as Record<string, unknown>;
+  return Boolean(row.public_payload && typeof row.public_payload === "object");
+}
+
+export const onRequestGet: PagesFunction<Bindings> = async ({ env, request }) => {
+  const requestId = crypto.randomUUID();
+  if (!originAllowed(request, env)) {
+    return jsonResponse({ error: "Origin not allowed" }, 403, request, env, requestId);
+  }
+  if (!env.NEON_API_DATABASE_URL) {
+    logFailure("release_binding_missing", request, requestId);
+    return jsonResponse({ error: "Evidence unavailable" }, 503, request, env, requestId);
+  }
   try {
     const sql = neon(env.NEON_API_DATABASE_URL);
     const rows = await sql.query("SELECT public_payload FROM public_release_snapshot LIMIT 1");
-    if (!rows.length) return json({ error: "No approved release" }, 404, origin, env);
-    return json(rows[0].public_payload, 200, origin, env);
-  } catch {
-    return json({ error: "Evidence unavailable" }, 503, origin, env);
+    if (!isPublicReleaseRow(rows[0])) {
+      return jsonResponse({ error: "No approved release" }, 404, request, env, requestId);
+    }
+    return jsonResponse(rows[0].public_payload, 200, request, env, requestId, "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400");
+  } catch (error) {
+    logFailure("release_evidence_unavailable", request, requestId, error);
+    return jsonResponse({ error: "Evidence unavailable" }, 503, request, env, requestId);
   }
 };
-
-function json(body: unknown, status: number, origin: string | null, env: Env): Response {
-  const headers = new Headers({ "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=3600, s-maxage=3600", "X-Content-Type-Options": "nosniff", "Referrer-Policy": "same-origin" });
-  if (origin && env.ALLOWED_ORIGIN === origin) headers.set("Access-Control-Allow-Origin", origin);
-  return new Response(JSON.stringify(body), { status, headers });
-}

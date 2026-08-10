@@ -1,96 +1,46 @@
 import { useEffect, useMemo, useState } from "react";
-import { Badge, Button, FluentProvider, Input, Select, Spinner, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow, webDarkTheme, webLightTheme } from "@fluentui/react-components";
-import { ArrowLeftRegular, ArrowRightRegular, SearchRegular } from "@fluentui/react-icons";
+import { Badge, Button, FluentProvider, Input, Select, Spinner, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow, Tab, TabList, webDarkTheme, webLightTheme } from "@fluentui/react-components";
+import { SearchRegular } from "@fluentui/react-icons";
 import { getPublicDataset } from "./api";
 import type { CreditRecord, PublicDataset } from "./types";
 
-const PAGE_SIZE = 25;
-const currency = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 const number = new Intl.NumberFormat("en-US");
+const PAGE_SIZE = 20;
+type View = "overview" | "workbench" | "model";
 
-function App() {
-  const [dataset, setDataset] = useState<PublicDataset | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [query, setQuery] = useState("");
-  const [outcome, setOutcome] = useState("all");
-  const [sex, setSex] = useState("all");
-  const [page, setPage] = useState(0);
-  const [selected, setSelected] = useState<CreditRecord | null>(null);
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    getPublicDataset(controller.signal).then(setDataset).catch((reason: Error) => {
-      if (reason.name !== "AbortError") setError(reason.message);
-    });
-    return () => controller.abort();
-  }, []);
-
-  useEffect(() => {
-    const media = window.matchMedia?.("(prefers-color-scheme: dark)");
-    if (!media) return;
-    const update = () => setDark(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
-
-  const records = dataset?.records ?? [];
-  const filtered = useMemo(() => records.filter((record) => {
-    const matchesQuery = !query || String(record.ID).includes(query.trim());
-    const matchesOutcome = outcome === "all" || String(record["default payment next month"]) === outcome;
-    return matchesQuery && matchesOutcome && (sex === "all" || String(record.SEX) === sex);
-  }), [records, outcome, query, sex]);
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const currentPage = Math.min(page, pageCount - 1);
-  const visible = filtered.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE);
-  const defaults = records.filter((record) => record["default payment next month"] === 1).length;
-  const late = records.filter((record) => record.PAY_0 >= 2).length;
-  const medianLimit = useMemo(() => {
-    const limits = records.map((record) => record.LIMIT_BAL).sort((left, right) => left - right);
-    return limits.length ? limits[Math.floor(limits.length / 2)] : 0;
-  }, [records]);
-
-  const resetPage = () => { setPage(0); setSelected(null); };
-
-  return <FluentProvider theme={dark ? webDarkTheme : webLightTheme} className={`app-shell${dark ? " theme-dark" : ""}`}>
-    <main className="workspace">
-      <header className="workspace-header">
-        <div><p className="eyebrow">UCI Default of Credit Card Clients</p><h1>Credit portfolio analyst workspace</h1><p className="subhead">Search all licensed source records. Observed outcomes are historical benchmark labels, not lending decisions.</p></div>
-        <div className="source-note"><Badge appearance="filled" color="informative">Full source records</Badge><span>CC BY 4.0</span><span>30,000 rows</span></div>
-      </header>
-
-      {error && <State title="Source artifact unavailable" detail={error} />}
-      {!error && !dataset && <div className="loading"><Spinner label="Loading full source records" /><p>Preparing the UCI analyst workspace.</p></div>}
-      {dataset && <>
-        <section className="metrics" aria-label="Portfolio summary">
-          <Metric label="Records" value={number.format(records.length)} detail="Full licensed UCI source" />
-          <Metric label="Observed defaults" value={`${((defaults / records.length) * 100).toFixed(1)}%`} detail={`${number.format(defaults)} historical labels`} />
-          <Metric label="Median credit limit" value={currency.format(medianLimit)} detail="Reported account limit" />
-          <Metric label="Current repayment delay" value={`${((late / records.length) * 100).toFixed(1)}%`} detail="PAY_0 status of 2 or higher" />
-        </section>
-
-        <section className="analyst-grid">
-          <div className="record-panel">
-            <div className="panel-heading"><div><h2>Record explorer</h2><p>Filter by source ID, observed outcome, or recorded sex value.</p></div><span>{number.format(filtered.length)} matching</span></div>
-            <div className="filters">
-              <label>Source ID<Input value={query} onChange={(_, data) => { setQuery(data.value); resetPage(); }} contentBefore={<SearchRegular />} placeholder="Search ID" /></label>
-              <label>Observed outcome<Select value={outcome} onChange={(_, data) => { setOutcome(data.value); resetPage(); }}><option value="all">All outcomes</option><option value="0">No observed default</option><option value="1">Observed default</option></Select></label>
-              <label>Recorded sex<Select value={sex} onChange={(_, data) => { setSex(data.value); resetPage(); }}><option value="all">All values</option><option value="1">Value 1</option><option value="2">Value 2</option></Select></label>
-            </div>
-            <div className="table-wrap"><Table size="small" aria-label="UCI credit source records"><TableHeader><TableRow><TableHeaderCell>Source ID</TableHeaderCell><TableHeaderCell>Limit</TableHeaderCell><TableHeaderCell>Age</TableHeaderCell><TableHeaderCell>PAY_0</TableHeaderCell><TableHeaderCell>Latest bill</TableHeaderCell><TableHeaderCell>Observed outcome</TableHeaderCell><TableHeaderCell>Inspect</TableHeaderCell></TableRow></TableHeader><TableBody>{visible.map((record) => <TableRow key={record.ID}><TableCell>{number.format(record.ID)}</TableCell><TableCell>{currency.format(record.LIMIT_BAL)}</TableCell><TableCell>{record.AGE}</TableCell><TableCell>{record.PAY_0}</TableCell><TableCell>{currency.format(record.BILL_AMT1)}</TableCell><TableCell><Badge size="medium" color={record["default payment next month"] ? "danger" : "success"}>{record["default payment next month"] ? "Observed default" : "No observed default"}</Badge></TableCell><TableCell><Button appearance="subtle" onClick={() => setSelected(record)}>Open</Button></TableCell></TableRow>)}</TableBody></Table></div>
-            <div className="pager"><span>Page {currentPage + 1} of {pageCount}</span><div><Button icon={<ArrowLeftRegular />} disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>Previous</Button><Button icon={<ArrowRightRegular />} iconPosition="after" disabled={currentPage + 1 >= pageCount} onClick={() => setPage(currentPage + 1)}>Next</Button></div></div>
-          </div>
-          <aside className="inspector" aria-live="polite">{selected ? <RecordInspector record={selected} onClose={() => setSelected(null)} /> : <div><p className="eyebrow">Record inspection</p><h2>Select a source record</h2><p>Open a row to review every UCI field, including repayment history, billed amounts, payments, demographics, and the observed target.</p></div>}</aside>
-        </section>
-        <footer><p>{dataset.source.citation}</p><p>Source archive SHA-256: <code>{dataset.source.archive_sha256}</code></p></footer>
-      </>}
-    </main>
-  </FluentProvider>;
+export default function App() {
+  const [dataset, setDataset] = useState<PublicDataset | null>(null); const [error, setError] = useState<string | null>(null);
+  const [view, setView] = useState<View>("overview"); const [query, setQuery] = useState(""); const [band, setBand] = useState("all"); const [capacity, setCapacity] = useState(.2); const [page, setPage] = useState(0); const [selected, setSelected] = useState<CreditRecord | null>(null); const [dark, setDark] = useState(false); const [loadAttempt, setLoadAttempt] = useState(0);
+  useEffect(() => { const controller = new AbortController(); setError(null); getPublicDataset(controller.signal).then(setDataset).catch((reason: Error) => { if (!controller.signal.aborted) setError(reason.message); }); return () => controller.abort(); }, [loadAttempt]);
+  useEffect(() => { const media = matchMedia?.("(prefers-color-scheme: dark)"); if (!media) return; const sync = () => setDark(media.matches); sync(); media.addEventListener("change", sync); return () => media.removeEventListener("change", sync); }, []);
+  if (error) return <State title="Analyst artifact unavailable" detail={`${error} No record data was exposed.`} onRetry={() => setLoadAttempt(attempt => attempt + 1)} />;
+  if (!dataset) return <div className="loading"><Spinner label="Loading analyst workspace" /></div>;
+  const records = dataset.records; const evidence = dataset.evidence; const selectedModel = evidence.models[evidence.selection.selected_model];
+  if (!records.length || !selectedModel) return <State title="No governed evidence available" detail="The artifact is empty or its selected model is unavailable. No record data was exposed." onRetry={() => setLoadAttempt(attempt => attempt + 1)} />;
+  return <FluentProvider theme={dark ? webDarkTheme : webLightTheme} className={`app-shell${dark ? " theme-dark" : ""}`}><main className="workspace">
+    <header className="workspace-header"><div><p className="eyebrow">Validated retrospective simulation · UCI CC BY 4.0</p><h1>Credit portfolio analyst workspace</h1><p className="subhead">Evidence-led portfolio research across 30,000 licensed academic records. Scores describe historic benchmark patterns; they do not approve, deny, price, or recommend credit.</p></div><div className="source-note"><Badge color="informative">Research only</Badge><span>{evidence.selection.selected_model.replaceAll("_", " ")}</span><span>{records.length.toLocaleString()} records</span></div></header>
+    <TabList selectedValue={view} onTabSelect={(_, data) => setView(data.value as View)} aria-label="Analyst views"><Tab value="overview">Executive overview</Tab><Tab value="workbench">Portfolio workbench</Tab><Tab value="model">Technical model lab</Tab></TabList>
+    {view === "overview" && <Overview records={records} model={selectedModel} capacity={capacity} setCapacity={setCapacity} />}
+    {view === "workbench" && <Workbench records={records} query={query} setQuery={setQuery} band={band} setBand={setBand} page={page} setPage={setPage} selected={selected} setSelected={setSelected} />}
+    {view === "model" && <ModelLab dataset={dataset} />}
+    <footer><p>{dataset.source.citation}</p><p>Source archive SHA-256: <code>{dataset.source.archive_sha256}</code></p></footer>
+  </main></FluentProvider>;
 }
 
-function Metric({ label, value, detail }: { label: string; value: string; detail: string }) { return <article className="metric"><span>{label}</span><strong>{value}</strong><p>{detail}</p></article>; }
-function State({ title, detail }: { title: string; detail: string }) { return <section className="state"><h2>{title}</h2><p>{detail}</p></section>; }
-function RecordInspector({ record, onClose }: { record: CreditRecord; onClose: () => void }) { return <><div className="inspector-title"><div><p className="eyebrow">Source record {record.ID}</p><h2>Full field inspection</h2></div><Button appearance="subtle" onClick={onClose}>Close</Button></div><dl>{Object.entries(record).map(([field, value]) => <div key={field}><dt>{field}</dt><dd>{typeof value === "number" && (field.includes("AMT") || field === "LIMIT_BAL") ? currency.format(value) : String(value)}</dd></div>)}</dl></> }
+function Overview({ records, model, capacity, setCapacity }: { records: CreditRecord[]; model: PublicDataset["evidence"]["models"][string]; capacity: number; setCapacity: (value: number) => void }) {
+  const defaults = records.filter(r => r["default payment next month"] === 1).length; const delayed = records.filter(r => r.delinquency_severity !== "Current or paid").length; const limits = records.map(r => r.LIMIT_BAL).sort((a,b) => a-b); const scenario = model.threshold_tradeoffs.reduce((best, row) => Math.abs(row.capacity-capacity) < Math.abs(best.capacity-capacity) ? row : best);
+  const segments = ["Very low", "Low", "Moderate", "Elevated", "High"].map(score_band => { const rows=records.filter(r=>r.score_band===score_band); return { score_band, n:rows.length, rate: rows.length ? rows.filter(r=>r["default payment next month"]===1).length/rows.length : 0}; });
+  return <><section className="metrics" aria-label="Portfolio KPIs"><Metric label="Portfolio records" value={number.format(records.length)} detail="Licensed UCI population" /><Metric label="Observed default rate" value={`${(defaults/records.length*100).toFixed(1)}%`} detail={`${number.format(defaults)} historical labels`} /><Metric label="Median credit limit" value={money.format(limits[Math.floor(limits.length/2)])} detail="Reported account limit" /><Metric label="Delayed repayment" value={`${(delayed/records.length*100).toFixed(1)}%`} detail="PAY_0 indicates delay" /></section>
+    <section className="insight-grid"><article className="panel"><p className="eyebrow">Executive readout</p><h2>What this portfolio says</h2><p>Observed repayment delay and score-band concentration are the clearest signals in this retrospective population. Use these views to compare historical cohorts and evaluate review capacity—not to make consumer-credit decisions.</p><dl className="facts"><div><dt>Selected model</dt><dd>{model.metrics.pr_auc.toFixed(3)} PR-AUC · {model.metrics.ece_10_bin.toFixed(3)} ECE</dd></div><div><dt>Validation standard</dt><dd>Held-out ranking plus calibration, with uncertainty reported</dd></div></dl></article><article className="panel"><p className="eyebrow">Review-capacity simulation</p><h2>Historic workload at {Math.round(scenario.review_rate*100)}%</h2><label>Capacity <input type="range" min=".05" max=".5" step=".05" value={capacity} onChange={(event)=>setCapacity(Number(event.target.value))} /></label><div className="scenario"><Metric label="Precision" value={`${(scenario.precision*100).toFixed(1)}%`} detail="Observed labels in selected set"/><Metric label="Recall" value={`${(scenario.recall*100).toFixed(1)}%`} detail={`${scenario.captured_defaults} historical defaults captured`}/></div></article></section>
+    <section className="panel"><div className="panel-heading"><div><p className="eyebrow">Score-band distribution</p><h2>Observed rate by retrospective score band</h2></div></div><div className="segment-grid">{segments.map(item=><article key={item.score_band}><span>{item.score_band}</span><strong>{number.format(item.n)}</strong><small>{(item.rate*100).toFixed(1)}% observed default</small></article>)}</div></section></>;
+}
 
-export default App;
+function Workbench({ records, query, setQuery, band, setBand, page, setPage, selected, setSelected }: any) {
+  const rows=useMemo(()=>records.filter((r:CreditRecord)=>(!query||String(r.ID).includes(query.trim()))&&(band==="all"||r.score_band===band)),[records,query,band]); const pages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE)); const current=Math.min(page,pages-1); const visible=rows.slice(current*PAGE_SIZE,(current+1)*PAGE_SIZE);
+  return <section className="analyst-grid"><div className="record-panel"><div className="panel-heading"><div><p className="eyebrow">Portfolio workbench</p><h2>Research-score cohort review</h2><p>Search governed research records and compare retrospective risk bands.</p></div><span>{number.format(rows.length)} matching</span></div><div className="filters"><label>Source ID<Input value={query} onChange={(_,d)=>{setQuery(d.value);setPage(0)}} contentBefore={<SearchRegular/>} placeholder="Search ID"/></label><label>Score band<Select value={band} onChange={(_,d)=>{setBand(d.value);setPage(0)}}><option value="all">All bands</option>{["Very low","Low","Moderate","Elevated","High"].map(x=><option key={x}>{x}</option>)}</Select></label></div><div className="table-wrap"><Table aria-label="Portfolio research records"><TableHeader><TableRow><TableHeaderCell>ID</TableHeaderCell><TableHeaderCell>Research score</TableHeaderCell><TableHeaderCell>Band</TableHeaderCell><TableHeaderCell>Limit</TableHeaderCell><TableHeaderCell>Repayment</TableHeaderCell><TableHeaderCell>Observed outcome</TableHeaderCell><TableHeaderCell>Inspect</TableHeaderCell></TableRow></TableHeader><TableBody>{visible.map((r:CreditRecord)=><TableRow key={r.ID}><TableCell>{r.ID}</TableCell><TableCell>{(r.research_score*100).toFixed(1)}%</TableCell><TableCell><Badge color={r.score_band==="High"?"danger":r.score_band==="Elevated"?"warning":"informative"}>{r.score_band}</Badge></TableCell><TableCell>{money.format(r.LIMIT_BAL)}</TableCell><TableCell>{r.delinquency_severity}</TableCell><TableCell>{r["default payment next month"]?"Observed default":"No observed default"}</TableCell><TableCell><Button appearance="subtle" onClick={()=>setSelected(r)}>Open</Button></TableCell></TableRow>)}</TableBody></Table></div><div className="pager"><span>Page {current+1} of {pages}</span><div><Button disabled={!current} onClick={()=>setPage(current-1)}>Previous</Button><Button disabled={current+1>=pages} onClick={()=>setPage(current+1)}>Next</Button></div></div></div><aside className="inspector">{selected?<><p className="eyebrow">Source record {selected.ID}</p><h2>Research profile</h2><p><strong>{(selected.research_score*100).toFixed(1)}%</strong> retrospective score · {selected.score_band}</p><p>Model inputs exclude demographic fields. This profile is research evidence, not an individual credit recommendation.</p><dl>{Object.entries(selected).map(([key,value])=><div key={key}><dt>{key.replaceAll("_"," ")}</dt><dd>{String(value)}</dd></div>)}</dl></>:<><p className="eyebrow">Record inspection</p><h2>Select a record</h2><p>Approved non-demographic source fields, derived portfolio measures, and an out-of-fold retrospective score appear here.</p></>}</aside></section>;
+}
+
+function ModelLab({ dataset }: { dataset: PublicDataset }) { const evidence=dataset.evidence; return <section className="model-lab"><article className="panel"><p className="eyebrow">Model selection</p><h2>{evidence.selection.selected_model.replaceAll("_"," ")}</h2><p>{evidence.selection.gate}. Status: <strong>{evidence.selection.status}</strong>.</p></article><div className="model-grid">{Object.entries(evidence.models).map(([name, model])=><article className="panel" key={name}><p className="eyebrow">{name.replaceAll("_"," ")}</p><h2>{model.metrics.pr_auc.toFixed(3)} PR-AUC</h2><p>AUROC {model.metrics.auroc.toFixed(3)} · Brier {model.metrics.brier.toFixed(3)} · ECE {model.metrics.ece_10_bin.toFixed(3)}</p><p>95% PR-AUC interval: {model.confidence_intervals_95.pr_auc.join("–")}</p></article>)}</div><article className="panel"><p className="eyebrow">Evidence and boundaries</p><h2>How to read this simulation</h2><p>Models use 19 financial and repayment-history fields. ID, sex, education, marriage, age, and the observed target are excluded. Fairness diagnostics are aggregate-only. The UCI source has one target horizon, so no time-based validation claim is made.</p><h3>Data dictionary</h3><div className="dictionary"><span><strong>PAY_0…PAY_6</strong> Repayment status over six historical months</span><span><strong>BILL_AMT1…6</strong> Monthly statement balance</span><span><strong>PAY_AMT1…6</strong> Monthly payment amount</span><span><strong>Research score</strong> Out-of-fold benchmark propensity estimate</span></div></article></section> }
+function Metric({label,value,detail}:{label:string;value:string;detail:string}) { return <article className="metric"><span>{label}</span><strong>{value}</strong><p>{detail}</p></article>; }
+function State({title,detail,onRetry}:{title:string;detail:string;onRetry:()=>void}) { return <FluentProvider theme={webLightTheme} className="app-shell"><main className="workspace state"><p className="eyebrow">Governed unavailable state</p><h1>{title}</h1><p>{detail}</p><div className="state-actions"><Button appearance="primary" onClick={onRetry}>Retry evidence load</Button><a href="/api/v1/health">View system status</a></div></main></FluentProvider>; }

@@ -62,7 +62,9 @@ def main() -> int:
         raise ValueError("Worktree is not clean. Commit or discard changes before a release gate.")
 
     validate_artifact((ROOT / args.release_file).resolve(), args.revision)
+    run(["uv", "run", "python", "scripts/run_evaluation.py"])
     run(["uv", "run", "python", "scripts/build_public_dataset.py"])
+    run(["uv", "run", "python", "scripts/validate_public_artifact.py"])
     run(["uv", "run", "pytest", "-q"])
     run(["pnpm", "lint"], cwd=ROOT / "web")
     run(["pnpm", "test"], cwd=ROOT / "web")

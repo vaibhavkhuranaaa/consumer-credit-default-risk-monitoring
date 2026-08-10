@@ -2,11 +2,13 @@
 
 ## Current release
 
-The full-record analyst workspace is live at https://consumer-credit-default-risk-monitoring.pages.dev. It serves the approved UCI source-record artifact and remains read-only with no automated lending decision.
+The deployed workspace is the prior full-record explorer at https://consumer-credit-default-risk-monitoring.pages.dev. The local successor is a validated retrospective analyst simulation with executive overview, workbench, and model lab; it has not been deployed by this change.
 
 ## Next action
 
-M8 is complete. M9 is unblocked but must not begin without a separate request. GitHub-required branch protection cannot be enabled for this private repository on the current plan; require both `scripts/pre_release_gate.py` from a clean worktree and a green GitHub Actions `quality` run for the same commit before deployment.
+M9 is locally implemented but not production-verified. Project-owner deployment approval was recorded on 2026-08-09. Refresh graph freshness, commit the intended revision, generate the matching evaluation/release/analyst artifacts, pass `scripts/pre_release_gate.py` from a clean worktree and the matching GitHub Actions `quality` run, deploy, then run `scripts/verify_live_release.py`. Only then mark M9 complete.
+
+Graph freshness remains pending. No transmission occurred: the external-policy reviewer requires an approval that explicitly names transmission of repository source and governance content to the configured Gemini-backed Graphify semantic service.
 
 ## Release-control evidence
 
@@ -16,4 +18,4 @@ The current full-record deployment is release `4cd50ffb-5cae-4812-aaad-f7631821f
 
 ## Safety boundary
 
-Do not change repository visibility, add paid services, or make a credit decision claim. The raw workbook remains local and ignored by Git; `scripts/build_public_dataset.py` generates the separately ignored, approved full-record deployment artifact.
+Do not change repository visibility, add paid services, or make a credit decision claim. The raw workbook and demographic fields remain local and ignored by Git; `scripts/build_public_dataset.py` generates the separately ignored, non-demographic deployment artifact.

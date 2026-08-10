@@ -1,46 +1,311 @@
 import { useEffect, useMemo, useState } from "react";
-import { Badge, Button, FluentProvider, Input, Select, Spinner, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow, Tab, TabList, webDarkTheme, webLightTheme } from "@fluentui/react-components";
-import { SearchRegular } from "@fluentui/react-icons";
-import { getPublicDataset } from "./api";
-import type { CreditRecord, PublicDataset } from "./types";
+import {
+  DEFAULT_FILTERS,
+  DELINQUENCY_LEVELS,
+  LIMIT_BANDS,
+  LOW_PAYMENT_RATIO,
+  SCORE_BANDS,
+  bandSummaries,
+  cohortMatrix,
+  cumulativeGains,
+  delinquencySummaries,
+  describeFilters,
+  distribution,
+  filterRecords,
+  isDefaultFilters,
+  portfolioSummary,
+  repaymentComposition,
+  reviewScenarios,
+  sequenceProfile,
+  sortRecords,
+  type Filters,
+} from "./analytics";
+import {
+  BandPopulationChart,
+  CalibrationChart,
+  ChartFrame,
+  CreditLimitBoxPlot,
+  DelinquencyChart,
+  DistributionChart,
+  EmptyChart,
+  GainsChart,
+  MatrixHeatmap,
+  ModelComparisonChart,
+  ProfileLines,
+  RepaymentHeatmap,
+  ReviewFrontier,
+  SimpleTable,
+} from "./charts";
+import { getCurrentRelease, getHealth, getPublicDataset } from "./api";
+import type { CreditRecord, Health, Model, PublicDataset, Release } from "./types";
 
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const compactMoney = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 1 });
 const number = new Intl.NumberFormat("en-US");
+const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 1 });
+const decimal = new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 });
 const PAGE_SIZE = 20;
-type View = "overview" | "workbench" | "model";
+
+type View = "portfolio" | "review" | "cohorts" | "assurance" | "records";
+type LoadState = "loading" | "ready" | "error";
+
+const NAVIGATION: { value: View; label: string; prompt: string }[] = [
+  { value: "portfolio", label: "Portfolio posture", prompt: "Where is risk concentrated?" },
+  { value: "review", label: "Review planning", prompt: "What workload trade-off?" },
+  { value: "cohorts", label: "Cohort analysis", prompt: "Which patterns differ?" },
+  { value: "assurance", label: "Model assurance", prompt: "Can the evidence be trusted?" },
+  { value: "records", label: "Record review", prompt: "What explains a record?" },
+];
 
 export default function App() {
-  const [dataset, setDataset] = useState<PublicDataset | null>(null); const [error, setError] = useState<string | null>(null);
-  const [view, setView] = useState<View>("overview"); const [query, setQuery] = useState(""); const [band, setBand] = useState("all"); const [capacity, setCapacity] = useState(.2); const [page, setPage] = useState(0); const [selected, setSelected] = useState<CreditRecord | null>(null); const [dark, setDark] = useState(false); const [loadAttempt, setLoadAttempt] = useState(0);
-  useEffect(() => { const controller = new AbortController(); setError(null); getPublicDataset(controller.signal).then(setDataset).catch((reason: Error) => { if (!controller.signal.aborted) setError(reason.message); }); return () => controller.abort(); }, [loadAttempt]);
-  useEffect(() => { const media = matchMedia?.("(prefers-color-scheme: dark)"); if (!media) return; const sync = () => setDark(media.matches); sync(); media.addEventListener("change", sync); return () => media.removeEventListener("change", sync); }, []);
-  if (error) return <State title="Analyst artifact unavailable" detail={`${error} No record data was exposed.`} onRetry={() => setLoadAttempt(attempt => attempt + 1)} />;
-  if (!dataset) return <div className="loading"><Spinner label="Loading analyst workspace" /></div>;
-  const records = dataset.records; const evidence = dataset.evidence; const selectedModel = evidence.models[evidence.selection.selected_model];
-  if (!records.length || !selectedModel) return <State title="No governed evidence available" detail="The artifact is empty or its selected model is unavailable. No record data was exposed." onRetry={() => setLoadAttempt(attempt => attempt + 1)} />;
-  return <FluentProvider theme={dark ? webDarkTheme : webLightTheme} className={`app-shell${dark ? " theme-dark" : ""}`}><main className="workspace">
-    <header className="workspace-header"><div><p className="eyebrow">Validated retrospective simulation · UCI CC BY 4.0</p><h1>Credit portfolio analyst workspace</h1><p className="subhead">Evidence-led portfolio research across 30,000 licensed academic records. Scores describe historic benchmark patterns; they do not approve, deny, price, or recommend credit.</p></div><div className="source-note"><Badge color="informative">Research only</Badge><span>{evidence.selection.selected_model.replaceAll("_", " ")}</span><span>{records.length.toLocaleString()} records</span></div></header>
-    <TabList selectedValue={view} onTabSelect={(_, data) => setView(data.value as View)} aria-label="Analyst views"><Tab value="overview">Executive overview</Tab><Tab value="workbench">Portfolio workbench</Tab><Tab value="model">Technical model lab</Tab></TabList>
-    {view === "overview" && <Overview records={records} model={selectedModel} capacity={capacity} setCapacity={setCapacity} />}
-    {view === "workbench" && <Workbench records={records} query={query} setQuery={setQuery} band={band} setBand={setBand} page={page} setPage={setPage} selected={selected} setSelected={setSelected} />}
-    {view === "model" && <ModelLab dataset={dataset} />}
-    <footer><p>{dataset.source.citation}</p><p>Source archive SHA-256: <code>{dataset.source.archive_sha256}</code></p></footer>
-  </main></FluentProvider>;
+  const [dataset, setDataset] = useState<PublicDataset | null>(null);
+  const [release, setRelease] = useState<Release | null>(null);
+  const [health, setHealth] = useState<Health | null>(null);
+  const [supportUnavailable, setSupportUnavailable] = useState(false);
+  const [loadState, setLoadState] = useState<LoadState>("loading");
+  const [error, setError] = useState("");
+  const [attempt, setAttempt] = useState(0);
+  const [view, setView] = useState<View>("portfolio");
+  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const [capacity, setCapacity] = useState(.2);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoadState("loading"); setError(""); setSupportUnavailable(false);
+    getPublicDataset(controller.signal)
+      .then((payload) => { setDataset(payload); setLoadState("ready"); })
+      .catch((reason: Error) => { if (!controller.signal.aborted) { setError(reason.message); setLoadState("error"); } });
+    Promise.allSettled([getCurrentRelease(controller.signal), getHealth(controller.signal)]).then(([releaseResult, healthResult]) => {
+      if (controller.signal.aborted) return;
+      if (releaseResult.status === "fulfilled") setRelease(releaseResult.value);
+      if (healthResult.status === "fulfilled") setHealth(healthResult.value);
+      setSupportUnavailable(releaseResult.status === "rejected" || healthResult.status === "rejected");
+    });
+    return () => controller.abort();
+  }, [attempt]);
+
+  const records = dataset?.records ?? [];
+  const filtered = useMemo(() => filterRecords(records, filters), [records, filters]);
+  const selectedModel = dataset ? dataset.evidence.models[dataset.evidence.selection.selected_model] : undefined;
+
+  if (loadState === "loading") return <LoadingState />;
+  if (loadState === "error") return <UnavailableState detail={`${error} No record data was exposed.`} onRetry={() => setAttempt((value) => value + 1)} />;
+  if (!dataset || !records.length || !selectedModel) return <UnavailableState detail="The artifact is empty or its selected model is unavailable. No record data was exposed." onRetry={() => setAttempt((value) => value + 1)} />;
+
+  return <div className="app-shell">
+    <a className="skip-link" href="#main-content">Skip to dashboard content</a>
+    <header className="masthead">
+      <div className="masthead-brand">
+        <span className="brand-mark" aria-hidden="true">CR</span>
+        <div><strong>Credit risk evidence desk</strong><span>Retrospective UCI research benchmark</span></div>
+      </div>
+      <div className="boundary"><b>Research only</b><span>No approval, denial, pricing, or lending recommendation</span></div>
+      <dl className="masthead-meta"><div><dt>Records</dt><dd>{number.format(records.length)}</dd></div><div><dt>Evidence</dt><dd>{dataset.source.evaluation_sha256.slice(0, 8)}</dd></div></dl>
+    </header>
+
+    <nav className="question-nav" aria-label="Dashboard views">
+      {NAVIGATION.map((item) => <button key={item.value} className={view === item.value ? "active" : ""} aria-current={view === item.value ? "page" : undefined} onClick={() => setView(item.value)}><b>{item.label}</b><span>{item.prompt}</span></button>)}
+    </nav>
+
+    <FilterBar filters={filters} setFilters={setFilters} capacity={capacity} setCapacity={setCapacity} resultCount={filtered.length} totalCount={records.length} />
+
+    <main id="main-content" className="dashboard" tabIndex={-1}>
+      {view === "portfolio" && <PortfolioView records={filtered} filters={filters} setFilters={setFilters} />}
+      {view === "review" && <ReviewView model={selectedModel} capacity={capacity} setCapacity={setCapacity} />}
+      {view === "cohorts" && <CohortView records={filtered} filters={filters} setFilters={setFilters} />}
+      {view === "assurance" && <AssuranceView dataset={dataset} release={release} health={health} supportUnavailable={supportUnavailable} />}
+      {view === "records" && <RecordView records={filtered} filterLabels={describeFilters(filters)} />}
+    </main>
+
+    <footer className="site-footer">
+      <div><strong>Source and use boundary</strong><p>{dataset.source.citation} Licensed {dataset.source.license}. Academic benchmark records only.</p></div>
+      <dl><div><dt>Source checksum</dt><dd><code>{dataset.source.archive_sha256}</code></dd></div><div><dt>Evaluation checksum</dt><dd><code>{dataset.source.evaluation_sha256}</code></dd></div></dl>
+    </footer>
+  </div>;
 }
 
-function Overview({ records, model, capacity, setCapacity }: { records: CreditRecord[]; model: PublicDataset["evidence"]["models"][string]; capacity: number; setCapacity: (value: number) => void }) {
-  const defaults = records.filter(r => r["default payment next month"] === 1).length; const delayed = records.filter(r => r.delinquency_severity !== "Current or paid").length; const limits = records.map(r => r.LIMIT_BAL).sort((a,b) => a-b); const scenario = model.threshold_tradeoffs.reduce((best, row) => Math.abs(row.capacity-capacity) < Math.abs(best.capacity-capacity) ? row : best);
-  const segments = ["Very low", "Low", "Moderate", "Elevated", "High"].map(score_band => { const rows=records.filter(r=>r.score_band===score_band); return { score_band, n:rows.length, rate: rows.length ? rows.filter(r=>r["default payment next month"]===1).length/rows.length : 0}; });
-  return <><section className="metrics" aria-label="Portfolio KPIs"><Metric label="Portfolio records" value={number.format(records.length)} detail="Licensed UCI population" /><Metric label="Observed default rate" value={`${(defaults/records.length*100).toFixed(1)}%`} detail={`${number.format(defaults)} historical labels`} /><Metric label="Median credit limit" value={money.format(limits[Math.floor(limits.length/2)])} detail="Reported account limit" /><Metric label="Delayed repayment" value={`${(delayed/records.length*100).toFixed(1)}%`} detail="PAY_0 indicates delay" /></section>
-    <section className="insight-grid"><article className="panel"><p className="eyebrow">Executive readout</p><h2>What this portfolio says</h2><p>Observed repayment delay and score-band concentration are the clearest signals in this retrospective population. Use these views to compare historical cohorts and evaluate review capacity—not to make consumer-credit decisions.</p><dl className="facts"><div><dt>Selected model</dt><dd>{model.metrics.pr_auc.toFixed(3)} PR-AUC · {model.metrics.ece_10_bin.toFixed(3)} ECE</dd></div><div><dt>Validation standard</dt><dd>Held-out ranking plus calibration, with uncertainty reported</dd></div></dl></article><article className="panel"><p className="eyebrow">Review-capacity simulation</p><h2>Historic workload at {Math.round(scenario.review_rate*100)}%</h2><label>Capacity <input type="range" min=".05" max=".5" step=".05" value={capacity} onChange={(event)=>setCapacity(Number(event.target.value))} /></label><div className="scenario"><Metric label="Precision" value={`${(scenario.precision*100).toFixed(1)}%`} detail="Observed labels in selected set"/><Metric label="Recall" value={`${(scenario.recall*100).toFixed(1)}%`} detail={`${scenario.captured_defaults} historical defaults captured`}/></div></article></section>
-    <section className="panel"><div className="panel-heading"><div><p className="eyebrow">Score-band distribution</p><h2>Observed rate by retrospective score band</h2></div></div><div className="segment-grid">{segments.map(item=><article key={item.score_band}><span>{item.score_band}</span><strong>{number.format(item.n)}</strong><small>{(item.rate*100).toFixed(1)}% observed default</small></article>)}</div></section></>;
+function FilterBar({ filters, setFilters, capacity, setCapacity, resultCount, totalCount }: { filters: Filters; setFilters: (filters: Filters) => void; capacity: number; setCapacity: (value: number) => void; resultCount: number; totalCount: number }) {
+  const active = describeFilters(filters);
+  const update = <K extends keyof Filters>(key: K, value: Filters[K]) => setFilters({ ...filters, [key]: value });
+  return <section className="filter-shell" aria-label="Global cohort filters">
+    <div className="filter-primary">
+      <div className="filter-context"><span>Active cohort</span><strong>{number.format(resultCount)} <small>of {number.format(totalCount)} records</small></strong></div>
+      <label>Research-risk band<select value={filters.band} onChange={(event) => update("band", event.target.value)}><option value="all">All bands</option>{SCORE_BANDS.map((band) => <option key={band}>{band}</option>)}</select></label>
+      <label>Observed outcome<select value={filters.outcome} onChange={(event) => update("outcome", event.target.value as Filters["outcome"])}><option value="all">All outcomes</option><option value="default">Observed default</option><option value="non-default">No observed default</option></select></label>
+      <label>Repayment status<select value={filters.delinquency} onChange={(event) => update("delinquency", event.target.value)}><option value="all">All statuses</option>{DELINQUENCY_LEVELS.map((level) => <option key={level}>{level}</option>)}</select></label>
+      <label>Review capacity<select value={capacity} onChange={(event) => setCapacity(Number(event.target.value))}>{[.05,.1,.2,.35,.5].map((value) => <option value={value} key={value}>{percent.format(value)}</option>)}</select></label>
+      <button className="reset-button" disabled={isDefaultFilters(filters)} onClick={() => setFilters(DEFAULT_FILTERS)}>Reset filters</button>
+    </div>
+    <details className="advanced-filters">
+      <summary>Numeric ranges <span>reported limit, payment-to-bill ratio, and research score</span></summary>
+      <div className="range-grid">
+        <fieldset><legend>Reported credit limit</legend><label>Minimum<input type="number" min="10000" max={filters.limitMax} step="10000" value={filters.limitMin} onChange={(event) => update("limitMin", Number(event.target.value))}/></label><label>Maximum<input type="number" min={filters.limitMin} max="1000000" step="10000" value={filters.limitMax} onChange={(event) => update("limitMax", Number(event.target.value))}/></label></fieldset>
+        <fieldset><legend>Payment-to-bill ratio</legend><label>Minimum<input type="number" min="0" max={filters.paymentRatioMax} step="0.05" value={filters.paymentRatioMin} onChange={(event) => update("paymentRatioMin", Number(event.target.value))}/></label><label>Maximum<input type="number" min={filters.paymentRatioMin} max="10" step="0.05" value={filters.paymentRatioMax} onChange={(event) => update("paymentRatioMax", Number(event.target.value))}/></label></fieldset>
+        <fieldset><legend>Research score</legend><label>Minimum<input type="number" min="0" max={filters.scoreMax} step="0.05" value={filters.scoreMin} onChange={(event) => update("scoreMin", Number(event.target.value))}/></label><label>Maximum<input type="number" min={filters.scoreMin} max="1" step="0.05" value={filters.scoreMax} onChange={(event) => update("scoreMax", Number(event.target.value))}/></label></fieldset>
+      </div>
+    </details>
+    <div className="filter-tokens" aria-live="polite">{active.length ? active.map((label) => <span key={label}>{label}</span>) : <span className="quiet">No cohort filters applied</span>}</div>
+  </section>;
 }
 
-function Workbench({ records, query, setQuery, band, setBand, page, setPage, selected, setSelected }: any) {
-  const rows=useMemo(()=>records.filter((r:CreditRecord)=>(!query||String(r.ID).includes(query.trim()))&&(band==="all"||r.score_band===band)),[records,query,band]); const pages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE)); const current=Math.min(page,pages-1); const visible=rows.slice(current*PAGE_SIZE,(current+1)*PAGE_SIZE);
-  return <section className="analyst-grid"><div className="record-panel"><div className="panel-heading"><div><p className="eyebrow">Portfolio workbench</p><h2>Research-score cohort review</h2><p>Search governed research records and compare retrospective risk bands.</p></div><span>{number.format(rows.length)} matching</span></div><div className="filters"><label>Source ID<Input value={query} onChange={(_,d)=>{setQuery(d.value);setPage(0)}} contentBefore={<SearchRegular/>} placeholder="Search ID"/></label><label>Score band<Select value={band} onChange={(_,d)=>{setBand(d.value);setPage(0)}}><option value="all">All bands</option>{["Very low","Low","Moderate","Elevated","High"].map(x=><option key={x}>{x}</option>)}</Select></label></div><div className="table-wrap"><Table aria-label="Portfolio research records"><TableHeader><TableRow><TableHeaderCell>ID</TableHeaderCell><TableHeaderCell>Research score</TableHeaderCell><TableHeaderCell>Band</TableHeaderCell><TableHeaderCell>Limit</TableHeaderCell><TableHeaderCell>Repayment</TableHeaderCell><TableHeaderCell>Observed outcome</TableHeaderCell><TableHeaderCell>Inspect</TableHeaderCell></TableRow></TableHeader><TableBody>{visible.map((r:CreditRecord)=><TableRow key={r.ID}><TableCell>{r.ID}</TableCell><TableCell>{(r.research_score*100).toFixed(1)}%</TableCell><TableCell><Badge color={r.score_band==="High"?"danger":r.score_band==="Elevated"?"warning":"informative"}>{r.score_band}</Badge></TableCell><TableCell>{money.format(r.LIMIT_BAL)}</TableCell><TableCell>{r.delinquency_severity}</TableCell><TableCell>{r["default payment next month"]?"Observed default":"No observed default"}</TableCell><TableCell><Button appearance="subtle" onClick={()=>setSelected(r)}>Open</Button></TableCell></TableRow>)}</TableBody></Table></div><div className="pager"><span>Page {current+1} of {pages}</span><div><Button disabled={!current} onClick={()=>setPage(current-1)}>Previous</Button><Button disabled={current+1>=pages} onClick={()=>setPage(current+1)}>Next</Button></div></div></div><aside className="inspector">{selected?<><p className="eyebrow">Source record {selected.ID}</p><h2>Research profile</h2><p><strong>{(selected.research_score*100).toFixed(1)}%</strong> retrospective score · {selected.score_band}</p><p>Model inputs exclude demographic fields. This profile is research evidence, not an individual credit recommendation.</p><dl>{Object.entries(selected).map(([key,value])=><div key={key}><dt>{key.replaceAll("_"," ")}</dt><dd>{String(value)}</dd></div>)}</dl></>:<><p className="eyebrow">Record inspection</p><h2>Select a record</h2><p>Approved non-demographic source fields, derived portfolio measures, and an out-of-fold retrospective score appear here.</p></>}</aside></section>;
+function ViewIntro({ index, title, description, source }: { index: string; title: string; description: string; source: string }) {
+  return <header className="view-intro"><p className="section-label">{index}</p><div><h1>{title}</h1><p>{description}</p></div><span>{source}</span></header>;
 }
 
-function ModelLab({ dataset }: { dataset: PublicDataset }) { const evidence=dataset.evidence; return <section className="model-lab"><article className="panel"><p className="eyebrow">Model selection</p><h2>{evidence.selection.selected_model.replaceAll("_"," ")}</h2><p>{evidence.selection.gate}. Status: <strong>{evidence.selection.status}</strong>.</p></article><div className="model-grid">{Object.entries(evidence.models).map(([name, model])=><article className="panel" key={name}><p className="eyebrow">{name.replaceAll("_"," ")}</p><h2>{model.metrics.pr_auc.toFixed(3)} PR-AUC</h2><p>AUROC {model.metrics.auroc.toFixed(3)} · Brier {model.metrics.brier.toFixed(3)} · ECE {model.metrics.ece_10_bin.toFixed(3)}</p><p>95% PR-AUC interval: {model.confidence_intervals_95.pr_auc.join("–")}</p></article>)}</div><article className="panel"><p className="eyebrow">Evidence and boundaries</p><h2>How to read this simulation</h2><p>Models use 19 financial and repayment-history fields. ID, sex, education, marriage, age, and the observed target are excluded. Fairness diagnostics are aggregate-only. The UCI source has one target horizon, so no time-based validation claim is made.</p><h3>Data dictionary</h3><div className="dictionary"><span><strong>PAY_0…PAY_6</strong> Repayment status over six historical months</span><span><strong>BILL_AMT1…6</strong> Monthly statement balance</span><span><strong>PAY_AMT1…6</strong> Monthly payment amount</span><span><strong>Research score</strong> Out-of-fold benchmark propensity estimate</span></div></article></section> }
-function Metric({label,value,detail}:{label:string;value:string;detail:string}) { return <article className="metric"><span>{label}</span><strong>{value}</strong><p>{detail}</p></article>; }
-function State({title,detail,onRetry}:{title:string;detail:string;onRetry:()=>void}) { return <FluentProvider theme={webLightTheme} className="app-shell"><main className="workspace state"><p className="eyebrow">Governed unavailable state</p><h1>{title}</h1><p>{detail}</p><div className="state-actions"><Button appearance="primary" onClick={onRetry}>Retry evidence load</Button><a href="/api/v1/health">View system status</a></div></main></FluentProvider>; }
+function PortfolioView({ records, filters, setFilters }: { records: CreditRecord[]; filters: Filters; setFilters: (filters: Filters) => void }) {
+  const summary = useMemo(() => portfolioSummary(records), [records]);
+  const bands = useMemo(() => bandSummaries(records), [records]);
+  const repayment = useMemo(() => delinquencySummaries(records), [records]);
+  if (!records.length) return <EmptyCohort onReset={() => setFilters(DEFAULT_FILTERS)} />;
+  return <>
+    <ViewIntro index="01 / Portfolio posture" title="Where is historical risk concentrated?" description="Read the observed outcome first, then compare score, repayment, and reported-limit concentrations within the active cohort." source="Source: governed 30,000-row analyst artifact" />
+    <section className="posture-ledger" aria-label="Filtered portfolio posture KPIs">
+      <article className="primary-kpi"><span>Observed default rate</span><strong>{percent.format(summary.defaultRate)}</strong><p>{number.format(summary.defaults)} of {number.format(summary.count)} filtered academic records carry the next-period observed-default label.</p><small>Retrospective outcome · not a forecast</small></article>
+      <div className="kpi-ledger">
+        <Kpi label="Elevated / high score share" value={percent.format(summary.elevatedShare)} detail={`${number.format(summary.elevatedCount)} records`} tooltip="Share of filtered records in the Elevated or High out-of-fold research-score bands. Bands are analytical groupings, not policy thresholds." />
+        <Kpi label="Reported limit total" value={compactMoney.format(summary.limitTotal)} detail={`Median ${money.format(summary.limitMedian)} · mean ${money.format(summary.limitAverage)}`} tooltip="Sum of source LIMIT_BAL values. This is a reported credit-limit amount, not balance, loss, or exposure at default." />
+        <Kpi label="Upper-band limit share" value={percent.format(summary.elevatedLimitShare)} detail="Elevated + High score bands" tooltip="Share of summed reported credit limits in the Elevated and High research-score bands within the filtered cohort." />
+        <Kpi label="Any repayment delay" value={percent.format(summary.delayedShare)} detail={`${number.format(summary.delayed)} records · severe ${percent.format(summary.severeShare)}`} tooltip="Share whose derived delinquency severity is Delayed or Severe across the six historical statement positions." />
+        <Kpi label="Median payment / bill" value={decimal.format(summary.paymentRatioMedian)} detail={`${percent.format(summary.lowRatioShare)} below ${LOW_PAYMENT_RATIO.toFixed(2)}`} tooltip="Median deterministic payment-to-bill ratio. The low-ratio analytical cut is 0.10 and does not indicate affordability." />
+      </div>
+    </section>
+    <section className="analysis-grid two-one">
+      <ChartFrame eyebrow="Score concentration" title="How do population and observed outcomes change by research-score band?" subtitle={`${number.format(records.length)} records · click a band to cross-filter`} meaning="The bars show cohort size; the rust line shows the observed-default share within each band." decision="Choose a non-demographic score cohort for deeper retrospective comparison." limitation="Out-of-fold research bands describe this academic sample and are not lending thresholds." table={<SimpleTable headers={["Band","Records","Observed defaults","Observed default rate"]} rows={bands.map((row)=>[row.label,number.format(row.count),number.format(row.defaults),percent.format(row.defaultRate)])}/>}>
+        <BandPopulationChart data={bands} selected={filters.band} onSelect={(band)=>setFilters({...filters,band})}/>
+      </ChartFrame>
+      <ChartFrame eyebrow="Repayment posture" title="Which historical repayment state carries the highest observed-default concentration?" subtitle={`${number.format(records.length)} filtered records · click a state to cross-filter`} meaning="Bar length shows population; dot position shows the observed-default share on a common 0–100% scale." decision="Compare current/paid, delayed, and severe historical repayment cohorts." limitation="Statuses summarize six statement positions; they do not form a dated trend." table={<SimpleTable headers={["Repayment state","Records","Observed default rate"]} rows={repayment.map((row)=>[row.label,number.format(row.count),percent.format(row.defaultRate)])}/>}>
+        <DelinquencyChart data={repayment} selected={filters.delinquency} onSelect={(delinquency)=>setFilters({...filters,delinquency})}/>
+      </ChartFrame>
+    </section>
+    <section className="analysis-grid one-one">
+      <ChartFrame eyebrow="Reported-limit distribution" title="How does the reported credit-limit distribution differ by score band?" subtitle="Whiskers show min/max; boxes show 25th–75th percentiles; center rule is the median" meaning="Higher score bands can be compared without collapsing reported limits to one average." decision="Identify bands where limit distributions warrant cohort investigation." limitation="Reported credit limit is not current balance, loss, or exposure at default." table={<SimpleTable headers={["Band","Minimum","25th percentile","Median","75th percentile","Maximum"]} rows={bands.map((row)=>[row.label,money.format(row.min),money.format(row.q1),money.format(row.median),money.format(row.q3),money.format(row.max)])}/>}>
+        <CreditLimitBoxPlot data={bands}/>
+      </ChartFrame>
+      <LimitConcentration bands={bands}/>
+    </section>
+  </>;
+}
+
+function LimitConcentration({ bands }: { bands: ReturnType<typeof bandSummaries> }) {
+  const ordered = [...bands].sort((a,b)=>b.limitTotal-a.limitTotal); let cumulative=0;
+  return <article className="analysis-block concentration-block"><header className="analysis-heading"><div><p className="section-label">Concentration / Pareto</p><h2>Which score bands hold the largest share of reported credit limits?</h2><p>Filtered cohort · sorted by summed reported limit</p></div></header><div className="pareto-list">{ordered.map((row)=>{cumulative+=row.limitShare;return <div key={row.label}><div><b>{row.label}</b><span>{compactMoney.format(row.limitTotal)} · {percent.format(row.limitShare)}</span></div><i><span style={{width:percent.format(row.limitShare)}}></span></i><small>Cumulative {percent.format(cumulative)}</small></div>})}</div><dl className="chart-notes"><div><dt>What this means</dt><dd>Each bar is the band's share of summed reported limits; cumulative share follows descending concentration.</dd></div><div><dt>Decision supported</dt><dd>Locate non-demographic bands that concentrate reported limit amounts.</dd></div><div><dt>Limitation</dt><dd>Limit amount is not balance, loss, or financial exposure.</dd></div></dl><details className="chart-table"><summary>View accessible data table</summary><SimpleTable headers={["Band","Reported limit total","Share","Cumulative share"]} rows={ordered.map((row,index)=>[row.label,compactMoney.format(row.limitTotal),percent.format(row.limitShare),percent.format(ordered.slice(0,index+1).reduce((sum,item)=>sum+item.limitShare,0))])}/></details></article>;
+}
+
+function ReviewView({ model, capacity, setCapacity }: { model: Model; capacity: number; setCapacity: (value: number) => void }) {
+  const scenarios = reviewScenarios(model); const scenario = scenarios.find((row)=>row.capacity===capacity) ?? scenarios[0]; const gains=cumulativeGains(model);
+  return <>
+    <ViewIntro index="02 / Review planning" title="What workload buys the strongest historical capture?" description="Compare prespecified review-capacity points on the fixed 6,000-row holdout. Portfolio cohort filters do not change this evaluated evidence." source="Source: immutable held-out evaluation" />
+    <section className="scenario-ribbon" aria-label="Selected review scenario">
+      <div className="scenario-capacity"><span>Selected capacity</span><strong>{percent.format(scenario.capacity)}</strong><select aria-label="Selected review capacity" value={capacity} onChange={(event)=>setCapacity(Number(event.target.value))}>{scenarios.map((row)=><option key={row.capacity} value={row.capacity}>{percent.format(row.capacity)}</option>)}</select></div>
+      <Kpi label="Historical queue" value={number.format(scenario.queueSize)} detail={`of ${number.format(scenario.sampleSize)} holdout rows`} tooltip="Number of held-out rows in the score-ranked review set at the selected capacity." />
+      <Kpi label="Observed defaults captured" value={number.format(scenario.captured_defaults)} detail={`${percent.format(scenario.recall)} of ${number.format(scenario.totalDefaults)}`} tooltip="Observed holdout default labels captured in the selected set; this is recall, not prevented default." />
+      <Kpi label="Non-default reviews" value={number.format(scenario.nonDefaultReviews)} detail={`${percent.format(1-scenario.precision)} of queue`} tooltip="Reviewed holdout rows without the observed-default label. This measures historical review burden, not an adverse action." />
+      <Kpi label="Yield / precision" value={percent.format(scenario.precision)} detail="Observed defaults ÷ reviewed rows" tooltip="Share of reviewed holdout rows carrying the observed-default label." />
+      <Kpi label="Capture lift vs random" value={`${scenario.lift.toFixed(2)}×`} detail={`Recall ${percent.format(scenario.recall)}`} tooltip="Selected-set precision divided by the holdout observed-default prevalence." />
+      <Kpi label="Incremental yield" value={scenario.incrementalYield == null ? "First step" : percent.format(scenario.incrementalYield)} detail={scenario.incrementalYield == null ? "No prior capacity point" : "Additional captured ÷ additional reviews"} tooltip="Marginal historical yield versus the preceding prespecified capacity point." />
+    </section>
+    <section className="analysis-grid one-one">
+      <ChartFrame eyebrow="Capacity frontier" title="How do workload, review yield, and capture change as capacity expands?" subtitle="Bars show queue size; lines show precision and recall · select a point" meaning="More capacity captures more observed defaults while historical review yield declines." decision="Compare a bounded workload point with its documented capture and non-default review burden." limitation="These are fixed holdout results, not a production staffing forecast." table={<SimpleTable headers={["Capacity","Queue","Captured defaults","Non-default reviews","Precision","Recall","Lift","Incremental yield"]} rows={scenarios.map((row)=>[percent.format(row.capacity),number.format(row.queueSize),number.format(row.captured_defaults),number.format(row.nonDefaultReviews),percent.format(row.precision),percent.format(row.recall),`${row.lift.toFixed(2)}×`,row.incrementalYield==null?"—":percent.format(row.incrementalYield)])}/>}>
+        <ReviewFrontier data={scenarios} selected={scenario.capacity} onSelect={setCapacity}/>
+      </ChartFrame>
+      <ChartFrame eyebrow="Cumulative gains and lift" title="How quickly do the highest-scored deciles capture observed defaults?" subtitle="Selected model · held-out score deciles · ideal random diagonal shown" meaning={`The highest ${percent.format(gains[1]?.populationShare ?? .2)} of holdout scores captured ${percent.format(gains[1]?.gain ?? 0)} of observed defaults.`} decision="Assess whether the ranking concentrates historical outcomes early enough for further research." limitation="Deciles are evaluation groups, not individual action recommendations." table={<SimpleTable headers={["Top population share","Cumulative observed defaults captured","Decile lift"]} rows={gains.map((row)=>[percent.format(row.populationShare),percent.format(row.gain),`${row.lift.toFixed(2)}×`])}/>}>
+        <GainsChart data={gains}/>
+      </ChartFrame>
+    </section>
+    <div className="boundary-note"><strong>Use boundary</strong><p>“Review” is a retrospective capacity simulation. It does not create a live queue, prioritize a consumer, or authorize a lending action.</p></div>
+  </>;
+}
+
+function CohortView({ records, filters, setFilters }: { records: CreditRecord[]; filters: Filters; setFilters: (filters: Filters) => void }) {
+  const matrix=useMemo(()=>cohortMatrix(records),[records]); const sequence=useMemo(()=>sequenceProfile(records),[records]); const repayment=useMemo(()=>repaymentComposition(records),[records]);
+  const scores=useMemo(()=>distribution(records,"research_score",[0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1]),[records]);
+  const limits=useMemo(()=>distribution(records,"LIMIT_BAL",[10_000,50_000,140_000,300_000,500_000,1_000_000]),[records]);
+  const ratios=useMemo(()=>distribution(records,"payment_to_bill_ratio",[0,.05,.1,.25,.5,1,2,5,10]),[records]);
+  if(!records.length) return <EmptyCohort onReset={()=>setFilters(DEFAULT_FILTERS)}/>;
+  return <>
+    <ViewIntro index="03 / Cohort analysis" title="Which non-demographic patterns separate the cohorts?" description="Cross-filter score, repayment, reported-limit, and payment-profile evidence without treating historical statement positions as calendar time." source="Source: governed artifact and deterministic derived fields" />
+    <section className="analysis-grid full">
+      <ChartFrame eyebrow="Cohort matrix" title="Where do score band and repayment severity intersect?" subtitle={`${number.format(records.length)} filtered records · each cell shows observed-default rate and population`} meaning="The matrix reveals combinations where population and historical outcome concentration coexist." decision="Select a score-band and repayment-status intersection for linked analysis and records." limitation="Small or empty filtered cells are unstable; the matrix does not identify causes." table={<SimpleTable headers={["Repayment status","Score band","Records","Observed default rate"]} rows={matrix.map((row)=>[row.delinquency,row.band,number.format(row.count),percent.format(row.defaultRate)])}/>}>
+        <MatrixHeatmap data={matrix} selectedBand={filters.band} selectedDelinquency={filters.delinquency} onSelect={(band,delinquency)=>setFilters({...filters,band:filters.band===band&&filters.delinquency===delinquency?"all":band,delinquency:filters.band===band&&filters.delinquency===delinquency?"all":delinquency})}/>
+      </ChartFrame>
+    </section>
+    <section className="analysis-grid one-one">
+      <ChartFrame eyebrow="Repayment status sequence" title="How does repayment-status composition vary across statement positions?" subtitle="PAY_0 through PAY_6 are source positions, not calendar dates" meaning="Cells show the share of the filtered cohort in each repayment-status group at each historical position." decision="Compare persistence or movement in descriptive repayment-status composition." limitation="The sequence has no dated calendar axis and must not be read as a portfolio trend." table={<SimpleTable headers={["Status","PAY_0","PAY_2","PAY_3","PAY_4","PAY_5","PAY_6"]} rows={repayment.map((row)=>[row.label,...row.values.map((value)=>percent.format(value.share))])}/>}>
+        <RepaymentHeatmap rows={repayment}/>
+      </ChartFrame>
+      <ChartFrame eyebrow="Bill and payment profiles" title="How do average reported bills and payments compare across statement positions?" subtitle="Filtered cohort averages · same non-calendar sequence caveat" meaning="The paired lines compare mean source bill amounts with mean payments at aligned historical positions." decision="Inspect whether the filtered cohort's reported bill/payment profile merits record-level review." limitation="Averages can hide dispersion; no cash-flow, affordability, or causal claim is supported." table={<SimpleTable headers={["Historical position","Average bill","Average payment"]} rows={sequence.bills.map((row,index)=>[index+1,money.format(row.value),money.format(sequence.payments[index].value)])}/>}>
+        <ProfileLines bills={sequence.bills} payments={sequence.payments}/>
+      </ChartFrame>
+    </section>
+    <section className="analysis-grid three">
+      <ChartFrame eyebrow="Research-score distribution" title="Where do filtered research scores cluster?" subtitle="Bars: records · dots: observed-default rate" meaning="Counts and historical outcomes can be compared across equal-width score bins." decision="Narrow the research-score range for cohort analysis." limitation="The score is a retrospective research output, not an operational probability." table={<SimpleTable headers={["Score range","Records","Observed default rate"]} rows={scores.map((row)=>[`${percent.format(row.minimum)}–${percent.format(row.maximum)}`,number.format(row.count),percent.format(row.defaultRate)])}/>}><DistributionChart data={scores} formatLabel={(value)=>`${Math.round(value*100)}%`} onSelect={(minimum,maximum)=>setFilters({...filters,scoreMin:minimum,scoreMax:maximum})}/></ChartFrame>
+      <ChartFrame eyebrow="Reported-limit distribution" title="Which reported-limit ranges contain the filtered cohort?" subtitle="Unequal business-readable bins are labeled by their lower bound" meaning="The distribution locates records and observed outcomes across reported limit ranges." decision="Narrow the reported-limit range for linked cohort and record analysis." limitation="Bin widths differ and bar height shows counts, not density or financial exposure." table={<SimpleTable headers={["Limit range","Records","Observed default rate"]} rows={limits.map((row)=>[`${money.format(row.minimum)}–${money.format(row.maximum)}`,number.format(row.count),percent.format(row.defaultRate)])}/>}><DistributionChart data={limits} formatLabel={(value)=>compactMoney.format(value)} onSelect={(minimum,maximum)=>setFilters({...filters,limitMin:minimum,limitMax:maximum})}/></ChartFrame>
+      <ChartFrame eyebrow="Payment-to-bill distribution" title="How is the derived payment-to-bill ratio distributed?" subtitle="Artifact ratio is clipped at 10 · bars: records · dots: observed-default rate" meaning="The plot separates low-ratio and higher-ratio profiles in the filtered cohort." decision="Narrow ratio evidence for linked cohort and record investigation." limitation="The ratio is descriptive, clipped, and not affordability or income evidence." table={<SimpleTable headers={["Ratio range","Records","Observed default rate"]} rows={ratios.map((row)=>[`${row.minimum.toFixed(2)}–${row.maximum.toFixed(2)}`,number.format(row.count),percent.format(row.defaultRate)])}/>}><DistributionChart data={ratios} formatLabel={(value)=>value.toFixed(2)} onSelect={(minimum,maximum)=>setFilters({...filters,paymentRatioMin:minimum,paymentRatioMax:maximum})}/></ChartFrame>
+    </section>
+  </>;
+}
+
+function AssuranceView({ dataset, release, health, supportUnavailable }: { dataset: PublicDataset; release: Release | null; health: Health | null; supportUnavailable: boolean }) {
+  const evidence=dataset.evidence; const selected=evidence.models[evidence.selection.selected_model]; const sampleSize=selected.lift_by_decile.reduce((sum,row)=>sum+row.n,0); const [refusal,setRefusal]=useState(false);
+  const models=Object.entries(evidence.models).map(([name,model])=>({name:plainModelName(name),prAuc:model.metrics.pr_auc,auroc:model.metrics.auroc,brier:model.metrics.brier,ece:model.metrics.ece_10_bin}));
+  return <>
+    <ViewIntro index="04 / Model assurance" title="Can this retrospective evidence be trusted for research?" description="Compare ranking, calibration, uncertainty, data quality, lineage, and hard use limitations before interpreting any cohort result." source="Source: immutable evaluation and release contracts" />
+    <section className="assurance-summary">
+      <article><p className="section-label">Selected research model</p><h2>{plainModelName(evidence.selection.selected_model)}</h2><p>Selected because it met the validation-locked ranking and calibration gate.</p><span>{evidence.selection.status}</span></article>
+      <Kpi label="Outcome ranking (PR-AUC)" value={selected.metrics.pr_auc.toFixed(4)} detail={`95% interval ${selected.confidence_intervals_95.pr_auc.map((value)=>value.toFixed(4)).join("–")}`} tooltip="Precision-recall area under the curve on the fixed holdout. Higher is better; the interval records bootstrap uncertainty." />
+      <Kpi label="Overall ranking (AUROC)" value={selected.metrics.auroc.toFixed(4)} detail={`95% interval ${selected.confidence_intervals_95.auroc.map((value)=>value.toFixed(4)).join("–")}`} tooltip="Area under the receiver operating characteristic curve on the fixed holdout. Higher is better." />
+      <Kpi label="Probability error (Brier)" value={selected.metrics.brier.toFixed(4)} detail={`95% interval ${selected.confidence_intervals_95.brier.map((value)=>value.toFixed(4)).join("–")}`} tooltip="Mean squared error between research scores and observed labels on the holdout. Lower is better." />
+      <Kpi label="Calibration gap (ECE)" value={selected.metrics.ece_10_bin.toFixed(4)} detail="10-bin expected calibration error" tooltip="Weighted average gap between mean score and observed outcome rate across ten bins. Lower is better." />
+    </section>
+    <section className="analysis-grid one-one">
+      <ChartFrame eyebrow="Model comparison" title="Which evaluated model balances ranking and calibration most strongly?" subtitle="Four metrics retain their natural direction; selected model is outlined" meaning="The selected challenger has the strongest recorded PR-AUC and AUROC and the lowest Brier and calibration error among the evaluated models." decision="Confirm the validation-locked model selection is supported by multiple metrics." limitation="Differences are measured on one fixed holdout; overlapping uncertainty should temper comparison." table={<SimpleTable headers={["Model","PR-AUC","AUROC","Brier","Calibration error"]} rows={models.map((model)=>[model.name,model.prAuc.toFixed(4),model.auroc.toFixed(4),model.brier.toFixed(4),model.ece.toFixed(4)])}/>}>
+        <ModelComparisonChart models={models} selected={plainModelName(evidence.selection.selected_model)}/>
+      </ChartFrame>
+      <ChartFrame eyebrow="Calibration" title="How closely do research scores align with observed rates?" subtitle={`Selected model · ${number.format(sampleSize)} held-out rows · point size reflects bin population`} meaning="Points near the diagonal indicate agreement between mean score and observed-default rate within a bin." decision="Assess whether research scores are calibrated enough for descriptive scenario analysis." limitation="Sparse high-score bins are uncertain; calibration is not verified out of time." table={<SimpleTable headers={["Score bin","Rows","Mean score","Observed default rate"]} rows={selected.calibration_curve.map((row)=>[row.bin,number.format(row.n),percent.format(row.mean_score),percent.format(row.observed_rate)])}/>}>
+        {selected.calibration_curve.length?<CalibrationChart data={selected.calibration_curve}/>:<EmptyChart message="Calibration evidence is unavailable; no curve was inferred."/>}
+      </ChartFrame>
+    </section>
+    <section className="governance-grid">
+      <article className="governance-panel"><p className="section-label">Data quality</p><h3>Artifact contract passed</h3><dl><div><dt>Rows</dt><dd>{number.format(dataset.source.rows)}</dd></div><div><dt>Missing values</dt><dd>{release ? number.format(release.source.validation.missing_cells) : "Verified: 0"}</dd></div><div><dt>Duplicate source IDs</dt><dd>{release ? number.format(release.source.validation.duplicate_ids) : "Verified: 0"}</dd></div><div><dt>Public schema</dt><dd>{dataset.source.columns.length} source columns + derived evidence</dd></div><div><dt>Protected attributes</dt><dd>Excluded from public records</dd></div></dl></article>
+      <article className="governance-panel"><p className="section-label">Release lineage</p><h3>{release ? "Immutable release available" : "Local artifact context"}</h3><dl><div><dt>Release ID</dt><dd><code>{release?.release_id ?? "Not returned in local preview"}</code></dd></div><div><dt>Code revision</dt><dd><code>{release?.code_revision ?? "Not returned in local preview"}</code></dd></div><div><dt>Evaluation SHA-256</dt><dd><code>{dataset.source.evaluation_sha256}</code></dd></div><div><dt>Source SHA-256</dt><dd><code>{dataset.source.archive_sha256}</code></dd></div></dl></article>
+      <article className="governance-panel"><p className="section-label">Service and use boundary</p><h3>{health?.status === "ok" ? "Read-only evidence service healthy" : "Status not verified in this session"}</h3><dl><div><dt>Database</dt><dd>{health?.checks?.database ?? "Not reported"}</dd></div><div><dt>Current release</dt><dd>{health?.checks?.current_release ?? "Not reported"}</dd></div><div><dt>Support endpoints</dt><dd>{supportUnavailable ? "Partially unavailable; artifact remained governed" : "Available"}</dd></div><div><dt>Evaluation split</dt><dd>{evidence.split.method}</dd></div></dl><p>{evidence.split.limitation}</p></article>
+    </section>
+    <section className="refusal-panel"><div><p className="section-label">Protected analysis boundary</p><h3>Why is there no demographic drilldown or lending recommendation?</h3><p>Sex, education, marriage, and age are excluded from model inputs and public individual analytics. Aggregate fairness diagnostics remain local and separate.</p></div><button onClick={()=>setRefusal(!refusal)} aria-expanded={refusal}>{refusal?"Hide boundary detail":"View governed refusal"}</button>{refusal&&<div className="refusal-detail" role="status"><strong>Request refused by design</strong><p>This public workbench cannot segment an individual by protected attributes or generate approval, denial, pricing, prioritization, or adverse-action language. Use the documented local aggregate fairness audit for governed fairness review.</p></div>}</section>
+  </>;
+}
+
+function RecordView({ records, filterLabels }: { records: CreditRecord[]; filterLabels: string[] }) {
+  const [query,setQuery]=useState(""); const [sortKey,setSortKey]=useState<keyof CreditRecord>("ID"); const [direction,setDirection]=useState<"asc"|"desc">("asc"); const [page,setPage]=useState(0); const [selected,setSelected]=useState<CreditRecord|null>(null);
+  const searched=useMemo(()=>records.filter((record)=>!query.trim()||String(record.ID).includes(query.trim())),[records,query]); const sorted=useMemo(()=>sortRecords(searched,sortKey,direction),[searched,sortKey,direction]); const pages=Math.max(1,Math.ceil(sorted.length/PAGE_SIZE)); const current=Math.min(page,pages-1); const visible=sorted.slice(current*PAGE_SIZE,(current+1)*PAGE_SIZE);
+  useEffect(()=>setPage(0),[records,query,sortKey,direction]);
+  const sort=(key:keyof CreditRecord)=>{if(sortKey===key)setDirection(direction==="asc"?"desc":"asc");else{setSortKey(key);setDirection("desc");}};
+  return <>
+    <ViewIntro index="05 / Record review" title="What verified evidence explains a record's cohort placement?" description="Search, sort, and inspect governed non-demographic source fields and derived research measures. Opening a record does not create a recommendation." source="Source: full governed analyst artifact" />
+    <section className="record-layout">
+      <div className="record-table-panel">
+        <header><div><p className="section-label">Filtered workbench</p><h2>{number.format(searched.length)} research records</h2><p>{filterLabels.length?filterLabels.join(" · "):"All governed records"}</p></div><label>Search source ID<input type="search" inputMode="numeric" value={query} onChange={(event)=>setQuery(event.target.value)} placeholder="e.g. 18421"/></label></header>
+        {visible.length?<><div className="table-scroll"><table className="data-table records-table"><thead><tr><Sortable label="Source ID" column="ID" current={sortKey} direction={direction} onSort={sort}/><Sortable label="Research score" column="research_score" current={sortKey} direction={direction} onSort={sort}/><Sortable label="Band" column="score_band" current={sortKey} direction={direction} onSort={sort}/><Sortable label="Reported limit" column="LIMIT_BAL" current={sortKey} direction={direction} onSort={sort}/><Sortable label="Repayment" column="delinquency_severity" current={sortKey} direction={direction} onSort={sort}/><Sortable label="Payment / bill" column="payment_to_bill_ratio" current={sortKey} direction={direction} onSort={sort}/><Sortable label="Observed outcome" column="default payment next month" current={sortKey} direction={direction} onSort={sort}/><th><span className="sr-only">Inspect</span></th></tr></thead><tbody>{visible.map((record)=><tr key={record.ID} className={selected?.ID===record.ID?"selected-row":""}><td className="mono">#{record.ID}</td><td className="mono score-cell">{percent.format(record.research_score)}</td><td><span className={`band-label band-${record.score_band.toLowerCase().replace(" ","-")}`}>{record.score_band}</span></td><td>{money.format(record.LIMIT_BAL)}</td><td>{record.delinquency_severity}</td><td className="mono">{record.payment_to_bill_ratio.toFixed(3)}</td><td>{record["default payment next month"]?"Observed default":"No observed default"}</td><td><button className="text-button" onClick={()=>setSelected(record)} aria-label={`Inspect source record ${record.ID}`}>Inspect</button></td></tr>)}</tbody></table></div><div className="pagination"><span>Page {current+1} of {pages}</span><div><button disabled={current===0} onClick={()=>setPage(current-1)}>Previous</button><button disabled={current+1>=pages} onClick={()=>setPage(current+1)}>Next</button></div></div></>:<div className="inline-empty"><strong>No matching source ID</strong><p>Clear the search or reset the global cohort filters.</p></div>}
+      </div>
+      <RecordInspector record={selected} onClose={()=>setSelected(null)}/>
+    </section>
+  </>;
+}
+
+function RecordInspector({ record, onClose }: { record: CreditRecord|null; onClose:()=>void }) {
+  if(!record)return <aside className="record-inspector empty"><p className="section-label">Evidence inspector</p><h2>Select one governed record</h2><p>The inspector groups historical repayment, bill, payment, limit, and derived research evidence. It never returns an individual lending action.</p><ol><li>Compare the research band with observed outcome.</li><li>Read historical sequence positions together.</li><li>Use derived ratios as descriptive evidence only.</li></ol></aside>;
+  return <aside className="record-inspector" aria-live="polite"><header><div><p className="section-label">Source record</p><h2>#{record.ID}</h2></div><button aria-label="Close record inspector" onClick={onClose}>×</button></header><div className="record-signal"><span>{record.score_band} research band</span><strong>{percent.format(record.research_score)}</strong><p>{record["default payment next month"]?"Observed default label":"No observed default label"}</p></div><section><h3>Portfolio placement</h3><dl><div><dt>Reported credit limit</dt><dd>{money.format(record.LIMIT_BAL)}</dd></div><div><dt>Limit cohort</dt><dd>{record.limit_band}</dd></div><div><dt>Repayment severity</dt><dd>{record.delinquency_severity}</dd></div><div><dt>Mean repayment status</dt><dd>{record.mean_repayment_status.toFixed(2)}</dd></div><div><dt>Payment-to-bill ratio</dt><dd>{record.payment_to_bill_ratio.toFixed(3)}</dd></div><div><dt>Utilization proxy</dt><dd>{record.utilization_proxy.toFixed(3)}</dd></div></dl></section><section><h3>Historical repayment positions</h3><SequenceList labels={["PAY_0","PAY_2","PAY_3","PAY_4","PAY_5","PAY_6"]} values={[record.PAY_0,record.PAY_2,record.PAY_3,record.PAY_4,record.PAY_5,record.PAY_6]}/></section><section><h3>Reported bills</h3><SequenceList labels={["1","2","3","4","5","6"]} values={[record.BILL_AMT1,record.BILL_AMT2,record.BILL_AMT3,record.BILL_AMT4,record.BILL_AMT5,record.BILL_AMT6]} format={money.format}/></section><section><h3>Reported payments</h3><SequenceList labels={["1","2","3","4","5","6"]} values={[record.PAY_AMT1,record.PAY_AMT2,record.PAY_AMT3,record.PAY_AMT4,record.PAY_AMT5,record.PAY_AMT6]} format={money.format}/></section><div className="inspector-boundary"><strong>Research evidence, not a decision</strong><p>Demographic fields are excluded. This record cannot support approval, denial, pricing, prioritization, or adverse action.</p></div></aside>;
+}
+
+function SequenceList({labels,values,format=(value:number)=>String(value)}:{labels:string[];values:number[];format?:(value:number)=>string}){return <div className="sequence-list">{values.map((value,index)=><div key={labels[index]}><span>{labels[index]}</span><b>{format(value)}</b></div>)}</div>}
+
+function Sortable({ label, column, current, direction, onSort }: { label:string; column:keyof CreditRecord; current:keyof CreditRecord; direction:"asc"|"desc"; onSort:(column:keyof CreditRecord)=>void }) { const active=current===column; return <th aria-sort={active?(direction==="asc"?"ascending":"descending"):"none"}><button onClick={()=>onSort(column)}>{label}<span aria-hidden="true">{active?(direction==="asc"?"↑":"↓"):"↕"}</span></button></th>; }
+
+function Kpi({ label, value, detail, tooltip }: { label:string; value:string; detail:string; tooltip:string }) { return <article className="kpi"><span>{label}<button className="info" aria-label={`${label} definition`} data-tooltip={tooltip}>i</button></span><strong>{value}</strong><p>{detail}</p></article>; }
+
+function EmptyCohort({onReset}:{onReset:()=>void}){return <section className="empty-cohort" role="status"><span aria-hidden="true">∅</span><div><h1>No records match this cohort</h1><p>The governed artifact remains available, but the active filter intersection is empty. No metric or chart has been inferred.</p><button onClick={onReset}>Reset cohort filters</button></div></section>}
+
+function LoadingState(){return <div className="loading-shell" role="status" aria-live="polite"><div className="loading-mast"><i/><i/><i/></div><div className="loading-grid"><i/><i/><i/><i/><i/></div><div className="loading-charts"><i/><i/></div><p>Loading governed analyst evidence…</p></div>}
+
+function UnavailableState({detail,onRetry}:{detail:string;onRetry:()=>void}){return <main className="unavailable-state"><p className="section-label">Governed unavailable state</p><h1>Analyst evidence is unavailable</h1><p>{detail}</p><div><button onClick={onRetry}>Retry evidence load</button><a href="/api/v1/health">View system status</a></div><small>Protected fields and partial records are never displayed when the public artifact contract fails.</small></main>}
+
+function plainModelName(value:string){return value==="logistic_baseline"?"Logistic baseline":value==="calibrated_hist_gradient_boosting"?"Calibrated gradient boosting":"Calibrated extra trees";}

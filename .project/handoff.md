@@ -2,9 +2,25 @@
 
 ## Executive status
 
-The live release at https://consumer-credit-risk-workbench.pages.dev is technically healthy and privacy-preserving, but its user experience is rejected as template-like and analytically shallow. The owner requires a serious analyst-style BI dashboard for non-technical stakeholders, with enough decision-relevant KPIs, graphs, and visual analysis to answer the important portfolio, operations, model, and governance questions.
+The live M9 release at https://consumer-credit-risk-workbench.pages.dev remains technically healthy and privacy-preserving, but its user experience is rejected as template-like and analytically shallow. A complete M10 replacement is now implemented and verified locally on `feature/m10-bi-dashboard`. It awaits explicit owner visual approval and separate deployment approval.
 
-Do not describe the current website as portfolio-ready or industry-ready. Its operational evidence remains valid; its visual design, information architecture, analytical depth, and stakeholder usefulness are stale. M10 is now the first unblocked milestone and supersedes case-study packaging.
+Do not describe the current public website or local candidate as portfolio-ready or industry-ready before the owner accepts the supplied screenshots. The live operational evidence remains valid; the local candidate has not been deployed. M10 remains the first unblocked milestone in `awaiting_visual_approval` state and supersedes case-study packaging.
+
+## M10 local candidate ready for review
+
+- Replaced rejected `DESIGN.md` with the approved local stakeholder decision map, information architecture, visual system, KPI glossary, chart grammar, interaction contract, responsive rules, accessibility states, safety language, and visual deployment gate.
+- Preserved the version-3 30,000-row non-demographic artifact, immutable evaluation evidence, read-only API contracts, availability behavior, source/evaluation lineage, research-only boundary, and record-level investigation.
+- Added five question-led views: Portfolio posture, Review planning, Cohort analysis, Model assurance, and Record review.
+- Added global cohort filters; chart/matrix cross-filtering; active-filter context; score, limit, ratio, delinquency, payment/bill, capacity, gains, calibration, model-comparison, and governance analysis; chart data tables; loading, empty, unavailable, and refusal states.
+- Removed rendered Fluent UI imports and used one native SVG/semantic HTML chart system. No new runtime dependency, API field, database change, telemetry, tracker, paid resource, or external transmission was added.
+- Added substantive current project records: `.project/data.md`, `.project/evaluation.md`, `.project/publication.md`, data dictionary, metric glossary, case-study claim standard, and cross-agent adapters.
+- Local verification at handoff: 14 web tests pass; production build passes; 1440×1000, 834×1112, and 390×844 browser checks show no document-level overflow or console warnings. Screenshots are in `docs/screenshots/m10/`.
+- Candidate production build: 255.31 kB JavaScript / 76.87 kB gzip; 28.11 kB CSS / 6.30 kB gzip. Combined app assets are 33.3% smaller gzip than the rejected baseline (436.55 kB JavaScript / 4.20 kB CSS). The 15 MB analyst artifact remains the dominant load and transfer cost.
+- Graphify was not run or transmitted. The current project-kit structural/record check passes without claiming semantic freshness; semantic sync remains pending its separate explicit transmission approval. The repository-local `project_kit.py check` remains the declared non-release gate.
+
+### Next approval action
+
+The owner reviews `desktop-portfolio.jpg`, `desktop-review-planning.jpg`, `tablet-portfolio.jpg`, and `mobile-portfolio.jpg` plus the test/build/bundle evidence. Record explicit visual acceptance or requested changes. Deployment, merge, publication, visibility, paid resources, rollback, and Graphify remain out of scope until separately approved.
 
 ## Verified release that must not be confused with design acceptance
 
@@ -145,9 +161,9 @@ Do not invent a time dimension, forecast, causal relationship, benchmark, target
 - Current repository: private GitHub repository `vaibhavkhuranaaa/consumer-credit-default-risk-monitoring`, branch `release/m9-availability-hardening`, draft PR #1. Do not merge, change visibility, add billing, or exercise rollback/teardown without separate approval.
 - Graphify: semantic freshness remains blocked. Do not transmit repository content unless the owner explicitly states: “I approve transmitting repository source and governance content to the configured Gemini-backed Graphify semantic service solely for project freshness.” No such transmission has occurred.
 
-## Known project-record debt
+## Project-record reconciliation
 
-`project-kit assess` reports 80/100 structural readiness and identifies the real-data and evaluation contracts as missing or unverified. `project-kit check` currently fails because the repository predates the current kit contract and lacks `GEMINI.md`, `.github/prompts/project-delivery.prompt.md`, `.agents/rules/project-delivery.md`, `.agents/workflows/project-delivery.md`, `.agents/skills/project-delivery/SKILL.md`, `.project/data.md`, `.project/evaluation.md`, `.project/publication.md`, `docs/data-dictionary.md`, `docs/metric-glossary.md`, and `docs/case-study-standard.md`. This is not a failure introduced by the handoff, but M10 cannot be claimed complete until the applicable records are added or the project-kit contract is deliberately reconciled and the check passes. Do not create empty placeholder documents merely to satisfy the checker.
+The prior 80/100 structural debt is resolved with substantive real-data, evaluation, publication, dictionary, glossary, case-study, adapter, and portfolio-manifest records. The current assessment reports 100/100 structural presence and the non-release project-kit record check passes. Graphify semantic freshness remains separately pending because transmission to the configured external service is not approved; no Graphify source, output, or freshness signature was changed.
 
 ## Rollback note
 

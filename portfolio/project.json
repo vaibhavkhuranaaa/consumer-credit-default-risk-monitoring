@@ -3,6 +3,16 @@
   "slug": "consumer-credit-default-risk-monitoring",
   "title": "Consumer Credit Default Risk & Portfolio Monitoring",
   "status": "live-verified",
+  "businessProblem": "Which approved academic consumer-credit records show elevated retrospective default-risk patterns, and what evidence supports governed portfolio research?",
+  "stakeholder": "Credit-risk analyst, portfolio executive, review-operations lead, and risk-governance reviewer",
+  "decision": "Compare portfolio posture, bounded historical review-capacity trade-offs, non-demographic cohort concentration, model assurance, and record evidence without making a lending decision.",
+  "repositoryUrl": "https://github.com/vaibhavkhuranaaa/consumer-credit-default-risk-monitoring",
+  "demoUrl": "https://consumer-credit-risk-workbench.pages.dev",
+  "portfolioUrl": "",
+  "sourceSha": "142462ab74d0a2e3eb7cce131830b9eff71b1a86",
+  "deploymentSha": "142462ab74d0a2e3eb7cce131830b9eff71b1a86",
+  "portfolioSourceSha": "",
+  "portfolioDeploymentSha": "",
   "source": {
     "dataBoundary": "UCI Default of Credit Card Clients, CC BY 4.0. The deployed product publishes non-demographic research fields; demographics remain local and audit-only."
   },

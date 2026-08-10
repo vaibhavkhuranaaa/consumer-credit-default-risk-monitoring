@@ -40,3 +40,19 @@ evidence:
     claim: The deployed version-3 analyst artifact excludes sex, education, marriage, and age from public individual records and binds embedded evaluation evidence to a SHA-256 lineage hash.
     status: verified
     record: scripts/build_public_dataset.py, scripts/validate_public_artifact.py, scripts/verify_live_release.py, https://consumer-credit-risk-workbench.pages.dev/data/analyst-workspace.json
+  - id: M10-DESIGN-01
+    claim: The rejected design contract was replaced with an approved-for-local-implementation stakeholder decision map, KPI glossary, chart grammar, interaction contract, responsive rules, accessibility states, and explicit visual deployment gate.
+    status: verified_local
+    record: DESIGN.md, .project/approvals.yml
+  - id: M10-PRODUCT-01
+    claim: The local dashboard provides linked portfolio posture, review-capacity, cohort, model-assurance, governance, and record-evidence workflows without protected-attribute individual analytics or lending recommendations.
+    status: verified_local
+    record: web/src/App.tsx, web/src/analytics.ts, web/src/charts.tsx, web/src/App.test.tsx, web/src/analytics.test.ts
+  - id: M10-VERIFY-01
+    claim: The local M10 candidate passed 14 web tests, production TypeScript/Vite build, browser interaction checks, zero browser warnings, and 1440px, 834px, and 390px viewport checks without document-level responsive overflow.
+    status: verified_local
+    record: docs/screenshots/m10/desktop-portfolio.jpg, docs/screenshots/m10/desktop-review-planning.jpg, docs/screenshots/m10/tablet-portfolio.jpg, docs/screenshots/m10/mobile-portfolio.jpg
+  - id: M10-PERF-01
+    claim: The local production bundle removes the rendered Fluent UI dependency and builds to 255.31 kB JavaScript (76.87 kB gzip) plus 28.11 kB CSS (6.30 kB gzip); combined app assets are 33.3% smaller gzip than the rejected 436.55 kB JavaScript / 4.20 kB CSS baseline.
+    status: verified_local
+    record: web/package.json, web/src/App.tsx, web/dist/assets

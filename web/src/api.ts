@@ -1,4 +1,4 @@
-import type { PublicDataset, Release } from "./types";
+import type { Health, PublicDataset, Release } from "./types";
 
 export async function getCurrentRelease(signal?: AbortSignal): Promise<Release> {
   const response = await fetch("/api/v1/releases/current", { signal, headers: { Accept: "application/json" } });
@@ -13,6 +13,12 @@ export async function getPublicDataset(signal?: AbortSignal): Promise<PublicData
   const payload: unknown = await response.json();
   if (!isPublicDataset(payload)) throw new Error("The analyst artifact failed its public contract.");
   return payload;
+}
+
+export async function getHealth(signal?: AbortSignal): Promise<Health> {
+  const response = await fetch("/api/v1/health", { signal, headers: { Accept: "application/json" } });
+  if (!response.ok) throw new Error("Service status is unavailable.");
+  return response.json() as Promise<Health>;
 }
 
 function isPublicDataset(value: unknown): value is PublicDataset {

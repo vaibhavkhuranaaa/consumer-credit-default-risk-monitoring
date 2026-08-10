@@ -54,3 +54,11 @@ export type PublicDataset = {
   records: CreditRecord[];
   evidence: Evaluation;
 };
+
+export type Health = {
+  status: "ok" | "unavailable";
+  checks?: { database?: string; current_release?: string };
+  release_id?: string;
+  code_revision?: string;
+  verified_at?: string;
+};

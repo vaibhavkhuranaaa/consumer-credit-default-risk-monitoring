@@ -25,6 +25,16 @@ The system supports an analyst's aggregate review of retrospective benchmark ris
 
 `manual verification → database-backed health and release lineage → fail-closed analyst state → Cloudflare rollback diagnostic`
 
+## M10 local presentation architecture
+
+The M10 candidate preserves the version-3 static analyst artifact and read-only aggregate/health APIs. It adds no database field, model endpoint, write path, paid service, or analytics tracker.
+
+`version-3 non-demographic artifact → typed client validation → memoized cohort filters and deterministic aggregates → native accessible SVG charts + tabular alternatives → linked portfolio/cohort/record views`
+
+`immutable evaluation evidence → fixed holdout capacity, gains, calibration, model comparison → plain-language assurance and limitation views`
+
+Native SVG and semantic HTML replace the previous rendered Fluent UI shell without adding a chart library. Portfolio/cohort calculations remain client-side over the approved 30,000 rows; evaluation-only views remain fixed to the 6,000-row holdout and visibly ignore cohort filters. Support-endpoint failures do not expose partial data, while a valid governed artifact remains usable with an honest local/unverified service-status state.
+
 ## Release control
 
 - Before every deployment, the publisher runs `scripts/pre_release_gate.py` from a clean worktree against the intended immutable Git revision and local aggregate artifact. The gate validates the artifact envelope and forbidden credentials or model fields, then runs Python tests, web lint/tests/build, and `project-kit check`.

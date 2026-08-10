@@ -70,7 +70,8 @@ milestones:
       - Do not add monitoring services, scheduled jobs, or paid capacity without approval.
   - id: M10
     title: Rebuild the non-technical BI decision dashboard
-    status: planned
+    status: awaiting_visual_approval
+    evidence: [M10-DESIGN-01, M10-PRODUCT-01, M10-VERIFY-01, M10-PERF-01]
     acceptance:
       - Replace the rejected design contract with an owner-approved stakeholder decision map, information architecture, visual system, KPI glossary, and chart specification before public deployment.
       - Support portfolio posture, review-capacity planning, cohort concentration, model assurance, data quality, and governance decisions with verified KPIs and linked analytical visuals rather than prose or decorative cards.

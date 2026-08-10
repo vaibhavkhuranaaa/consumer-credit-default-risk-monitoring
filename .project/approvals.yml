@@ -1,5 +1,16 @@
 version: 1
 architecture: approved
+m10_local_implementation:
+  status: approved
+  approved_on: 2026-08-10
+  authority: project owner
+  allowed_action: replace the rejected design contract and implement the detailed M10 KPI, chart, interaction, safety, accessibility, responsive, and verification contract locally
+  boundary: no deployment, merge, visibility change, paid resource, rollback, publication, or Graphify transmission
+m10_visual_and_deployment:
+  status: pending_explicit_approval
+  requested_on: 2026-08-10
+  required_action: review the local desktop, tablet, and mobile screenshots and candidate verification evidence, then separately approve or reject public deployment
+  boundary: local implementation and screenshots do not authorize deployment
 data_acquisition:
   status: approved
   proposed_source: UCI Default of Credit Card Clients (CC BY 4.0)

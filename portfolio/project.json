@@ -189,15 +189,14 @@
     {
       "id": "delivery.quality",
       "kind": "test",
-      "claim": "The exact deployed candidate passed governed regeneration, artifact validation, 19 Python tests, TypeScript lint, 15 web tests, production build, and project record checks.",
-      "source": "GitHub Actions quality run 31397767371 and docs/RELEASE-LOG.md",
-      "method": "Clean pre-release gate plus matching GitHub Actions run for revision d3e5b103b63a8e222d36084c85eed302f6b35398",
+      "claim": "The publication candidate preserves the governed M10 artifact checks and passes 24 Python tests, TypeScript lint, 15 web tests, the production build, and project record checks.",
+      "source": ".github/workflows/quality.yml and docs/RELEASE-LOG.md",
+      "method": "Clean local checks plus a matching GitHub Actions run for the exact default-branch publication candidate",
       "result": true,
-      "observedAt": "2026-08-10T14:53:18Z",
       "execution": "integration",
       "counts": {
-        "total": 34,
-        "passed": 34,
+        "total": 39,
+        "passed": 39,
         "failed": 0
       }
     },
@@ -336,7 +335,7 @@
       },
       {
         "role": "Data Product Engineering",
-        "bullet": "Shipped a privacy-preserving React, Cloudflare, and Neon research workstation with 30,000 full records, no demographic fields in public individual views, immutable release lineage, fail-closed availability, and a clean gate covering 19 Python and 15 web tests.",
+        "bullet": "Shipped a privacy-preserving React, Cloudflare, and Neon research workstation with 30,000 full records, no demographic fields in public individual views, immutable release lineage, fail-closed availability, and a clean gate covering 24 Python and 15 web tests.",
         "evidenceRefs": [
           "privacy.boundary",
           "delivery.quality",
@@ -360,7 +359,7 @@
     "decisionSupported": "Assess retrospective model readiness and compare fixed simulated review workloads without making an individual credit decision.",
     "architectureAlt": "A checksum-pinned UCI source flows through locked selection, repeated development evaluation and a frozen holdout into versioned artifacts, a React workstation, read-only Cloudflare Functions, and immutable Neon release evidence.",
     "evaluationMode": "Frozen 6,000-row stratified holdout plus two repeats of three paired stratified development folds",
-    "publicationStatus": "The research lab is live and verified; the M11 portfolio case-study package is prepared but not yet published.",
+    "publicationStatus": "The research lab is live and verified; the M11 case study is approved for public portfolio and resume-builder admission after exact default-branch and deployed-source alignment.",
     "licenseNote": "UCI Default of Credit Card Clients is used under CC BY 4.0 with recorded citation and checksums.",
     "coverImage": "docs/screenshots/m10/desktop-validation-workstation.png",
     "coverAlt": "Desktop view of the credit-risk model validation workstation showing readiness, review-capacity, calibration, and model-comparison evidence",

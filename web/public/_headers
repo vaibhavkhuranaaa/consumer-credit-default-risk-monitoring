@@ -10,3 +10,6 @@
 
 /data/*
   Cache-Control: public, max-age=0, must-revalidate
+
+/source.json
+  Cache-Control: no-store

@@ -25,6 +25,8 @@ The system supports an analyst's aggregate review of retrospective benchmark ris
 
 `manual verification → database-backed health and release lineage → fail-closed analyst state → Cloudflare rollback diagnostic`
 
+`default-branch revision → post-build source.json → anonymous live-source verification → portfolio admission`
+
 ## M10 deployed presentation architecture
 
 The verified M10 deployment advances the static analyst artifact to version 4 and preserves the read-only aggregate/health APIs. It adds no database field, model endpoint, write path, paid service, or analytics tracker.
@@ -52,7 +54,8 @@ The simulated review placement is a presentation of score rank, not a new model 
 ## Release control
 
 - Before every deployment, the publisher runs `scripts/pre_release_gate.py` from a clean worktree against the intended immutable Git revision and local aggregate artifact. The gate validates the artifact envelope and forbidden credentials or model fields, then runs Python tests, web lint/tests/build, and `project-kit check`.
-- GitHub-required branch protection is unavailable while this repository remains private on the current plan. The compensating control is mandatory: a passing local pre-release gate and a green GitHub Actions `quality` run for the same commit are both required before deployment.
+- The public GitHub repository retains the mandatory release control: a passing local pre-release gate and a green GitHub Actions `quality` run for the same commit are both required before deployment.
+- The evaluated model release and deployed application source are separate lineage facts. Neon and the health API retain the immutable M10 evaluated revision; the generated static source marker carries the exact deployed default-branch revision without changing the frozen evaluation or publishing a new aggregate release.
 - `docs/RELEASE-CHECKLIST.md` and `docs/RELEASE-LOG.md` provide the credential-free evidence trail. Publishing, rollback, visibility, billing, and provider changes remain separately approval-gated.
 
 ## Scale and cost boundary

@@ -6,6 +6,12 @@ m11_finalization:
   authority: project owner
   allowed_action: complete the M11 case-study package, remove retired repository and GitHub material, keep agent-specific files local and ignored, update the portfolio manifest and resume bullet candidates, commit, push, and verify the resulting branch
   boundary: no merge, repository visibility change, case-study or portfolio publication, product redeployment, paid resource, provider change, rollback, teardown, or secret transmission
+m11_publication_and_deployment:
+  status: approved
+  approved_on: 2026-08-10
+  authority: project owner
+  allowed_action: fast-forward the verified M11 work to the default branch, deploy it to the existing Cloudflare Pages Free project, enable anonymous portfolio admission, trigger the existing portfolio synchronizer and Vercel Git deployment, and verify the live project and resume surfaces
+  boundary: existing public repository and zero-dollar providers only; no model reselection, aggregate release rewrite, paid resource, provider change, rollback, teardown, custom domain, analytics, scheduled monitoring, or secret transmission
 m10_local_implementation:
   status: approved
   approved_on: 2026-08-10
@@ -57,7 +63,7 @@ public_research_score_scope:
   boundary: validated academic simulation only; no approval, denial, pricing, or lending recommendation
 repository:
   status: approved
-  visibility: private
+  visibility: public
   purpose: source control and Cloudflare preview deployment integration
 cloud:
   status: approved

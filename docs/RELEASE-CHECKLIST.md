@@ -15,6 +15,7 @@ Use this checklist for every public release. It is a local control only; do not 
 
 - [ ] Record the SHA-256 hash of `artifacts/evaluation.json`, the gate-validated `artifacts/release.json`, and `web/public/data/analyst-workspace.json`.
 - [ ] Confirm `web/public/data/` contains only `analyst-workspace.json`; the gate rejects obsolete or unexpected payloads before building `web/dist`.
+- [ ] After the production build, generate `web/dist/source.json` with `scripts/write_deployment_source.py` and the exact default-branch SHA. Do not use the evaluated model revision when the application revision has advanced.
 - [ ] Confirm `scripts/validate_public_artifact.py` passes and the version-4 artifact contains no demographic fields, local fairness evidence, forbidden decision fields, or incomplete deterministic ranks.
 - [ ] Confirm the most recent GitHub Actions `quality` workflow for the same source revision is green.
 - [ ] Confirm `.project/approvals.yml` still authorizes the effective non-demographic record and retrospective-score public scope. A new deployment needs explicit approval; this checklist does not grant it.
@@ -22,8 +23,8 @@ Use this checklist for every public release. It is a local control only; do not 
 
 ## After an explicitly approved deployment
 
-- [ ] Verify the deployment URL serves the expected release and analyst artifact version.
-- [ ] Run `scripts/verify_live_release.py` with the exact approved release ID and full Git SHA; retain its pass result in the credential-free release record.
+- [ ] Verify the deployment URL serves the expected release, analyst artifact version, and exact application revision at `/source.json`.
+- [ ] Run `scripts/verify_live_release.py` with the exact approved release ID, evaluated release SHA, and deployed source SHA; retain its pass result in the credential-free release record.
 - [ ] Record the verification timestamp and the exact rollback target in the release log.
 - [ ] Do not publish if the local gate or GitHub Actions quality run is not green.
 

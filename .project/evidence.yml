@@ -61,9 +61,9 @@ evidence:
     status: verified_local
     record: README.md, CASE-STUDY.md, docs/case-study-standard.md
   - id: M11-PORTFOLIO-01
-    claim: The v2 portfolio manifest contains an evidence-linked analytical story, approved presentation asset, exact live deployment facts, privacy disclosure, and four resume bullet candidates; publication-profile validation, resume projection, and an isolated production export pass while its release contract remains disabled.
+    claim: The v2 portfolio manifest contains an evidence-linked analytical story, approved presentation asset, exact live deployment facts, privacy disclosure, and four resume bullet candidates; publication-profile validation, resume projection, and an isolated production export pass, and owner-approved admission remains fail closed until the live source marker matches the public default branch.
     status: verified_local
-    record: portfolio/project.json, portfolio/release.json
+    record: portfolio/project.json, portfolio/release.json, scripts/write_deployment_source.py
   - id: M11-HYGIENE-01
     claim: Superseded screenshots and continuation copy were deleted, agent-specific files are local/ignored, development-only web tooling is classified correctly, and retired M9 GitHub PR and branch material were removed.
     status: verified_local

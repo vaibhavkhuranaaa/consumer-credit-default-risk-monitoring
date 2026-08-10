@@ -43,8 +43,10 @@ def validate_payloads(
     health: dict[str, Any],
     release: dict[str, Any],
     artifact: dict[str, Any],
+    source_marker: dict[str, Any],
     expected_release_id: str,
     expected_revision: str,
+    expected_source_revision: str,
 ) -> None:
     if health.get("status") != "ready" or health.get("checks") != {"database": "reachable", "current_release": "available"}:
         raise ValueError("Health endpoint is not ready.")
@@ -53,6 +55,8 @@ def validate_payloads(
     health_release = health.get("release", {})
     if health_release.get("release_id") != expected_release_id or health_release.get("code_revision") != expected_revision:
         raise ValueError("Health and aggregate release lineage disagree.")
+    if source_marker != {"schema_version": 1, "source_sha": expected_source_revision}:
+        raise ValueError("Deployed application source does not match the approved revision.")
     if artifact.get("version") not in {3, 4}:
         raise ValueError("Deployed analyst artifact version is unsupported.")
     source = artifact.get("source", {})
@@ -75,14 +79,16 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default="https://consumer-credit-risk-workbench.pages.dev")
     parser.add_argument("--expected-release-id", required=True)
-    parser.add_argument("--expected-revision", required=True)
+    parser.add_argument("--expected-revision", required=True, help="Evaluated model-release revision")
+    parser.add_argument("--expected-source-revision", required=True, help="Deployed application revision")
     args = parser.parse_args()
     base = args.base_url.rstrip("/")
     root_headers, _ = fetch(base)
     health_headers, health_bytes = fetch(f"{base}/api/v1/health")
     release_headers, release_bytes = fetch(f"{base}/api/v1/releases/current")
     artifact_headers, artifact_bytes = fetch(f"{base}/data/analyst-workspace.json")
-    for label, headers in (("site", root_headers), ("health", health_headers), ("release", release_headers), ("artifact", artifact_headers)):
+    source_headers, source_bytes = fetch(f"{base}/source.json")
+    for label, headers in (("site", root_headers), ("health", health_headers), ("release", release_headers), ("artifact", artifact_headers), ("source", source_headers)):
         validate_security(headers, label)
     if "no-store" not in health_headers.get("cache-control", ""):
         raise ValueError("Health endpoint must not be cached.")
@@ -94,8 +100,10 @@ def main() -> int:
         json.loads(health_bytes),
         json.loads(release_bytes),
         json.loads(artifact_bytes),
+        json.loads(source_bytes),
         args.expected_release_id,
         args.expected_revision,
+        args.expected_source_revision,
     )
     print("Live availability, security headers, cache policy, lineage, and privacy boundary: pass")
     return 0

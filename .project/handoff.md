@@ -11,7 +11,7 @@ M11 changes documentation and publication-source contracts only. It does not cha
 - `README.md`: analytical project document covering the problem, decision boundary, method, evidence, design, architecture, reproduction, and limitations.
 - `CASE-STUDY.md`: final evidence-backed case study with exact model, capacity, calibration, reliability, privacy, accessibility, performance, and lineage qualifications.
 - `portfolio/project.json`: v2 publication-profile manifest with the case-study story, presentation metadata, evidence records, and four resume bullet candidates.
-- `portfolio/release.json`: disabled release contract. Public portfolio admission remains impossible until separately approved.
+- `portfolio/release.json`: owner-approved enabled release contract with fail-closed default-branch/live-source verification.
 - Isolated portfolio proof: v2 publication validation, four-bullet resume projection, and the Next production export for `/projects/consumer-credit-default-risk-monitoring` pass. The portfolio platform's formal preview path still excludes preview-status entries from static route generation; the renderer proof promoted status only inside a disposable build directory.
 - Four approved presentation captures under `docs/screenshots/m10/`; all superseded captures were deleted.
 - Agent-specific files are local and ignored rather than tracked as project content.
@@ -51,4 +51,4 @@ Sex, education, marriage, and age remain excluded from model inputs and public i
 
 ## Next action
 
-M12 is next and requires approval before any rollback or teardown rehearsal. Separately, publishing the M11 case study requires approval to align the private repository’s default branch with the live source revision and admit the manifest to the portfolio registry. No merge, visibility change, product redeployment, publication, rollback, teardown, or paid-resource action is implied by this handoff.
+M11 publication is approved and awaits exact default-branch/live-source alignment, Cloudflare verification, and portfolio/resume-builder synchronization. The immutable evaluated M10 release must not be rewritten for this documentation and application-source publication. M12 is next and still requires approval before any rollback or teardown rehearsal.

@@ -12,16 +12,17 @@ Cloudflare Pages serves the React/Vite application. Pages Functions exposes only
 
 ## First release checklist
 
-1. Record approval for the private GitHub repository, Neon Free project, Cloudflare Pages project, and public analyst-product scope in `.project/approvals.yml`.
+1. Record approval for the GitHub repository visibility, Neon Free project, Cloudflare Pages project, and public analyst-product scope in `.project/approvals.yml`.
 2. Create Neon roles `portfolio_api` and `portfolio_publisher`, apply `db/migrations/001_release_evidence.sql`, and set a Neon branch aside for migration validation.
 3. Run `uv sync`, `uv run python scripts/run_evaluation.py`, and `uv run python scripts/build_release.py --revision <immutable-git-sha>` locally.
 4. From a clean worktree, run the required local gate with that exact immutable SHA: `uv run python scripts/pre_release_gate.py --revision <immutable-git-sha> --release-file artifacts/release.json`. It validates the aggregate artifact, rebuilds and validates the non-demographic analyst artifact from the checksum-pinned workbook, then runs Python tests, web lint/tests/build, and project records.
 5. Confirm the GitHub Actions `quality` workflow is green for the same source SHA, then complete `docs/RELEASE-CHECKLIST.md` and append the required credential-free lineage record to `docs/RELEASE-LOG.md`.
 6. Set `NEON_PUBLISHER_DATABASE_URL` only in the publisher shell, then run `uv run python scripts/publish_release.py`.
-7. Confirm `web/public/data/` contains only the governed `analyst-workspace.json`, build `web` with `pnpm build`, then deploy `web/dist` directly to the approved Cloudflare Pages project with `pnpm exec wrangler pages deploy dist --project-name consumer-credit-risk-workbench`. Configure only `NEON_API_DATABASE_URL` and `ALLOWED_ORIGIN` as Cloudflare secrets. Pages Functions emit structured failure events to Cloudflare's existing logs; the Pages configuration deliberately omits the unsupported Workers-only `observability` block and creates no scheduled job or third-party monitor.
-8. Run the exact live verification command in `docs/AVAILABILITY-RUNBOOK.md`. Treat any security-header, cache, release-lineage, health, row-count, or protected-field failure as a failed deployment.
+7. Confirm `web/public/data/` contains only the governed `analyst-workspace.json`, build `web` with `pnpm build`, then run `uv run python scripts/write_deployment_source.py --revision <full-default-branch-sha>`. The generated `web/dist/source.json` contains only that public Git revision and lets the portfolio verify the deployed application independently of the older evaluated model release.
+8. Deploy `web/dist` directly to the approved Cloudflare Pages project with `pnpm exec wrangler pages deploy dist --project-name consumer-credit-risk-workbench --branch main --commit-hash <full-default-branch-sha>`. Configure only `NEON_API_DATABASE_URL` and `ALLOWED_ORIGIN` as Cloudflare secrets. Pages Functions emit structured failure events to Cloudflare's existing logs; the Pages configuration deliberately omits the unsupported Workers-only `observability` block and creates no scheduled job or third-party monitor.
+9. Run the exact live verification command in `docs/AVAILABILITY-RUNBOOK.md`. Treat any security-header, cache, model-release lineage, deployed-source lineage, health, row-count, or protected-field failure as a failed deployment.
 
-The current private GitHub Free repository cannot enforce required branch protection; do not make it public or add billing without a new recorded approval. The mandatory compensating control is the passing local gate plus a green GitHub Actions quality run before deployment. Git-connected pull-request previews are not configured.
+The public GitHub repository and zero-dollar boundary are recorded in `.project/approvals.yml`. The mandatory release control is the passing local gate plus a green GitHub Actions quality run before deployment. Git-connected pull-request previews are not configured.
 
 ## Rollback and teardown
 

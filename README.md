@@ -71,7 +71,7 @@ checksum-pinned UCI workbook
   → read-only release and health functions backed by Neon
 ```
 
-The production path uses Cloudflare Pages/Workers Free and Neon Free. It accepts no viewer writes and adds no visitor analytics or scheduled monitoring. The exact deployed application revision is `d3e5b103b63a8e222d36084c85eed302f6b35398`; live verification completed at `2026-08-10T14:53:18Z`.
+The production path uses Cloudflare Pages/Workers Free and Neon Free. It accepts no viewer writes and adds no visitor analytics or scheduled monitoring. The health API identifies the immutable M10 model release; `/source.json` identifies the exact deployed application revision so the public portfolio can verify default-branch alignment without rewriting evaluation evidence.
 
 ## Reproduce and verify
 

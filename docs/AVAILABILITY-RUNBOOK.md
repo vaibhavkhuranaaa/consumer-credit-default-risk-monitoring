@@ -14,7 +14,7 @@ Run the bounded, read-only health request:
 curl -fsS -A 'consumer-credit-release-verifier/1.0' https://consumer-credit-risk-workbench.pages.dev/api/v1/health
 ```
 
-A healthy response reports `status: ready`, database connectivity, current-release availability, release ID, and code revision. It reveals no credentials or visitor information. `configured` alone is not healthy.
+A healthy response reports `status: ready`, database connectivity, current-release availability, release ID, and the evaluated model-release revision. `/source.json` separately reports the exact deployed application revision. Neither endpoint contains credentials or visitor information. `configured` alone is not healthy.
 
 ## Failure guide
 
@@ -35,10 +35,11 @@ After deployment, run:
 uv run python scripts/verify_live_release.py \
   --base-url https://consumer-credit-risk-workbench.pages.dev \
   --expected-release-id <approved-release-id> \
-  --expected-revision <full-git-sha>
+  --expected-revision <evaluated-release-sha> \
+  --expected-source-revision <deployed-default-branch-sha>
 ```
 
-The verifier checks the site, health endpoint, aggregate release, and analyst artifact; required security/cache headers; exact release lineage; 30,000-row artifact contract; and absence of demographic fields.
+The verifier checks the site, health endpoint, aggregate release, analyst artifact, and anonymous deployment-source marker; required security/cache headers; exact model-release and application-source lineage; the 30,000-row artifact contract; and absence of demographic fields.
 
 ## Rollback diagnostic
 

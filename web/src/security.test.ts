@@ -8,9 +8,9 @@ it("ships the static security and cache contract", () => {
   }
 });
 
-it("enables bounded native Workers observability", () => {
+it("keeps the Pages configuration within supported fields", () => {
   const config = JSON.parse(readFileSync("wrangler.jsonc", "utf8"));
   expect(config.compatibility_flags).toContain("nodejs_compat");
-  expect(config.observability.logs.head_sampling_rate).toBeLessThanOrEqual(.1);
-  expect(config.observability.traces.head_sampling_rate).toBeLessThanOrEqual(.01);
+  expect(config.pages_build_output_dir).toBe("dist");
+  expect(config).not.toHaveProperty("observability");
 });

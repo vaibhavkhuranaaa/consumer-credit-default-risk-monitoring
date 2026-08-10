@@ -2,7 +2,7 @@
 
 ## Starting point
 
-M0–M9 are complete. M10's analyst-style visual rebuild is implemented locally on `feature/m10-bi-dashboard`, but visual acceptance is withheld after the owner requested stronger evidence of model usefulness and a safe record-level simulation. The public M9 site remains technically verified and unchanged.
+M0–M9 are complete. M10's analyst-style visual rebuild and the approved evaluation-strengthening contract are implemented locally on `feature/m10-bi-dashboard`. The public M9 site remains technically verified and unchanged. M10 still requires refreshed screenshot review and explicit human visual approval before any separately approved deployment.
 
 Complete milestones in order. The next task must work only on M10 and must not deploy.
 
@@ -10,7 +10,7 @@ Complete milestones in order. The next task must work only on M10 and must not d
 
 **Objective:** make the dashboard answer whether the research model is meaningfully and stably better than simple alternatives, what a score-ranked review simulation includes, and why the evidence is not an individual lending decision.
 
-### Evaluation work
+### Evaluation work — implemented locally
 
 - Freeze the existing 6,000-row holdout. Do not use it for additional model or hyperparameter selection.
 - Run repeated paired stratified evaluation on development data and report stability across identical folds.
@@ -22,7 +22,7 @@ Complete milestones in order. The next task must work only on M10 and must not d
 - Add feature-group ablations as model-reliance evidence, never causal or adverse-action reasons.
 - Add schema version, UTC generation timestamp, source/evaluation checksums, evaluated code revision, split identity, and command/version lineage to generated evidence.
 
-### Product work
+### Product work — implemented locally
 
 - Lead Model assurance with a plain-language readiness verdict and explicit supported/prohibited uses.
 - Keep fixed-holdout, repeated-development, full-artifact cohort, and live-service evidence visually distinct.
@@ -39,6 +39,8 @@ Complete milestones in order. The next task must work only on M10 and must not d
 - New desktop, tablet, and mobile screenshots show the strengthened evidence and record inspector without overflow or browser warnings.
 - Graphify, Git, GitHub, project records, and handoff describe the same revision and status.
 - Stop before deployment, merge, visibility changes, paid resources, rollback, or publication. Obtain explicit visual approval and separate deployment approval.
+
+The implementation now uses evaluation schema version 2, analyst artifact version 4, and aggregate release schema version 2. The next authorized action after final local gates and screenshots is human visual review only. Deployment, merge, publication, visibility, billing, rollback, and provider changes remain prohibited.
 
 ## M11 — Package the verified portfolio case study
 

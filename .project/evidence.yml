@@ -45,25 +45,37 @@ evidence:
     status: verified_local
     record: DESIGN.md, .project/approvals.yml
   - id: M10-PRODUCT-01
-    claim: The local dashboard provides linked portfolio posture, review-capacity, cohort, model-assurance, governance, and record-evidence workflows without protected-attribute individual analytics or lending recommendations.
+    claim: The local Credit Risk Model Validation & Review-Capacity Lab provides linked portfolio posture, review-capacity, cohort, model-validation, governance, and deterministic record-simulation workflows without protected-attribute individual analytics or lending recommendations.
     status: verified_local
-    record: web/src/App.tsx, web/src/analytics.ts, web/src/charts.tsx, web/src/App.test.tsx, web/src/analytics.test.ts
+    record: web/src/App.tsx, web/src/types.ts, web/src/analytics.ts, web/src/charts.tsx, web/src/App.test.tsx, web/src/analytics.test.ts
   - id: M10-VERIFY-01
-    claim: The local M10 candidate passed 14 web tests, production TypeScript/Vite build, browser interaction checks, zero browser warnings, and 1440px, 834px, and 390px viewport checks without document-level responsive overflow.
-    status: verified_local
+    claim: The pre-strengthening local M10 candidate passed 14 web tests and prior responsive checks; refreshed post-strengthening screenshots and browser verification supersede this evidence before visual approval.
+    status: superseded_local
     record: docs/screenshots/m10/desktop-portfolio.jpg, docs/screenshots/m10/desktop-review-planning.jpg, docs/screenshots/m10/tablet-portfolio.jpg, docs/screenshots/m10/mobile-portfolio.jpg
   - id: M10-PERF-01
-    claim: The local production bundle removes the rendered Fluent UI dependency and builds to 255.31 kB JavaScript (76.87 kB gzip) plus 28.11 kB CSS (6.30 kB gzip); combined app assets are 33.3% smaller gzip than the rejected 436.55 kB JavaScript / 4.20 kB CSS baseline.
+    claim: The strengthened local production bundle builds to 261.33 kB JavaScript (78.47 kB gzip) plus 31.64 kB CSS (6.86 kB gzip), adding 2.16 kB or 2.6% combined gzip versus the verified visual rebuild without adding a runtime dependency.
     status: verified_local
     record: web/package.json, web/src/App.tsx, web/dist/assets
   - id: M10-EVAL-AUDIT-01
     claim: The current evaluation supports retrospective academic ranking and capacity simulation but lacks temporal/external validation, repeated-split stability, paired model deltas, capacity uncertainty, and explicit evaluation generation/revision metadata.
-    status: verified_local
+    status: superseded_by_M10-EVAL-02
     record: src/credit_risk/pipeline.py, artifacts/evaluation.json, .project/evaluation.md
   - id: M10-EVAL-PLAN-01
     claim: The owner approved a local evidence-strengthening pass and safe record-level score-ranked simulated review placement while retaining the no-lending-decision boundary.
-    status: approved_local
+    status: implemented_local
     record: .project/approvals.yml, .project/evaluation.md, DESIGN.md, .project/handoff.md
+  - id: M10-EVAL-02
+    claim: Evaluation schema version 2 preserves the frozen 6,000-row holdout, adds six paired repeated-development folds, prevalence/random, logistic and repayment-delay references, practical-margin tie verdicts, capacity intervals, calibration diagnostics, non-demographic robustness, feature-group ablations, and immutable generation/revision/tool lineage.
+    status: verified_local
+    record: src/credit_risk/pipeline.py, artifacts/evaluation.json, tests/test_pipeline.py, .project/evaluation.md
+  - id: M10-SCHEMA-01
+    claim: Version-4 analyst and version-2 aggregate-release contracts validate evaluation freshness, deterministic complete rank, five model/reference envelopes, capacity intervals, privacy exclusions, and forbidden decision fields.
+    status: verified_local
+    record: scripts/build_public_dataset.py, scripts/validate_public_artifact.py, src/credit_risk/release_contract.py, web/src/api.ts, web/src/types.ts, tests/test_pipeline.py, web/src/api.test.ts
+  - id: M10-PRIVACY-02
+    claim: Sex, education, marriage, and age remain excluded from model inputs and public individual records; aggregate fairness evidence remains local and is removed from generated analyst and aggregate-release payloads.
+    status: verified_local
+    record: scripts/build_public_dataset.py, src/credit_risk/release_contract.py, scripts/validate_public_artifact.py, tests/test_pipeline.py
   - id: GRAPH-01
     claim: The owner approved and Graphify completed a project-scoped semantic refresh with a passing endpoint-integrity diagnostic; the unverified workspace node, initial missing-source-file edge warnings, and skill/runtime version mismatch remain disclosed.
     status: verified_local_with_limitations

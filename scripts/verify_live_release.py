@@ -53,8 +53,8 @@ def validate_payloads(
     health_release = health.get("release", {})
     if health_release.get("release_id") != expected_release_id or health_release.get("code_revision") != expected_revision:
         raise ValueError("Health and aggregate release lineage disagree.")
-    if artifact.get("version") != 3:
-        raise ValueError("Deployed analyst artifact version is not 3.")
+    if artifact.get("version") not in {3, 4}:
+        raise ValueError("Deployed analyst artifact version is unsupported.")
     source = artifact.get("source", {})
     records = artifact.get("records", [])
     if source.get("rows") != 30_000 or len(records) != 30_000:
@@ -63,6 +63,12 @@ def validate_payloads(
         raise ValueError("Deployed protected-attribute boundary is invalid.")
     if any(PROTECTED_FIELDS.intersection(record) for record in records):
         raise ValueError("Deployed analyst artifact exposes protected attributes.")
+    if artifact.get("version") == 4:
+        if source.get("evaluation_schema_version") != 2 or not source.get("evaluated_revision"):
+            raise ValueError("Deployed analyst artifact lacks evaluation freshness lineage.")
+        ranks = {record.get("research_score_rank") for record in records}
+        if ranks != set(range(1, len(records) + 1)):
+            raise ValueError("Deployed analyst artifact rank identity is invalid.")
 
 
 def main() -> int:

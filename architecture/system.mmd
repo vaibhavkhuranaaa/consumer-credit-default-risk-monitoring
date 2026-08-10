@@ -1,9 +1,17 @@
 flowchart LR
   A[Local checksum-pinned UCI source] --> B[Schema and range validation]
-  B --> C[Evaluation and non-demographic artifact]
-  C --> D[Local release gate and lineage hashes]
-  D --> E[Neon immutable aggregate evidence]
-  D --> F[Cloudflare Pages analyst workspace]
+  B --> C[Locked train and validation selection]
+  C --> D[Frozen 6000-row holdout audit]
+  C --> K[Repeated paired development evaluation]
+  K --> L[Baselines uncertainty robustness and ablations]
+  D --> L
+  L --> M[Evaluation schema v2]
+  M --> N[Version 4 artifact with deterministic rank]
+  N --> O[Validation and review-capacity lab]
+  M --> P[Aggregate release schema v2]
+  N --> Q[Local release gate and lineage hashes]
+  Q --> E[Neon immutable aggregate evidence]
+  Q --> F[Cloudflare Pages analyst workspace]
   G[Hiring manager or analyst] --> F
   F --> H[Read-only release and health Functions]
   H --> E

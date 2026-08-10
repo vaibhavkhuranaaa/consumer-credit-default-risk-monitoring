@@ -197,33 +197,23 @@ export function repaymentComposition(records: CreditRecord[]) {
 
 export type ReviewScenario = Threshold & {
   sampleSize: number;
-  queueSize: number;
   totalDefaults: number;
-  nonDefaultReviews: number;
-  lift: number;
-  incrementalYield: number | null;
 };
 
 export function reviewScenarios(model: Model): ReviewScenario[] {
   const sampleSize = model.lift_by_decile.reduce((sum, row) => sum + row.n, 0);
   const first = model.threshold_tradeoffs.find((row) => row.recall > 0);
   const totalDefaults = first ? Math.round(first.captured_defaults / first.recall) : 0;
-  const prevalence = sampleSize ? totalDefaults / sampleSize : 0;
-  return model.threshold_tradeoffs.map((row, index, rows) => {
-    const queueSize = Math.round(sampleSize * row.review_rate);
-    const previous = rows[index - 1];
-    const previousQueue = previous ? Math.round(sampleSize * previous.review_rate) : 0;
-    const incrementalYield = previous ? (row.captured_defaults - previous.captured_defaults) / (queueSize - previousQueue) : null;
-    return {
-      ...row,
-      sampleSize,
-      queueSize,
-      totalDefaults,
-      nonDefaultReviews: queueSize - row.captured_defaults,
-      lift: prevalence ? row.precision / prevalence : 0,
-      incrementalYield,
-    };
-  });
+  return model.threshold_tradeoffs.map((row) => ({ ...row, sampleSize, totalDefaults }));
+}
+
+export function reviewPlacement(record: CreditRecord, denominator: number, capacity: number) {
+  const cutoff = Math.max(1, Math.round(denominator * capacity));
+  return {
+    cutoff,
+    inside: record.research_score_rank <= cutoff,
+    label: record.research_score_rank <= cutoff ? "Inside simulated review set" : "Outside simulated review set",
+  } as const;
 }
 
 export function cumulativeGains(model: Model) {

@@ -16,7 +16,7 @@ Provide a reproducible retrospective credit-risk validation and review-capacity 
 
 ## Positioning
 
-The product makes readiness, uncertainty, freshness, and the non-decision boundary first-class evidence rather than presenting a credit score or lending recommendation.
+The Credit Risk Model Validation & Review-Capacity Lab makes readiness, paired baseline uncertainty, evaluation freshness, and the non-decision boundary first-class evidence rather than presenting a credit score or lending recommendation.
 
 ## Operating Context
 

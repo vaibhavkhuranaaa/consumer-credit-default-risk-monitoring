@@ -2,9 +2,9 @@
 
 ## Status and boundary
 
-Status: M10 local visual implementation completed on 2026-08-10, but the owner requested stronger evaluation and record-level simulation evidence before visual acceptance. Public deployment remains pending and prohibited.
+Status: M10 local visual rebuild and evaluation-strengthening contract are implemented on 2026-08-10. Refreshed visual evidence and owner approval remain required; public deployment is pending and prohibited.
 
-This product is a retrospective academic research workbench built from the licensed UCI Default of Credit Card Clients dataset. It supports portfolio posture, review-capacity planning, cohort comparison, model assurance, governance review, and manual record research. It never approves, denies, prices, prioritizes for lending action, or recommends credit. Protected attributes are excluded from model inputs and public individual analytics.
+This product is a retrospective academic research workbench built from the licensed UCI Default of Credit Card Clients dataset. It supports portfolio posture, review-capacity planning, cohort comparison, model validation, governance review, and restricted record simulation. It never approves, denies, determines eligibility, prices, supplies adverse-action reasons, or recommends credit. Protected attributes are excluded from model inputs and public individual analytics.
 
 ## Stakeholder decision map
 
@@ -22,10 +22,10 @@ This product is a retrospective academic research workbench built from the licen
 3. **Portfolio posture** leads with one primary observed-default signal, a supporting strip of portfolio magnitude and behavior metrics, and linked concentration visuals.
 4. **Review planning** shows the evaluated capacity frontier and a scenario ledger. This section uses holdout evidence and is not altered by portfolio cohort filters.
 5. **Cohort analysis** links repayment status, payment/bill profiles, distributions, and a score-band by delinquency matrix to the global filters.
-6. **Model assurance** begins with an explicit evidence-readiness verdict, then compares prevalence/simple-rule/logistic references, paired model deltas, split stability, calibration, cumulative gains/lift, capacity uncertainty, cohort robustness, feature-group ablations, freshness, data quality, and governance. Evidence absent from the governed artifact renders as unavailable rather than inferred.
-7. **Record review** retains searchable, sortable, paginated source records and opens an evidence inspector that groups signals, historical sequences, derived measures, score rank, and selected-capacity placement. The placement label is `Inside simulated review set` or `Outside simulated review set`, never a credit decision.
+6. **Model validation** is the Credit Risk Model Validation & Review-Capacity Lab. It begins with an explicit evidence-readiness verdict, then compares prevalence/random, repayment-rule, logistic, and candidate references; paired model deltas, split stability, calibration, capacity uncertainty, cohort robustness, feature-group ablations, freshness, data quality, and governance follow. Evidence absent from the governed artifact renders as unavailable rather than inferred.
+7. **Record simulation** retains searchable, sortable, paginated governed rows but displays only academic source ID, retrospective out-of-fold score, score band, deterministic rank/denominator, selected capacity, historical outcome, and `Inside simulated review set` or `Outside simulated review set`. Aggregate portfolio and cohort analysis continues to use the full governed non-demographic artifact.
 
-Navigation uses a compact top rail with five question-led views: Portfolio, Review planning, Cohorts, Model assurance, and Record review. Desktop favors analytical density; tablet wraps two-column structures; mobile stacks sections, keeps filters usable, and converts wide tables to contained horizontal scrolling.
+Navigation uses a compact top rail with five question-led views: Portfolio, Review planning, Cohorts, Model validation, and Record simulation. Desktop favors analytical density; tablet wraps two-column structures; mobile stacks sections, keeps filters usable, and converts wide tables to contained horizontal scrolling.
 
 ## Visual direction
 

@@ -14,7 +14,7 @@ Use this checklist for every public release. It is a local control only; do not 
   ```
 
 - [ ] Record the SHA-256 hash of `artifacts/evaluation.json`, the gate-validated `artifacts/release.json`, and `web/public/data/analyst-workspace.json`.
-- [ ] Confirm `scripts/validate_public_artifact.py` passes and the version-3 artifact contains no demographic fields.
+- [ ] Confirm `scripts/validate_public_artifact.py` passes and the version-4 artifact contains no demographic fields, local fairness evidence, forbidden decision fields, or incomplete deterministic ranks.
 - [ ] Confirm the most recent GitHub Actions `quality` workflow for the same source revision is green.
 - [ ] Confirm `.project/approvals.yml` still authorizes the effective non-demographic record and retrospective-score public scope. A new deployment needs explicit approval; this checklist does not grant it.
 - [ ] Record the source revision, evaluation, aggregate, and analyst-artifact hashes, release ID, publisher identity, deployment URL, verification timestamp, and rollback target in `docs/RELEASE-LOG.md`.

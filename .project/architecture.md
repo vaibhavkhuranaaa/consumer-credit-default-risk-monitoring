@@ -35,13 +35,19 @@ The M10 candidate preserves the version-3 static analyst artifact and read-only 
 
 Native SVG and semantic HTML replace the previous rendered Fluent UI shell without adding a chart library. Portfolio/cohort calculations remain client-side over the approved 30,000 rows; evaluation-only views remain fixed to the 6,000-row holdout and visibly ignore cohort filters. Support-endpoint failures do not expose partial data, while a valid governed artifact remains usable with an honest local/unverified service-status state.
 
-## M10 evaluation-strengthening architecture (approved, not yet implemented)
+## M10 evaluation-strengthening architecture (implemented locally, not deployed)
 
-`frozen holdout + development partitions → repeated paired stability evaluation → baseline/challenger deltas + capacity uncertainty + calibration/robustness/ablation evidence → versioned immutable evaluation artifact`
+`locked train/validation selection + frozen 6,000-row holdout → version-2 evaluation artifact with holdout identity and uncertainty`
 
-`out-of-fold artifact scores + selected capacity → deterministic within-artifact rank → inside/outside simulated research review set → record inspector with lineage and refusal boundary`
+`24,000 development rows → two repeats of three shared stratified folds → prevalence/random + repayment-rule + logistic + candidate deltas → practical-margin tie verdict + stability + feature-group ablations`
 
-The simulated review placement is a presentation of score rank, not a new model output, API decision endpoint, or lending action. No approval/denial label, adverse-action reason, policy recommendation, demographic individual analysis, or write path may be introduced. Existing public results remain unchanged until a separately approved deployment is built from a clean revision and verified artifacts.
+`frozen holdout → capacity bootstrap intervals + calibration slope/intercept and sparse-bin warnings + sample-size-aware non-demographic cohort robustness`
+
+`five-fold out-of-fold artifact scores + six-decimal publication rounding + source-ID tie-break → deterministic within-artifact rank → selected capacity → inside/outside simulated research review set → restricted record inspector with lineage and refusal boundary`
+
+The version-4 analyst artifact embeds strengthened non-demographic evaluation evidence, deterministic rank, UTC freshness, evaluated revision, source/evaluation hashes, split identity, and command/tool lineage. Local aggregate fairness diagnostics are removed before the artifact or release envelope is built. Aggregate release schema version 2 carries the strengthened non-demographic evidence without changing the read-only Pages Function or database write boundary.
+
+The simulated review placement is a presentation of score rank, not a new model output, API decision endpoint, or lending action. No approval/denial label, eligibility, adverse-action reason, pricing, policy recommendation, demographic individual analysis, or write path is introduced. Existing public results remain unchanged until a separately approved deployment is built from a clean revision and verified artifacts.
 
 ## Release control
 

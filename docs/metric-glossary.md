@@ -15,7 +15,7 @@
 
 ## Review planning
 
-All review metrics use the fixed 6,000-row held-out evaluation and remain unchanged by artifact cohort filters.
+All review metrics use the frozen 6,000-row held-out evaluation and remain unchanged by artifact cohort filters. Captured defaults, non-default reviews, precision, recall, lift, and incremental yield report deterministic bootstrap 95% intervals at every approved point; queue size is fixed by capacity.
 
 | Metric | Definition | Desired direction | Limitation |
 | --- | --- | --- | --- |
@@ -34,17 +34,33 @@ All review metrics use the fixed 6,000-row held-out evaluation and remain unchan
 | PR-AUC | Ranking quality with emphasis on the observed-default class | 0.5764 | Higher | Fixed holdout |
 | AUROC | Overall ranking separation across thresholds | 0.7916 | Higher | Fixed holdout |
 | Brier score | Mean squared score error against observed labels | 0.1314 | Lower | Does not capture every calibration defect |
-| 10-bin expected calibration error | Weighted average score-versus-observed gap across bins | 0.0124 | Lower | Sparse high-score bins remain uncertain |
+| 10-bin expected calibration error | Weighted average score-versus-observed gap across bins | 0.0124 (`0.0110–0.0237`) | Lower | Sparse high-score bins remain uncertain |
+| Calibration slope | Logistic calibration fit of observed outcomes on score log-odds | 1.0743 | Near 1 | Global diagnostic; does not remove bin-level uncertainty |
+| Calibration intercept | Intercept from the same calibration fit | 0.0757 | Near 0 | Global diagnostic; single historical holdout |
+| Repeated-development PR-AUC | Mean PR-AUC across two repeats of three paired stratified development folds | 0.5513 | Higher | Development stability, not holdout or out-of-time evidence |
+| Paired PR-AUC delta vs Extra Trees | Selected minus Extra Trees on identical development folds | +0.0061 (`0.0019–0.0109`) — tie | Positive beyond the 0.010 resolution margin | Small difference does not resolve superiority |
 
-Verified values and intervals come from `artifacts/evaluation.json`; the public analyst artifact binds that file by SHA-256.
+Verified values and intervals come from evaluation schema version 2 in `artifacts/evaluation.json`; the version-4 analyst artifact binds that file by SHA-256 and records UTC generation time, evaluated revision, source checksum, split identity, and command/tool lineage.
 
-The strengthened evaluation will add paired baseline deltas, repeated-split stability, capacity confidence intervals, calibration slope/intercept, non-demographic cohort robustness, feature-group ablations, and explicit generation/revision lineage. Until those fields exist in the governed artifact, the dashboard must label them unavailable.
+The selected model is better than prevalence/random, the documented repayment-delay rule, and logistic regression on paired development evidence. Added complexity over calibrated Extra Trees is unresolved under the prespecified practical-resolution margins and is reported as a tie.
+
+## Robustness and model reliance
+
+| Evidence | Definition | Verified result | Limitation |
+| --- | --- | --- | --- |
+| Cohort robustness | PR-AUC, AUROC, Brier, ECE, sample size, outcome count, and intervals within credit-limit, delinquency, and payment-to-bill cohorts | Severe delinquency is limited (`n=86`); Higher payment-to-bill PR-AUC is `0.3084` (`0.2536–0.3643`) | PR-AUC changes with prevalence; cohorts are descriptive and non-demographic |
+| Repayment-status ablation | Performance loss when the six repayment-status fields are removed in repeated development folds | PR-AUC loss `0.0982` (`0.0845–0.1141`) | Model reliance only; not a cause or consumer explanation |
+| Reported-limit ablation | Performance loss when `LIMIT_BAL` is removed | PR-AUC loss `0.0036` (`0.0028–0.0044`) | Model reliance only |
+| Bill-amount ablation | Performance loss when six bill fields are removed | PR-AUC loss `0.0056` (`0.0031–0.0080`) | Model reliance only |
+| Payment-amount ablation | Performance loss when six payment fields are removed | PR-AUC loss `0.0012` (`-0.0006–0.0028`) — tie | Reliance unresolved |
 
 ## Record-level research placement
 
 | Metric | Definition | Source | Interpretation | Limitation |
 | --- | --- | --- | --- | --- |
-| Research-score rank | Position of a record when governed out-of-fold scores are sorted descending; ties use a documented deterministic order | Analyst artifact | Relative position within this academic artifact | Not a population percentile or policy rank |
+| Research-score rank | Position after governed out-of-fold scores are rounded to six public decimals and sorted descending; ties use source ID ascending | Analyst artifact | Relative position within this 30,000-row academic artifact | Not a population percentile or policy rank |
 | Simulated review placement | `Inside simulated review set` when rank is within the selected 5%, 10%, 20%, 35%, or 50% of artifact rows; otherwise `Outside simulated review set` | Rank plus selected capacity | Shows what the score-ranked research simulation includes | Not what a lender decided; never approval, denial, eligibility, pricing, or recommendation |
 
 Required adjacent disclaimer: `Retrospective research simulation only — not an approval, denial, price, adverse-action reason, or lending recommendation.`
+
+The record-level interface shows only academic source ID, retrospective score, band, rank/denominator, selected capacity, historical outcome, and simulated placement. Lending-decision, eligibility, pricing, adverse-action, recommendation, and “the model decided” language is refused.

@@ -2,59 +2,53 @@
 
 ## Decision and scope
 
-Evaluation asks whether a non-demographic model can rank and calibrate next-period observed-default labels well enough for retrospective research and bounded review-capacity simulation. It does not validate an operational lending policy or consumer decision.
+Evaluation asks whether a non-demographic model provides stable ranking and calibration evidence beyond simple references and what uncertainty surrounds bounded retrospective review-capacity simulations. It does not validate an operational lending policy or consumer decision.
 
 ## Split and leakage controls
 
-- Fixed stratified 60/20/20 train/validation/test split with random state `20260801`.
-- Model selection is locked on validation evidence; reported model comparison is on the fixed 6,000-row holdout.
+- Fixed stratified 60/20/20 train/validation/holdout split with random state `20260801`.
+- Model selection remains locked on the original 18,000-row training and 6,000-row validation evidence.
+- The 6,000-row holdout identity is frozen at SHA-256 `df4a7f48dc14f491d592e858e1b128cb975ad83e1281de330876eb307cef2215` and is excluded from further model or hyperparameter selection.
+- Repeated development evidence uses the combined 24,000 train/validation rows only: two repeats of three-fold stratified evaluation with identical folds across candidates.
 - Inputs contain 19 pre-target financial and repayment fields. `ID`, sex, education, marriage, age, and the target are excluded.
 - The source has one target horizon. No calendar-time or out-of-time performance claim is allowed.
 
-## Required technical evidence
+## References and tie rule
 
-- Ranking: PR-AUC and AUROC, with 95% intervals where recorded.
-- Calibration: Brier score, 10-bin expected calibration error, and calibration curve.
-- Capacity: 5%, 10%, 20%, 35%, and 50% review points with queue size, captured observed defaults, non-default reviews, precision, recall, lift versus random, and incremental yield.
-- Concentration: score-decile observed-default rate, lift, and cumulative gains.
-- Fairness: local aggregate diagnostics only, separated from public individual analytics.
+- **Prevalence/random:** constant development-fold prevalence for probability metrics and analytic expected random selection with lift `1.0` for capacity context.
+- **Logistic:** standardized logistic regression over the same approved 19 fields.
+- **Repayment-delay rule:** fixed scores of `0.70` when `PAY_0 ≥ 2`, `0.45` when any repayment field is at least 2, `0.25` when any repayment field is at least 1, and `0.10` otherwise. It is a target-free research reference, not a lending rule.
+- Paired deltas use the same development folds. A result is a tie unless its paired 95% interval clears the prespecified practical-resolution margin in the better direction: AUROC `0.005`, PR-AUC `0.010`, Brier `0.002`, and ECE `0.005`.
 
-## Verified selected result
+## Verified strengthened result
 
-The validation-locked calibrated histogram gradient-boosting model records holdout PR-AUC `0.5764` (95% interval `0.5513–0.6058`), AUROC `0.7916` (`0.7793–0.8059`), Brier `0.1314` (`0.1257–0.1365`), and 10-bin calibration error `0.0124`. The exact machine-readable source is `artifacts/evaluation.json`, bound to the analyst artifact by evaluation SHA-256 `5b72d29dbc5b43375f185035f6c76654fd70b79dd69ac60708cf2ffa32b76eda`.
+The validation-locked calibrated histogram gradient-boosting model retains frozen-holdout PR-AUC `0.5764` (95% interval `0.5513–0.6058`), AUROC `0.7916` (`0.7793–0.8059`), Brier `0.1314` (`0.1257–0.1365`), and 10-bin ECE `0.0124` (`0.0110–0.0237`).
 
-## Current usability assessment
+Across six repeated development folds, its mean PR-AUC is `0.5513` versus prevalence/random `0.2212`, repayment-delay rule `0.4480`, logistic `0.5006`, and calibrated Extra Trees `0.5452`. Paired evidence supports superiority over prevalence/random, the repayment rule, and logistic regression. Its mean PR-AUC delta over Extra Trees is `0.0061` (paired 95% interval `0.0019–0.0109`), which does not clear the `0.010` practical-resolution margin; the correct verdict is **tie**.
 
-The current evidence is credible for an academic retrospective ranking and review-capacity demonstration. At 10% capacity on the 6,000-row holdout, 600 rows enter the simulated review set, 431 observed defaults are captured, precision is `0.7183`, recall is `0.3248`, and 169 reviewed rows are observed non-defaults. The selected model materially exceeds logistic regression, but its advantage over calibrated Extra Trees is small and the reported confidence intervals overlap. The evidence therefore supports a model-family comparison and bounded research simulation, not a claim that one champion is decisively superior.
+The readiness verdict is: **usable for retrospective research simulation; not validated for lending use**.
 
-It is not sufficient for present-day forecasting or operational lending use. The source is one historical academic population with a single target horizon; there is no temporal, external, geographic, prospective, drift, or live-policy validation. The current machine-readable evaluation also lacks an explicit generation timestamp and evaluated code revision.
+## Review-capacity uncertainty
 
-## Approved M10 strengthening contract
+Every approved capacity point reports queue size, captured observed defaults, observed non-default reviews, precision, recall, lift versus random, incremental yield, and bootstrap 95% intervals. At 10% capacity, the fixed queue contains 600 holdout rows, captures 431 observed defaults (`412–452`), includes 169 observed non-defaults (`148–188`), records precision `0.7183` (`0.6867–0.7533`), recall `0.3248` (`0.3088–0.3434`), and lift `3.2479` (`3.0880–3.4344`). These are audit-sample estimates, not staffing or benefit forecasts.
 
-The next local pass must improve decision usefulness without using the holdout for further selection:
+## Calibration, robustness, and reliance
 
-- Keep the existing 6,000-row holdout frozen as the final audit set.
-- Measure split stability on the remaining development data with repeated stratified cross-validation using identical folds across candidate models.
-- Add prevalence/random, logistic, and a documented simple repayment-delay rule as reference baselines.
-- Use paired resampling to report model-performance deltas and their uncertainty. If the challenger advantage is not resolved, report a statistical tie and prefer the model justified by calibration, stability, complexity, and runtime evidence.
-- Add confidence intervals for each prespecified review-capacity point and show queue size, captured observed defaults, observed non-default reviews, precision, recall, lift, and incremental yield.
-- Add calibration slope/intercept or another documented global calibration diagnostic and warnings for sparse high-score bins.
-- Add robustness tables for approved non-demographic cohorts such as credit-limit band, delinquency severity, and payment-to-bill profile, always with sample size and uncertainty.
-- Add feature-group ablations for repayment status, bill amounts, payment amounts, and reported limit. Describe these as model reliance/stability evidence, never causal reasons.
-- Stamp generated evaluation artifacts with schema version, UTC generation time, source checksum, evaluated code revision, split identity, and command/version lineage.
+- Calibration slope is `1.0743` and intercept is `0.0757`; ideal values are 1 and 0.
+- The `0.8–0.9` score bin has only 18 rows and triggers the governed sparse-bin warning.
+- Non-demographic holdout robustness covers credit-limit band, delinquency severity, and payment-to-bill profile with sample sizes and intervals. The Severe delinquency cohort has `n=86` and is explicitly limited; the Higher payment-to-bill cohort has the lowest recorded cohort PR-AUC (`0.3084`, interval `0.2536–0.3643`). Cross-cohort PR-AUC values are not directly comparable without considering prevalence.
+- Repeated-development ablations remove reported limit, repayment status, bill amounts, and payment amounts one group at a time. Repayment-status removal records the largest mean PR-AUC loss (`0.0982`, interval `0.0845–0.1141`). These are model-reliance and stability diagnostics only, never causes, consumer explanations, or adverse-action reasons.
 
-Repeated cross-validation is development/stability evidence; it does not turn this single-horizon dataset into out-of-time validation. Fairness diagnostics remain local and aggregate only.
+## Evidence schema and lineage
+
+Evaluation schema version `2` records UTC generation time, extracted-source SHA-256, evaluated Git revision, exact command, Python/NumPy/pandas/scikit-learn versions, train/validation/development/holdout row counts and ID checksums, baseline definitions, repeated split identities, uncertainty, and limitations. `artifacts/evaluation.json` is the machine-readable local source. The governed analyst artifact binds it by SHA-256 and removes local aggregate fairness diagnostics before public serving.
 
 ## Safe record-level simulation
 
-For a selected capacity, a public record may show `Inside simulated review set` or `Outside simulated review set`, derived deterministically from its out-of-fold research-score rank within the governed artifact. The inspector must also show the capacity, rank/denominator, score, score band, observed historical outcome, and artifact/evaluation lineage. It must say: `Retrospective research simulation only — not an approval, denial, price, adverse-action reason, or lending recommendation.`
+For a selected capacity, a public record may show only its academic source ID, out-of-fold retrospective score, score band, deterministic rank/denominator, selected capacity, historical outcome, and `Inside simulated review set` or `Outside simulated review set`. Rank uses the published six-decimal score descending with source ID ascending as the tie-breaker.
 
-The interface must refuse requests to convert this placement into an individual lending decision. A disclaimer does not authorize decision language.
-
-## Product, accessibility, and performance gate
-
-The dashboard must translate model metrics into plain language, distinguish artifact-cohort metrics from fixed holdout evaluation, provide chart data tables, preserve loading/empty/error/unavailable/refusal states, work at desktop/tablet/mobile breakpoints, and avoid document-level responsive overflow. Build size and test results are M10 implementation evidence, not deployed claims.
+The adjacent statement is mandatory: `Retrospective research simulation only — not an approval, denial, price, adverse-action reason, or lending recommendation.` The interface refuses lending-decision, eligibility, pricing, adverse-action, recommendation, and “the model decided” language.
 
 ## Limitations
 
-No out-of-time validation, causal interpretation, financial-loss estimate, production benchmark, operational staffing forecast, protected-attribute individual analysis, or automated lending decision is supported.
+No out-of-time, external, geographic, prospective, drift, operational, causal, financial-loss, protected-attribute individual, or automated lending-decision validation is supported. Repeated folds reduce dependence on one development split but remain correlated views of one historical academic population.

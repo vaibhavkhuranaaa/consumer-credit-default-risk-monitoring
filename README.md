@@ -1,12 +1,12 @@
 # Consumer Credit Default Risk & Portfolio Monitoring
 
-Status: a governed academic analyst workspace is live and verified at https://consumer-credit-risk-workbench.pages.dev.
+Status: the M9 governed academic analyst workspace remains live and verified at https://consumer-credit-risk-workbench.pages.dev. The strengthened M10 Credit Risk Model Validation & Review-Capacity Lab is local, verified, and not deployed pending explicit visual and deployment approval.
 
 ## Project
 
 - Decision owner: credit-risk analyst exploring licensed academic source records; no automated decision is made.
 - Data boundary: UCI Default of Credit Card Clients, CC BY 4.0. The public artifact contains non-demographic research fields; demographics remain local and are used only in the aggregate fairness audit.
-- First demo: Generate the governed 30,000-row artifact, explore historical cohorts, simulate review capacity, inspect model evidence, and exercise the fail-closed availability state.
+- First demo: Generate the governed 30,000-row artifact, compare the locked model with prevalence/random, logistic, and repayment-delay references, inspect repeated-development stability and a frozen-holdout review-capacity simulation, and view deterministic record placement without creating a lending decision.
 
 Read `AGENTS.md` and `.project/` before contributing.
 

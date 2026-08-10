@@ -11,13 +11,27 @@ from typing import Any
 
 PROTECTED_FIELDS = {"SEX", "EDUCATION", "MARRIAGE", "AGE"}
 FORBIDDEN_KEYS = {
+    "accepted",
+    "adverse_action_reason",
+    "approval",
+    "approved",
     "address",
     "credential",
     "customer_name",
+    "denial",
+    "denied",
     "email",
+    "eligibility",
+    "eligible",
+    "ineligible",
+    "lending_decision",
     "model_binary",
     "password",
     "phone",
+    "price",
+    "pricing",
+    "recommendation",
+    "rejected",
     "secret",
     "ssn",
     "token",
@@ -25,8 +39,8 @@ FORBIDDEN_KEYS = {
 
 
 def validate_artifact(artifact: dict[str, Any], evaluation_bytes: bytes) -> None:
-    if artifact.get("version") != 3:
-        raise ValueError("Analyst artifact version must be 3.")
+    if artifact.get("version") != 4:
+        raise ValueError("Analyst artifact version must be 4.")
     source = artifact.get("source")
     records = artifact.get("records")
     evidence = artifact.get("evidence")
@@ -40,6 +54,10 @@ def validate_artifact(artifact: dict[str, Any], evaluation_bytes: bytes) -> None
         raise ValueError("Protected attributes are forbidden from the public analyst artifact.")
     if source.get("protected_attribute_boundary") != "local fairness audit only":
         raise ValueError("Protected-attribute boundary is missing.")
+    if source.get("evaluation_schema_version") != 2:
+        raise ValueError("Evaluation schema version is missing or stale.")
+    if not source.get("evaluation_generated_at_utc") or not source.get("evaluated_revision"):
+        raise ValueError("Evaluation freshness lineage is incomplete.")
     expected_evaluation_hash = hashlib.sha256(evaluation_bytes).hexdigest()
     if source.get("evaluation_sha256") != expected_evaluation_hash:
         raise ValueError("Evaluation lineage hash does not match.")
@@ -47,6 +65,7 @@ def validate_artifact(artifact: dict[str, Any], evaluation_bytes: bytes) -> None
     if source.get("selected_model") != selection.get("selected_model"):
         raise ValueError("Selected model does not match embedded evidence.")
     ids: set[int] = set()
+    ranks: set[int] = set()
     for record in records:
         if not isinstance(record, dict):
             raise ValueError("Analyst artifact records must be objects.")
@@ -55,11 +74,17 @@ def validate_artifact(artifact: dict[str, Any], evaluation_bytes: bytes) -> None
             raise ValueError("Analyst artifact contains a forbidden public field.")
         record_id = record.get("ID")
         score = record.get("research_score")
+        rank = record.get("research_score_rank")
         if not isinstance(record_id, int) or record_id in ids:
             raise ValueError("Source row IDs must be unique integers.")
         if not isinstance(score, (int, float)) or not 0 <= score <= 1:
             raise ValueError("Research scores must be bounded probabilities.")
+        if not isinstance(rank, int) or not 1 <= rank <= expected_rows or rank in ranks:
+            raise ValueError("Research-score ranks must be a complete deterministic ordering.")
         ids.add(record_id)
+        ranks.add(rank)
+    if ranks != set(range(1, expected_rows + 1)):
+        raise ValueError("Research-score rank denominator is incomplete.")
 
 
 def main() -> int:

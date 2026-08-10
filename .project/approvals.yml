@@ -61,10 +61,18 @@ m9_release:
   allowed_action: commit and push the M9 release candidate, publish its aggregate release, deploy it to the approved Cloudflare Pages Free project, and verify the exact live revision after the clean local gate and matching green GitHub Actions quality run
   boundary: no provider changes, paid capacity, repository visibility change, scheduled monitoring, or expansion beyond the non-demographic retrospective analyst product
 graphify_semantic_sync:
-  status: pending_explicit_confirmation
+  status: approved
   requested_on: 2026-08-09
-  requested_action: transmit repository source and governance content to the configured Gemini-backed Graphify semantic service solely to refresh project-delivery graph freshness
-  boundary: the external-policy reviewer rejected the contextual approval as insufficiently specific; no transmission occurred
+  approved_on: 2026-08-10
+  authority: project owner
+  allowed_action: transmit repository source and governance content to the configured Gemini-backed Graphify semantic service solely to refresh project freshness
+  boundary: one project-scoped semantic refresh only; no unrelated repository content, credentials, raw ignored data, deployment, publication, or paid resource
+m10_evaluation_strengthening:
+  status: approved_for_local_implementation
+  approved_on: 2026-08-10
+  authority: project owner
+  allowed_action: strengthen the retrospective evaluation with stability, baseline, uncertainty, calibration, robustness, and feature-group evidence and expose safe per-record simulated review placement
+  boundary: use only the approved UCI source; no approval, denial, pricing, adverse-action, automated lending decision, protected-attribute individual analysis, deployment, or publication
 publication:
   status: approved
   scope: full UCI academic benchmark analyst product with individual source records

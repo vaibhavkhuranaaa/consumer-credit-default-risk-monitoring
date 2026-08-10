@@ -12,11 +12,11 @@ The current public service remains technically verified but its M9 user experien
 
 ## M10 publication gate
 
-M10 implementation remains local. Before any deployment, the owner must explicitly approve the desktop, tablet, and mobile screenshots and separately authorize deployment. A clean pre-release gate and matching green GitHub Actions quality run must bind the candidate commit to the generated artifacts. Deployment must preserve the current Cloudflare Free, Neon Free, read-only, non-demographic, research-only boundary.
+M10 remains local with changes requested. Before any deployment, the strengthened evaluation evidence and record-level simulated-review language must pass repository gates, the owner must explicitly approve refreshed desktop/tablet/mobile screenshots, and deployment must be separately authorized. A clean pre-release gate and matching green GitHub Actions quality run must bind the candidate commit to generated artifacts. Deployment must preserve the current Cloudflare Free, Neon Free, read-only, non-demographic, research-only boundary.
 
 ## Prohibited actions and claims
 
-No deployment, merge, visibility change, paid capacity, custom domain, rollback, teardown, scheduled monitoring, provider change, portfolio publication, or Graphify transmission is authorized by local design implementation. Never publish protected attributes, credentials, model binaries, automated decisions, forecasts, financial loss/exposure claims, or production-lending language.
+No deployment, merge, visibility change, paid capacity, custom domain, rollback, teardown, scheduled monitoring, provider change, or portfolio publication is authorized by local implementation. The owner separately approved one project-scoped Graphify semantic refresh on 2026-08-10; it does not expand publication authority. Never publish protected attributes, credentials, model binaries, automated decisions, forecasts, financial loss/exposure claims, or production-lending language. Record-level output is limited to retrospective score, band, rank, and simulated review-set placement.
 
 ## Rollback boundary
 

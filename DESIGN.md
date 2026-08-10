@@ -2,7 +2,7 @@
 
 ## Status and boundary
 
-Status: approved for M10 local implementation on 2026-08-10; public deployment and visual acceptance remain pending.
+Status: M10 local visual implementation completed on 2026-08-10, but the owner requested stronger evaluation and record-level simulation evidence before visual acceptance. Public deployment remains pending and prohibited.
 
 This product is a retrospective academic research workbench built from the licensed UCI Default of Credit Card Clients dataset. It supports portfolio posture, review-capacity planning, cohort comparison, model assurance, governance review, and manual record research. It never approves, denies, prices, prioritizes for lending action, or recommends credit. Protected attributes are excluded from model inputs and public individual analytics.
 
@@ -12,8 +12,8 @@ This product is a retrospective academic research workbench built from the licen
 | --- | --- | --- | --- | --- |
 | Portfolio executive | Where are observed defaults, elevated research scores, repayment delays, and reported limits concentrated? | Full governed artifact, filtered cohort metrics, score-band and limit distributions | Select a cohort for further retrospective analysis | No forecast, loss estimate, exposure value, or causal claim |
 | Review operations lead | What historical workload and capture trade-off appears at 5%, 10%, 20%, 35%, or 50% capacity? | Held-out evaluation threshold table | Compare queue size, captured defaults, non-default reviews, precision, recall, and lift | Simulation is evaluated on 6,000 holdout rows, not a production queue |
-| Risk governance reviewer | Does the selected model rank and calibrate acceptably, and is the evidence usable? | Immutable evaluation metrics, intervals, calibration curve, lineage, and validation status | Assess the research model and its limitations | Single target horizon; no out-of-time or operational validation |
-| Analyst | Which non-demographic fields explain a record's cohort placement? | Source repayment, bill, payment, limit fields plus deterministic derived measures and out-of-fold score | Inspect and compare research evidence | No individual lending recommendation or adverse-action reason |
+| Risk governance reviewer | Does the model outperform simple baselines consistently, and where does the evidence stop being usable? | Frozen holdout, repeated development-split stability, paired uncertainty, calibration, robustness, ablations, lineage, and validation status | Assign a research-readiness verdict and document gaps | Single target horizon; no out-of-time or operational validation |
+| Analyst | Why is a record inside or outside the selected simulated review set? | Source repayment, bill, payment, limit fields, deterministic derived measures, out-of-fold score, rank, capacity, and lineage | Inspect and compare retrospective research evidence | Review placement is not an approval, denial, price, adverse-action reason, or recommendation |
 
 ## Information architecture
 
@@ -22,8 +22,8 @@ This product is a retrospective academic research workbench built from the licen
 3. **Portfolio posture** leads with one primary observed-default signal, a supporting strip of portfolio magnitude and behavior metrics, and linked concentration visuals.
 4. **Review planning** shows the evaluated capacity frontier and a scenario ledger. This section uses holdout evidence and is not altered by portfolio cohort filters.
 5. **Cohort analysis** links repayment status, payment/bill profiles, distributions, and a score-band by delinquency matrix to the global filters.
-6. **Model assurance** compares evaluated models, calibration, cumulative gains/lift, uncertainty, data quality, and governance.
-7. **Record review** retains searchable, sortable, paginated source records and opens an evidence inspector that groups signals, historical sequences, derived measures, and boundaries.
+6. **Model assurance** begins with an explicit evidence-readiness verdict, then compares prevalence/simple-rule/logistic references, paired model deltas, split stability, calibration, cumulative gains/lift, capacity uncertainty, cohort robustness, feature-group ablations, freshness, data quality, and governance. Evidence absent from the governed artifact renders as unavailable rather than inferred.
+7. **Record review** retains searchable, sortable, paginated source records and opens an evidence inspector that groups signals, historical sequences, derived measures, score rank, and selected-capacity placement. The placement label is `Inside simulated review set` or `Outside simulated review set`, never a credit decision.
 
 Navigation uses a compact top rail with five question-led views: Portfolio, Review planning, Cohorts, Model assurance, and Record review. Desktop favors analytical density; tablet wraps two-column structures; mobile stacks sections, keeps filters usable, and converts wide tables to contained horizontal scrolling.
 
@@ -59,6 +59,9 @@ Every KPI displays its filter context and exposes a plain-language definition, u
 | Lift vs random | Precision divided by holdout observed-default prevalence | Derived from evaluation evidence | Values above 1 indicate better historical concentration than random selection | Not a financial return metric |
 | Incremental yield | Change in captured defaults divided by additional reviewed rows from the previous capacity step | Derived from evaluation thresholds | Marginal historical yield | Capacity steps are discrete and prespecified |
 | Ranking / calibration | PR-AUC, AUROC, Brier, and 10-bin expected calibration error | Evaluation artifact | Higher PR-AUC/AUROC and lower Brier/ECE are preferable | Fixed holdout, not out-of-time evidence |
+| Baseline-relative gain | Paired difference between a candidate and prevalence/random, logistic, or documented repayment-rule reference | Strengthened evaluation artifact | Shows whether complexity adds stable research value | Statistical uncertainty may support a tie rather than a winner |
+| Split stability | Distribution of repeated development-fold metrics using identical folds across models | Strengthened evaluation artifact | Narrower variation supports reproducibility | Development evidence, not a replacement for the frozen holdout |
+| Simulated review placement | Whether a record's out-of-fold score rank falls within the selected top-capacity share of the governed artifact | Analyst artifact plus selected capacity | Explains inclusion in a retrospective research review set | Not an approval, denial, price, adverse-action reason, or recommendation |
 
 ## Chart grammar
 
@@ -76,14 +79,15 @@ Every KPI displays its filter context and exposes a plain-language definition, u
 - Clicking a score-band bar, matrix cell, or distribution bin applies the corresponding supported filter. Active filters appear as removable text tokens with the remaining row count.
 - Filter controls have explicit labels; range inputs show current numeric bounds; reset is disabled when no filter is active.
 - Review capacity is restricted to verified 5%, 10%, 20%, 35%, and 50% points.
+- Changing review capacity updates each record's deterministic simulated-review placement and visibly states the rank denominator. It must not imply that the model made a lending decision.
 - Tables support source-ID search, sortable columns, 20-row pagination, visible sort direction, and keyboard-operable inspection.
-- The inspector groups evidence rather than dumping field names. It explains each derived measure, labels six-value arrays as historical statement positions, and repeats the no-decision boundary.
+- The inspector groups evidence rather than dumping field names. It explains each derived measure, labels six-value arrays as historical statement positions, shows score/rank/capacity/placement lineage, and repeats: `Retrospective research simulation only — not an approval, denial, price, adverse-action reason, or lending recommendation.`
 
 ## Accessibility and states
 
 - Target WCAG 2.2 AA contrast, keyboard access, logical heading order, visible focus rings, 44px touch targets on narrow screens, and a skip-to-content link.
 - Charts use text labels, patterns/shape where useful, and tabular alternatives. Color is never the sole encoding.
-- Loading uses a dashboard-shaped skeleton with status text. Empty filters preserve controls and explain how to reset. Invalid or absent artifacts fail closed and disclose that no records were exposed. A refusal state explains why protected-attribute or lending-decision analysis is unavailable.
+- Loading uses a dashboard-shaped skeleton with status text. Empty filters preserve controls and explain how to reset. Invalid or absent artifacts fail closed and disclose that no records were exposed. A refusal state explains why protected-attribute or lending-decision analysis is unavailable and offers the permitted simulated-review placement instead.
 - Live announcements report filter-result counts and record-inspector changes.
 - Tooltips are accessible from hover and keyboard focus; essential definitions are never tooltip-only.
 
@@ -92,8 +96,9 @@ Every KPI displays its filter context and exposes a plain-language definition, u
 - No equal-card sea, marketing hero, glass, glow, decorative gradient, rainbow categorical palette, ornamental icon, fake trend arrow, synthetic production claim, or filler insight paragraph.
 - Use plain business language first and technical names secondarily. Do not label reported limits as exposure, score as probability of a future customer outcome, review as an action recommendation, or historical statement positions as a time series.
 - Never display sex, education, marriage, age, credentials, direct identifiers, model binaries, automated decisions, pricing, adverse-action language, forecasts, targets, losses, revenue, causal claims, or unverified benchmarks.
+- Never label simulated review placement as `approved`, `denied`, `accepted`, `rejected`, `eligible`, `ineligible`, or `the model's decision`. A disclaimer does not cure decision language.
 - Footer and governance panels retain UCI attribution, source and evaluation hashes, selected model, split limitation, immutable release context, and research-only status.
 
 ## Visual acceptance gate
 
-Before public deployment, the production build must pass repository tests and `project-kit check`; representative desktop (1440×1000), tablet (834×1112), and mobile (390×844) screenshots must show usable controls, legible charts, chart alternatives, and no overflow of essential content. The owner must explicitly approve those screenshots and deployment. Local implementation does not grant deployment, merge, visibility, paid-resource, rollback, or Graphify authority.
+Before public deployment, the strengthened evaluation artifacts, production build, repository tests, and `project-kit check` must pass; representative desktop (1440×1000), tablet (834×1112), and mobile (390×844) screenshots must show usable controls, evidence-readiness status, simulated-review placement, legible charts, chart alternatives, and no overflow of essential content. The owner must explicitly approve those screenshots and separately approve deployment. Local implementation does not grant deployment, merge, visibility, paid-resource, or rollback authority. The project-scoped Graphify refresh approved on 2026-08-10 is separate from deployment authority.

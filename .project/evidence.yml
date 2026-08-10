@@ -56,3 +56,15 @@ evidence:
     claim: The local production bundle removes the rendered Fluent UI dependency and builds to 255.31 kB JavaScript (76.87 kB gzip) plus 28.11 kB CSS (6.30 kB gzip); combined app assets are 33.3% smaller gzip than the rejected 436.55 kB JavaScript / 4.20 kB CSS baseline.
     status: verified_local
     record: web/package.json, web/src/App.tsx, web/dist/assets
+  - id: M10-EVAL-AUDIT-01
+    claim: The current evaluation supports retrospective academic ranking and capacity simulation but lacks temporal/external validation, repeated-split stability, paired model deltas, capacity uncertainty, and explicit evaluation generation/revision metadata.
+    status: verified_local
+    record: src/credit_risk/pipeline.py, artifacts/evaluation.json, .project/evaluation.md
+  - id: M10-EVAL-PLAN-01
+    claim: The owner approved a local evidence-strengthening pass and safe record-level score-ranked simulated review placement while retaining the no-lending-decision boundary.
+    status: approved_local
+    record: .project/approvals.yml, .project/evaluation.md, DESIGN.md, .project/handoff.md
+  - id: GRAPH-01
+    claim: The owner approved and Graphify completed a project-scoped semantic refresh with a passing endpoint-integrity diagnostic; the unverified workspace node, initial missing-source-file edge warnings, and skill/runtime version mismatch remain disclosed.
+    status: verified_local_with_limitations
+    record: .project/approvals.yml, graphify-out/manifest.json, graphify-out/GRAPH_REPORT.md

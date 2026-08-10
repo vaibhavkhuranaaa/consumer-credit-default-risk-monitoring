@@ -37,3 +37,14 @@ All review metrics use the fixed 6,000-row held-out evaluation and remain unchan
 | 10-bin expected calibration error | Weighted average score-versus-observed gap across bins | 0.0124 | Lower | Sparse high-score bins remain uncertain |
 
 Verified values and intervals come from `artifacts/evaluation.json`; the public analyst artifact binds that file by SHA-256.
+
+The strengthened evaluation will add paired baseline deltas, repeated-split stability, capacity confidence intervals, calibration slope/intercept, non-demographic cohort robustness, feature-group ablations, and explicit generation/revision lineage. Until those fields exist in the governed artifact, the dashboard must label them unavailable.
+
+## Record-level research placement
+
+| Metric | Definition | Source | Interpretation | Limitation |
+| --- | --- | --- | --- | --- |
+| Research-score rank | Position of a record when governed out-of-fold scores are sorted descending; ties use a documented deterministic order | Analyst artifact | Relative position within this academic artifact | Not a population percentile or policy rank |
+| Simulated review placement | `Inside simulated review set` when rank is within the selected 5%, 10%, 20%, 35%, or 50% of artifact rows; otherwise `Outside simulated review set` | Rank plus selected capacity | Shows what the score-ranked research simulation includes | Not what a lender decided; never approval, denial, eligibility, pricing, or recommendation |
+
+Required adjacent disclaimer: `Retrospective research simulation only — not an approval, denial, price, adverse-action reason, or lending recommendation.`

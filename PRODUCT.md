@@ -8,15 +8,15 @@ web
 
 ## Users
 
-Hiring managers and credit-risk analysts reviewing a public academic benchmark. Their job is to explore governed non-demographic research records and retrospective evidence without making a lending decision.
+Hiring managers, model-risk reviewers, and credit-risk analysts reviewing a public academic benchmark. Their job is to test whether non-demographic model evidence is stable and useful for retrospective review planning without making a lending decision.
 
 ## Product Purpose
 
-Provide a reproducible, validated retrospective credit-risk simulation with executive KPIs, portfolio research, and model-quality evidence.
+Provide a reproducible retrospective credit-risk validation and review-capacity lab with executive KPIs, model stability evidence, cohort robustness, and record-level research placement.
 
 ## Positioning
 
-The product makes its non-decision boundary and evaluation limitations first-class evidence, rather than presenting a credit score or lending recommendation.
+The product makes readiness, uncertainty, freshness, and the non-decision boundary first-class evidence rather than presenting a credit score or lending recommendation.
 
 ## Operating Context
 
@@ -24,7 +24,7 @@ The evaluation and release publisher run locally. A generated static artifact co
 
 ## Capabilities and Constraints
 
-The dashboard may show approved non-demographic UCI source fields, derived portfolio measures, and individual out-of-fold retrospective research scores. Demographic fields remain local and appear only in aggregate fairness diagnostics. The product shows no credentials, direct identity data, model binaries, approval, denial, pricing, or lending recommendation. The source has a single target horizon, so evaluation is retrospective and not out-of-time.
+The dashboard may show approved non-demographic UCI source fields, derived portfolio measures, individual out-of-fold retrospective research scores, score bands, and whether a record is inside the selected score-ranked simulated review-capacity set. That placement is a research simulation, not what a lender decided. Demographic fields remain local and appear only in aggregate fairness diagnostics. The product shows no credentials, direct identity data, model binaries, approval, denial, pricing, adverse-action reason, or lending recommendation. The source has a single target horizon, so evaluation is retrospective and not out-of-time.
 
 ## Evidence on Hand
 
@@ -32,8 +32,9 @@ UCI CC BY 4.0 source provenance is recorded in `.project/data-manifest.yml`; loc
 
 ## Product Principles
 
-- Governed evidence before prediction.
+- Governed evidence and uncertainty before model comparison.
 - Full-record exploration, never automated consumer-credit decisions.
+- Prefer stable evidence and simple baselines over marginal leaderboard gains.
 - Reproducibility and limitations are visible in the workflow.
 - Accessible operational clarity over visual flourish.
 

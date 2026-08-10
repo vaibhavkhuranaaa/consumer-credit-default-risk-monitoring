@@ -2,73 +2,48 @@
 
 ## Starting point
 
-M0–M9 are complete. The privacy-preserving analyst workspace is live and verified at https://consumer-credit-risk-workbench.pages.dev. The repository remains private. GitHub required branch protection is unavailable on the current private plan; no visibility or billing change is approved.
+M0–M9 are complete. M10's analyst-style visual rebuild is implemented locally on `feature/m10-bi-dashboard`, but visual acceptance is withheld after the owner requested stronger evidence of model usefulness and a safe record-level simulation. The public M9 site remains technically verified and unchanged.
 
-Run milestones in order. Complete one acceptance gate before starting the next.
+Complete milestones in order. The next task must work only on M10 and must not deploy.
 
-## M7 — Release-control hardening
+## M10 — Evidence-led model validation and BI decision dashboard
 
-**Objective:** Make the existing manual release path auditable and repeatable without changing the public boundary or cost ceiling.
+**Objective:** make the dashboard answer whether the research model is meaningfully and stably better than simple alternatives, what a score-ranked review simulation includes, and why the evidence is not an individual lending decision.
 
-- Write a release checklist that records source revision, evaluation artifact hash, release ID, publisher identity, Cloudflare deployment URL, verification timestamp, and rollback target.
-- Add a local pre-release command that runs Python tests, web tests/build, release-artifact validation, and public-payload forbidden-field checks before publishing.
-- Document the compensating control for unavailable GitHub branch protection: required local gate plus green GitHub Actions run before deployment.
-- Add a release log template that contains no credentials or raw data.
+### Evaluation work
 
-Acceptance: a dry-run checklist and validation command succeed from a clean local clone; a reviewer can trace the current public release to its code revision and aggregate artifact; no raw fields or credentials enter Git.
+- Freeze the existing 6,000-row holdout. Do not use it for additional model or hyperparameter selection.
+- Run repeated paired stratified evaluation on development data and report stability across identical folds.
+- Add prevalence/random, logistic, and a documented simple repayment-delay rule as reference baselines.
+- Report paired model deltas and uncertainty. Treat overlapping or unresolved differences as a tie.
+- Add confidence intervals for the 5%, 10%, 20%, 35%, and 50% review-capacity metrics.
+- Add stronger calibration diagnostics and sparse-bin warnings.
+- Add sample-size-aware robustness by approved non-demographic credit-limit, delinquency, and payment-to-bill cohorts.
+- Add feature-group ablations as model-reliance evidence, never causal or adverse-action reasons.
+- Add schema version, UTC generation timestamp, source/evaluation checksums, evaluated code revision, split identity, and command/version lineage to generated evidence.
 
-Approval needed: none, provided this remains local documentation and validation only. Approval is required before publishing a new public release.
+### Product work
 
-**Completed 2026-08-05:** `scripts/pre_release_gate.py`, `docs/RELEASE-CHECKLIST.md`, and `docs/RELEASE-LOG.md` now provide the required local control and release lineage. The audit-mode gate passed without deployment.
+- Lead Model assurance with a plain-language readiness verdict and explicit supported/prohibited uses.
+- Keep fixed-holdout, repeated-development, full-artifact cohort, and live-service evidence visually distinct.
+- At the selected capacity, show each public record's score, band, deterministic rank/denominator, and `Inside simulated review set` or `Outside simulated review set`.
+- Use the adjacent disclaimer: `Retrospective research simulation only — not an approval, denial, price, adverse-action reason, or lending recommendation.`
+- Refuse individual approval/denial, eligibility, pricing, adverse-action, or recommendation requests and offer the simulated-review placement instead.
+- Preserve privacy, API availability states, record search/sort/pagination, accessible chart alternatives, responsive layouts, and immutable lineage.
 
-## M8 — Full-record analyst product
+### Acceptance
 
-**Objective:** Build the owner-approved, full-record academic UCI analyst workspace while retaining the retrospective no-decision boundary.
+- Evaluation tests prove split isolation, deterministic repeated folds, paired calculations, capacity intervals, freshness fields, and forbidden-field exclusions.
+- Web tests prove readiness/unavailable/refusal states and record-level placement at every approved capacity.
+- The production build and repository gate pass from the exact candidate revision.
+- New desktop, tablet, and mobile screenshots show the strengthened evidence and record inspector without overflow or browser warnings.
+- Graphify, Git, GitHub, project records, and handoff describe the same revision and status.
+- Stop before deployment, merge, visibility changes, paid resources, rollback, or publication. Obtain explicit visual approval and separate deployment approval.
 
-- Generate a checksum-traceable static artifact for all 30,000 licensed UCI source records.
-- Support source-ID search, outcome and demographic filters, pagination, and complete field inspection.
-- Keep the workbook, credentials, and model binaries local. Do not turn observed labels into an automated credit decision.
+## M11 — Package the verified portfolio case study
 
-Acceptance: the local workspace loads all 30,000 approved UCI rows, filters and record inspection work, and the public artifact is rebuilt by the release gate.
+Blocked by M10. Public claims must distinguish academic source vintage, evaluation generation time, code revision, and live verification time. They may describe simulated review placement but never a model lending decision.
 
-Approval: recorded 2026-08-04 in `.project/approvals.yml` as `public_individual_record_scope`. Deployment remains subject to the passing release gate and GitHub Actions quality run.
+## M12 — Exercise rollback and teardown ownership
 
-**Completed 2026-08-05:** The full-record artifact was generated for all 30,000 source rows, the responsive Fluent UI workspace passed local and GitHub Actions quality gates, and the verified production deployment replaced the aggregate-only view. Source revision: `b02193103a17bdc9e14158aecec10d9aba11cc08`.
-
-## M9 — Observability and availability safeguards
-
-**Objective:** Add lightweight, privacy-preserving evidence that the public read-only service is available and fails closed.
-
-- Define health-check cadence and owner without collecting visitor identity or analytics.
-- Add an unavailable-data dashboard state and a runbook for Neon wake-up, API failure, cache expiry, and Cloudflare rollback.
-- Verify security headers, CORS, API caching, and the refusal boundary against the live endpoint.
-
-Acceptance: a documented simulated unavailable state is correctly rendered; the runbook identifies an owner, first diagnostic command, rollback target, and teardown action.
-
-Approval needed: approval for any third-party uptime monitor, scheduled job, or paid service. Local/manual verification needs no new approval.
-
-**Completed 2026-08-10:** Database-backed health, fail-closed retry UX, structured Function failure events, static and Function security/cache headers, public-artifact privacy validation, and the manual availability runbook passed local and GitHub quality gates. Cloudflare Pages deployment `7b840f48-b262-40aa-8298-86deb84e6de3` then passed `scripts/verify_live_release.py` against the production URL.
-
-## M10 — Portfolio-quality case-study package
-
-**Objective:** Turn verified implementation evidence into a recruiter-ready narrative without overstating benchmark results.
-
-- Expand the case study with architecture, data classification, release controls, model limitations, and the fixed-split caveat.
-- Capture approved dashboard screenshots and link only public aggregate evidence.
-- Add concise résumé/portfolio bullets generated from `.project/evidence.yml`.
-
-Acceptance: every public claim cites a record; content clearly says retrospective benchmark, no live decisioning, and no out-of-time validation.
-
-Approval needed before publication outside the existing site: approval of each new public channel and final copy.
-
-## M11 — Teardown and ownership exercise
-
-**Objective:** Prove the $0 deployment can be safely retired or handed over.
-
-- Verify Cloudflare and Neon ownership, credentials rotation path, and export/retention boundary for aggregate release evidence.
-- Rehearse a non-destructive rollback to the previous Cloudflare deployment.
-- Update the teardown checklist with exact console locations and confirmation steps.
-
-Acceptance: the owner can complete a rollback rehearsal without changing database release history; teardown steps are precise and do not affect local raw data.
-
-Approval needed before an actual rollback, credential rotation, provider deletion, or any cost/visibility change.
+Blocked by M11 and separately approval-gated. The failed replacement deployment remains ineligible as a rollback target.

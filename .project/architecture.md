@@ -35,6 +35,14 @@ The M10 candidate preserves the version-3 static analyst artifact and read-only 
 
 Native SVG and semantic HTML replace the previous rendered Fluent UI shell without adding a chart library. Portfolio/cohort calculations remain client-side over the approved 30,000 rows; evaluation-only views remain fixed to the 6,000-row holdout and visibly ignore cohort filters. Support-endpoint failures do not expose partial data, while a valid governed artifact remains usable with an honest local/unverified service-status state.
 
+## M10 evaluation-strengthening architecture (approved, not yet implemented)
+
+`frozen holdout + development partitions → repeated paired stability evaluation → baseline/challenger deltas + capacity uncertainty + calibration/robustness/ablation evidence → versioned immutable evaluation artifact`
+
+`out-of-fold artifact scores + selected capacity → deterministic within-artifact rank → inside/outside simulated research review set → record inspector with lineage and refusal boundary`
+
+The simulated review placement is a presentation of score rank, not a new model output, API decision endpoint, or lending action. No approval/denial label, adverse-action reason, policy recommendation, demographic individual analysis, or write path may be introduced. Existing public results remain unchanged until a separately approved deployment is built from a clean revision and verified artifacts.
+
 ## Release control
 
 - Before every deployment, the publisher runs `scripts/pre_release_gate.py` from a clean worktree against the intended immutable Git revision and local aggregate artifact. The gate validates the artifact envelope and forbidden credentials or model fields, then runs Python tests, web lint/tests/build, and `project-kit check`.

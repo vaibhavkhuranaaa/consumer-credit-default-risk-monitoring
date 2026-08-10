@@ -3,6 +3,12 @@ __pycache__/
 .env
 .neon
 .cursor/
+.agents/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.github/copilot-instructions.md
+.github/prompts/
 graphify-out/
 .DS_Store
 data/raw/

@@ -97,16 +97,11 @@ def run(command: list[str], cwd: Path) -> None:
         raise RuntimeError(f"{' '.join(command)}: {message}")
 
 
-def copy_adapter(source: str, destination: Path) -> None:
-    write(destination, (KIT_ROOT / "adapters" / source).read_text(encoding="utf-8"))
-
-
 def project_files(charter: Charter) -> dict[str, str]:
     architecture = f"""# Architecture decision\n\n## Approved status\n\n- Status: `draft — human approval required`\n- Initial delivery: local-first\n- Cloud authority: none\n\n## Project\n\n- Title: {charter.title}\n- Category / industry: {charter.category} / {charter.industry}\n- Data boundary: {charter.data_boundary}\n- First demo: {charter.first_demo}\n\n## Options to compare before approval\n\n| Option | Cost | Use now? | Scale trigger |\n| --- | --- | --- | --- |\n| Local native or Docker Compose | $0 | Recommended baseline | None; use for first demo |\n| Vercel or comparable web host | Low | Only for a static/web-only shareable demo | Recruiter-facing interactive UI |\n| Azure or AWS container path | Variable | Only with approval | Persistent API, scheduled work, or multiple users |\n| Warehouse/lakehouse | Variable | Not a baseline dependency | Demonstrated volume, governance, or warehouse need |\n\n## Honest public wording\n\nDescribe scalable alternatives as planned architecture until they are deployed and verified.\n"""
     milestones = f"""version: 1\nproject: {charter.slug}\nstatus: planned\nmilestones:\n  - id: M1\n    title: Define data and baseline\n    status: unblocked\n    acceptance:\n      - Document the representative data boundary.\n      - Add a reproducible baseline and versioned evaluation inputs.\n  - id: M2\n    title: Build one end-to-end local workflow\n    status: blocked_by_M1\n    acceptance:\n      - A reviewer can complete the first-demo workflow locally.\n      - UI/API states are clear and safe.\n  - id: M3\n    title: Prove quality and first-demo readiness\n    status: blocked_by_M2\n    acceptance:\n      - Tests, evaluation, documentation, architecture, cost, and limitations are current.\n  - id: M4\n    title: Decide deployment\n    status: blocked_by_M3\n    acceptance:\n      - Human approves provider, cost, exposure, and teardown when deployment is useful.\n  - id: M5\n    title: Verify and publish\n    status: blocked_by_M4\n    acceptance:\n      - Deployed revision proves its exact source SHA.\n      - Public facts link to verified evidence.\n"""
     return {
-        "README.md": f"# {charter.title}\n\nStatus: planned. This repository starts from a local-first, evidence-led delivery plan.\n\n## Project\n\n- Decision owner: define in `PROJECT.md`.\n- Data boundary: {charter.data_boundary}\n- First demo: {charter.first_demo}\n\nRead `AGENTS.md` and `.project/` before contributing.\n",
-        "AGENTS.md": f"# Project delivery rules\n\n## Read first\n\nRead `PROJECT.md`, `.project/architecture.md`, `.project/milestones.yml`, `.project/state.md`, and `.project/handoff.md` before editing. Complete only the first unblocked milestone.\n\n## Rules\n\n- Preserve unrelated work and never overwrite existing files without instruction.\n- Use public, synthetic, anonymized, or licensed data only: {charter.data_boundary}\n- Use the smallest credible design; remove stale code and unjustified abstractions.\n- Apply `DESIGN.md` to all user-facing work.\n- Keep secrets outside source; commit variable names only in `.env.example`.\n- Use conventional commits and configured human Git identity. Never add AI/model author or co-author trailers.\n- Do not put AI/model names in Git branch names.\n- Do not create paid resources, change public visibility, deploy, roll back, or publish without explicit human approval recorded in `.project/approvals.yml`.\n- Update architecture, evidence, state, and handoff when verified facts change.\n- Run `project-kit check` before claiming a milestone is complete.\n",
+        "README.md": f"# {charter.title}\n\nStatus: planned. This repository starts from a local-first, evidence-led delivery plan.\n\n## Project\n\n- Decision owner: define in `PROJECT.md`.\n- Data boundary: {charter.data_boundary}\n- First demo: {charter.first_demo}\n\nProject decisions and evidence live in `.project/`.\n",
         "DESIGN.md": "# User-facing design rules\n\n- Use Impeccable/design-taste guidance for every screen, dashboard, demo, and public project page.\n- Use a professional, readable font available in the selected platform.\n- Make hierarchy, loading, empty, error, and refusal states clear.\n- Build responsive, keyboard-accessible interfaces; never hide essential meaning behind color alone.\n- Use visuals to explain the project workflow, architecture, or evaluation—not as decoration.\n",
         ".env.example": "# Add variable names only. Never commit credentials.\n",
         ".project/architecture.md": architecture,
@@ -192,10 +187,7 @@ def bootstrap(args: argparse.Namespace) -> None:
         destination_script.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(Path(__file__), destination_script)
         destination_script.chmod(0o755)
-        copy_adapter("CLAUDE.md", destination / "CLAUDE.md")
-        copy_adapter("copilot-instructions.md", destination / ".github" / "copilot-instructions.md")
-        copy_adapter("cursor-rule.mdc", destination / ".cursor" / "rules" / "project-delivery.mdc")
-        write(destination / ".gitignore", "__pycache__/\n*.py[cod]\n.env\n.DS_Store\n")
+        write(destination / ".gitignore", "__pycache__/\n*.py[cod]\n.env\n.DS_Store\n.agents/\nAGENTS.md\n")
         if not args.skip_git:
             run(["git", "init", "-b", "main"], destination)
             run(["git", "add", "."], destination)
@@ -215,7 +207,7 @@ def bootstrap(args: argparse.Namespace) -> None:
 
 def check(_: argparse.Namespace) -> None:
     root = Path.cwd()
-    required = ["PROJECT.md", "AGENTS.md", "DESIGN.md", ".project/architecture.md", ".project/milestones.yml", ".project/evidence.yml", ".project/state.md", ".project/handoff.md", "architecture/system.mmd", "portfolio/project.json"]
+    required = ["PROJECT.md", "DESIGN.md", ".project/architecture.md", ".project/milestones.yml", ".project/evidence.yml", ".project/state.md", ".project/handoff.md", "architecture/system.mmd", "portfolio/project.json"]
     missing = [name for name in required if not (root / name).is_file()]
     if missing:
         raise ValueError("Missing project records: " + ", ".join(missing))
@@ -223,8 +215,16 @@ def check(_: argparse.Namespace) -> None:
     if "milestones:" not in milestones or "acceptance:" not in milestones:
         raise ValueError("milestones.yml needs milestones and acceptance criteria")
     manifest = json.loads((root / "portfolio/project.json").read_text(encoding="utf-8"))
-    if manifest.get("status") not in {"draft", "first-demo", "release-candidate", "live-verified"}:
-        raise ValueError("portfolio/project.json has an invalid status")
+    if manifest.get("version") == 1:
+        if manifest.get("status") not in {"draft", "first-demo", "release-candidate", "live-verified"}:
+            raise ValueError("portfolio/project.json has an invalid status")
+    elif manifest.get("version") == 2:
+        required_manifest = ["slug", "title", "summary", "outcome", "deployment", "evidence", "story", "resume"]
+        absent = [field for field in required_manifest if not manifest.get(field)]
+        if absent:
+            raise ValueError("portfolio/project.json v2 is missing: " + ", ".join(absent))
+    else:
+        raise ValueError("portfolio/project.json has an unsupported version")
     print("Project records: pass")
 
 

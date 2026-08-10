@@ -1,6 +1,6 @@
 # Case-study claim standard
 
-The case study may describe the stakeholder problem, licensed-data provenance, privacy policy, leakage controls, reproducible evaluation, analyst workflow, local M10 verification, and exact deployed revision only when each fact links to `.project/evidence.yml` or an immutable artifact.
+The case study may describe the stakeholder problem, licensed-data provenance, privacy policy, leakage controls, reproducible evaluation, analyst workflow, verified M10 behavior, and exact deployed revision only when each fact links to `.project/evidence.yml` or an immutable artifact.
 
 Required language:
 

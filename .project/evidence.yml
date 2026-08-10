@@ -1,110 +1,74 @@
 version: 1
 evidence:
   - id: DATA-01
-    claim: Source provenance, license, checksum, and schema are recorded.
+    claim: UCI source provenance, CC BY 4.0 license, citation, archive and workbook checksums, schema, row count, and validation results are recorded.
     status: verified
     record: .project/data-manifest.yml
   - id: EVAL-01
-    claim: Leakage-safe baseline and challenger performance are reproducible.
-    status: verified
-    record: artifacts/evaluation.json
+    claim: The validation-locked model records frozen-holdout PR-AUC 0.5764, AUROC 0.7916, Brier 0.1314, and ECE 0.0124 without demographic model inputs.
+    status: verified_public
+    record: artifacts/evaluation.json, .project/evaluation.md, docs/RELEASE-LOG.md
   - id: EVAL-02
-    claim: Calibration, threshold trade-offs, and fairness diagnostics are documented.
-    status: verified
-    record: artifacts/evaluation.json
+    claim: Six paired repeated-development folds compare prevalence/random, repayment-delay, logistic, Extra Trees, and the selected model with uncertainty and practical-margin verdicts; Extra Trees is a tie.
+    status: verified_public
+    record: artifacts/evaluation.json, src/credit_risk/pipeline.py, tests/test_pipeline.py, .project/evaluation.md
+  - id: EVAL-03
+    claim: All five approved review-capacity points carry intervals, while calibration, sparse-bin, non-demographic cohort, and feature-group reliance evidence is sample-size-aware and explicitly non-causal.
+    status: verified_public
+    record: artifacts/evaluation.json, .project/evaluation.md, docs/metric-glossary.md
   - id: GOV-01
-    claim: The system has no automated lending decision. The deployed product publishes no demographic fields in individual records and retains demographics only for aggregate fairness diagnostics.
-    status: verified
-    record: PRODUCT.md, scripts/validate_public_artifact.py, .project/approvals.yml, https://consumer-credit-risk-workbench.pages.dev/data/analyst-workspace.json
+    claim: The system makes no lending decision. Sex, education, marriage, and age are excluded from model inputs and public individual records; aggregate fairness evidence remains local.
+    status: verified_public
+    record: PRODUCT.md, scripts/validate_public_artifact.py, tests/test_pipeline.py, https://consumer-credit-risk-workbench.pages.dev/data/analyst-workspace.json
   - id: PRODUCT-01
-    claim: The deployed analyst workspace provides non-demographic search, filtering, pagination, and evidence inspection for all 30,000 UCI rows.
-    status: verified
-    record: https://consumer-credit-risk-workbench.pages.dev, https://consumer-credit-risk-workbench.pages.dev/data/analyst-workspace.json
-  - id: DEPLOY-01
-    claim: The public serving path permits aggregate release evidence only and has a documented least-privilege, rollback, and teardown design.
-    status: verified
-    record: https://consumer-credit-risk-workbench.pages.dev/api/v1/releases/current, docs/RELEASE-LOG.md, docs/AVAILABILITY-RUNBOOK.md
+    claim: The live lab provides linked portfolio, capacity, cohort, validation, governance, and deterministic record-simulation workflows over all 30,000 non-demographic research rows.
+    status: verified_public
+    record: https://consumer-credit-risk-workbench.pages.dev, web/src/App.tsx, web/src/analytics.ts, web/src/charts.tsx
   - id: PRODUCT-02
-    claim: The deployed analyst artifact contains 30,000 non-demographic UCI research rows, deterministic derived measures, and out-of-fold retrospective research scores without credentials or model binaries.
-    status: verified
-    record: scripts/build_public_dataset.py, web/public/data/analyst-workspace.json, https://consumer-credit-risk-workbench.pages.dev/data/analyst-workspace.json
+    claim: Record inspection is limited to academic source ID, retrospective score, band, deterministic rank/denominator, selected capacity, historical outcome, and inside/outside simulated placement with the mandatory research-only disclaimer.
+    status: verified_public
+    record: web/src/App.tsx, web/src/App.test.tsx, scripts/validate_public_artifact.py
   - id: RELCTRL-01
-    claim: The manual release path requires a local analyst-artifact pre-release gate and a green GitHub Actions quality run before deployment.
+    claim: A clean local gate and matching GitHub Actions quality run are mandatory for the same immutable candidate before deployment.
     status: verified
     record: scripts/pre_release_gate.py, docs/RELEASE-CHECKLIST.md, docs/RELEASE-LOG.md
-  - id: RELCTRL-02
-    claim: Deployment-candidate preparation removes the obsolete full-record payload, rejects unexpected files in the public data directory, and removes unused Fluent UI dependencies without changing the production application bundle.
-    status: verified_local
-    record: scripts/pre_release_gate.py, tests/test_pre_release_gate.py, web/package.json, web/pnpm-lock.yaml, docs/DEPLOYMENT.md, docs/RELEASE-CHECKLIST.md
   - id: AVAIL-01
-    claim: The deployed product fails closed on missing or invalid artifacts, verifies database-backed health and release lineage, and applies explicit cache and security-header contracts without third-party monitoring.
-    status: verified
-    record: web/functions/api/v1/health.ts, web/public/_headers, web/src/App.tsx, scripts/verify_live_release.py, docs/AVAILABILITY-RUNBOOK.md, https://consumer-credit-risk-workbench.pages.dev/api/v1/health
-  - id: PRIVACY-01
-    claim: The deployed version-3 analyst artifact excludes sex, education, marriage, and age from public individual records and binds embedded evaluation evidence to a SHA-256 lineage hash.
-    status: verified
-    record: scripts/build_public_dataset.py, scripts/validate_public_artifact.py, scripts/verify_live_release.py, https://consumer-credit-risk-workbench.pages.dev/data/analyst-workspace.json
-  - id: M10-DESIGN-01
-    claim: The rejected design contract was replaced with an approved-for-local-implementation stakeholder decision map, KPI glossary, chart grammar, interaction contract, responsive rules, accessibility states, and explicit visual deployment gate.
-    status: verified_local
-    record: DESIGN.md, .project/approvals.yml
-  - id: M10-PRODUCT-01
-    claim: The local Credit Risk Model Validation & Review-Capacity Lab provides linked portfolio posture, review-capacity, cohort, model-validation, governance, and deterministic record-simulation workflows without protected-attribute individual analytics or lending recommendations.
-    status: verified_local
-    record: web/src/App.tsx, web/src/types.ts, web/src/analytics.ts, web/src/charts.tsx, web/src/App.test.tsx, web/src/analytics.test.ts
-  - id: M10-VERIFY-01
-    claim: The pre-strengthening local M10 candidate passed 14 web tests and prior responsive checks; refreshed post-strengthening screenshots and browser verification supersede this evidence before visual approval.
-    status: superseded_local
-    record: docs/screenshots/m10/desktop-portfolio.jpg, docs/screenshots/m10/desktop-review-planning.jpg, docs/screenshots/m10/tablet-portfolio.jpg, docs/screenshots/m10/mobile-portfolio.jpg
-  - id: M10-PERF-01
-    claim: The replacement local production bundle builds to 260.83 kB JavaScript (78.05 kB gzip) plus 31.39 kB CSS (6.66 kB gzip), 0.64 kB smaller combined gzip than the rejected candidate without adding a runtime dependency; local preview measured 1.5 ms TTFB, 88 ms FCP, 188 ms LCP, and CLS 0.
-    status: verified_local
-    record: web/package.json, web/src/App.tsx, web/dist/assets
-  - id: M10-EVAL-AUDIT-01
-    claim: The current evaluation supports retrospective academic ranking and capacity simulation but lacks temporal/external validation, repeated-split stability, paired model deltas, capacity uncertainty, and explicit evaluation generation/revision metadata.
-    status: superseded_by_M10-EVAL-02
-    record: src/credit_risk/pipeline.py, artifacts/evaluation.json, .project/evaluation.md
-  - id: M10-EVAL-PLAN-01
-    claim: The owner approved a local evidence-strengthening pass and safe record-level score-ranked simulated review placement while retaining the no-lending-decision boundary.
-    status: implemented_local
-    record: .project/approvals.yml, .project/evaluation.md, DESIGN.md, .project/handoff.md
-  - id: M10-EVAL-02
-    claim: Evaluation schema version 2 preserves the frozen 6,000-row holdout, adds six paired repeated-development folds, prevalence/random, logistic and repayment-delay references, practical-margin tie verdicts, capacity intervals, calibration diagnostics, non-demographic robustness, feature-group ablations, and immutable generation/revision/tool lineage.
-    status: verified_local
-    record: src/credit_risk/pipeline.py, artifacts/evaluation.json, tests/test_pipeline.py, .project/evaluation.md
-  - id: M10-SCHEMA-01
-    claim: Version-4 analyst and version-2 aggregate-release contracts validate evaluation freshness, deterministic complete rank, five model/reference envelopes, capacity intervals, privacy exclusions, and forbidden decision fields.
-    status: verified_local
-    record: scripts/build_public_dataset.py, scripts/validate_public_artifact.py, src/credit_risk/release_contract.py, web/src/api.ts, web/src/types.ts, tests/test_pipeline.py, web/src/api.test.ts
-  - id: M10-PRIVACY-02
-    claim: Sex, education, marriage, and age remain excluded from model inputs and public individual records; aggregate fairness evidence remains local and is removed from generated analyst and aggregate-release payloads.
-    status: verified_local
-    record: scripts/build_public_dataset.py, src/credit_risk/release_contract.py, scripts/validate_public_artifact.py, tests/test_pipeline.py
-  - id: M10-VERIFY-02
-    claim: Exact evaluated revision 543dc446c48b2cc2208f2e6362863563a0f7514d passed the full credential-free pre-release gate: governed evaluation and artifact regeneration, artifact validation, 17 Python tests, TypeScript lint, 15 web tests, production build, and project-kit check. Production browser verification passed at 1440x1000, 834x1112, and 390x844 with no document overflow, console errors, page errors, or automated WCAG A/AA violations.
-    status: superseded_visual_rejected
-    record: docs/screenshots/m10/desktop-assurance.jpg, docs/screenshots/m10/desktop-records.jpg, docs/screenshots/m10/tablet-assurance.jpg, docs/screenshots/m10/mobile-records.jpg, scripts/pre_release_gate.py
-  - id: M10-DESIGN-REJECTION-01
-    claim: The owner rejected the 2026-08-10 M10 visual candidate because its cream/serif/teal editorial system, oversized question hierarchy, bordered KPI grid, repeated eyebrow labels, and report-card composition made the generated design language visibly recognizable. Verified evaluation and product behavior remain reusable; the screenshot set is historical evidence only.
-    status: resolved_by_M10-DESIGN-CORRECTION-01
-    record: DESIGN.md, docs/NEXT-MILESTONE-PLAN.md, .project/state.md, .project/handoff.md
-  - id: M10-DESIGN-CORRECTION-01
-    claim: The rejected editorial visual language was replaced in place with a cool-neutral internal validation workstation, compact functional hierarchy, continuous evidence ledgers, progressive metric context, and a mobile-specific governed record-review flow while preserving verified product behavior.
-    status: verified_owner_approved
-    record: DESIGN.md, web/src/App.tsx, web/src/charts.tsx, web/src/styles.css, docs/screenshots/m10/desktop-validation-workstation.png, docs/screenshots/m10/desktop-record-review.png, docs/screenshots/m10/tablet-validation-workstation.png, docs/screenshots/m10/mobile-record-review.png
-  - id: M10-VERIFY-03
-    claim: The corrected candidate passed governed regeneration and artifact validation, 17 Python tests, TypeScript lint, 15 web tests, production build, project-kit check, and rendered browser verification at 1440x1000, 834x1112, and 390x844 with no document overflow, console/page errors, or automated WCAG A/AA violations. Desktop SVG text contrast remains automated-incomplete because axe cannot infer the background behind SVG text.
-    status: verified_local
-    record: scripts/pre_release_gate.py, docs/screenshots/m10/desktop-validation-workstation.png, docs/screenshots/m10/desktop-record-review.png, docs/screenshots/m10/tablet-validation-workstation.png, docs/screenshots/m10/mobile-record-review.png
-  - id: M10-DEPLOY-01
-    claim: Exact candidate d3e5b103b63a8e222d36084c85eed302f6b35398 and immutable release f7c0c305-caf8-4003-9f1b-4aeacb37ec63 were separately approved, published to Neon Free, deployed to Cloudflare Pages Free, and verified live for health, lineage, headers, cache policy, 30,000-row artifact contract, and demographic exclusions.
+    claim: The deployed product fails closed on missing or invalid artifacts, verifies database-backed health and release lineage, and applies explicit cache and security-header contracts.
     status: verified_public
-    record: .project/approvals.yml, docs/RELEASE-LOG.md, docs/AVAILABILITY-RUNBOOK.md, https://consumer-credit-risk-workbench.pages.dev
+    record: web/functions/api/v1/health.ts, web/public/_headers, scripts/verify_live_release.py, https://consumer-credit-risk-workbench.pages.dev/api/v1/health
+  - id: M10-DESIGN-01
+    claim: The deployed workstation follows the approved compact risk-validation information hierarchy, accessible chart/table grammar, responsive record-review composition, and governed availability/refusal states.
+    status: verified_public
+    record: DESIGN.md, web/src/App.tsx, web/src/styles.css, docs/screenshots/m10/desktop-validation-workstation.png, docs/screenshots/m10/desktop-record-review.png, docs/screenshots/m10/tablet-validation-workstation.png, docs/screenshots/m10/mobile-record-review.png
+  - id: M10-SCHEMA-01
+    claim: Version-4 analyst and version-2 aggregate-release validators enforce evaluation freshness, deterministic complete rank, five model/reference envelopes, capacity intervals, privacy exclusions, and forbidden decision fields.
+    status: verified_public
+    record: scripts/build_public_dataset.py, scripts/validate_public_artifact.py, src/credit_risk/release_contract.py, tests/test_pipeline.py, web/src/api.test.ts
+  - id: M10-VERIFY-01
+    claim: Exact deployed candidate d3e5b103b63a8e222d36084c85eed302f6b35398 passed governed regeneration, artifact validation, 19 Python tests, TypeScript lint, 15 web tests, production build, project records, browser checks, and matching GitHub quality run 31397767371.
+    status: verified_public
+    record: scripts/pre_release_gate.py, docs/RELEASE-LOG.md, docs/screenshots/m10
+  - id: M10-DEPLOY-01
+    claim: Release f7c0c305-caf8-4003-9f1b-4aeacb37ec63 and Cloudflare deployment bfd5f35a-86b2-40cb-b260-4f8967703236 passed live availability, lineage, security-header, cache, 30,000-row artifact, and demographic-exclusion verification.
+    status: verified_public
+    record: .project/approvals.yml, docs/RELEASE-LOG.md, https://consumer-credit-risk-workbench.pages.dev
+  - id: M10-PERF-01
+    claim: Production assets measure 260.83 kB JavaScript / 78.05 kB gzip and 31.39 kB CSS / 6.66 kB gzip; local preview measured 1.5 ms TTFB, 88 ms FCP, 188 ms LCP, and CLS 0.
+    status: verified
+    record: web/dist/assets, .project/state.md
+  - id: M11-CASE-01
+    claim: The final README and case study distinguish source, evaluation, deployment, and publication dates and revisions while linking every quantitative claim to governed evidence and its limitation.
+    status: verified_local
+    record: README.md, CASE-STUDY.md, docs/case-study-standard.md
+  - id: M11-PORTFOLIO-01
+    claim: The v2 portfolio manifest contains an evidence-linked analytical story, approved presentation asset, exact live deployment facts, privacy disclosure, and four resume bullet candidates; publication-profile validation, resume projection, and an isolated production export pass while its release contract remains disabled.
+    status: verified_local
+    record: portfolio/project.json, portfolio/release.json
+  - id: M11-HYGIENE-01
+    claim: Superseded screenshots and continuation copy were deleted, agent-specific files are local/ignored, development-only web tooling is classified correctly, and retired M9 GitHub PR and branch material were removed.
+    status: verified_local
+    record: .gitignore, web/package.json, .project/approvals.yml
   - id: GRAPH-01
-    claim: The owner approved and Graphify completed a project-scoped semantic refresh with a passing endpoint-integrity diagnostic; the unverified workspace node, initial missing-source-file edge warnings, and skill/runtime version mismatch remain disclosed.
-    status: verified_local_with_limitations
-    record: .project/approvals.yml, graphify-out/manifest.json, graphify-out/GRAPH_REPORT.md
-  - id: GRAPH-02
-    claim: The final local deterministic Graphify code update produced 397 nodes, 662 edges, and 43 communities; the multigraph diagnostic found no endpoint, loop, duplicate, or collapse defects, and manifest SHA-256 75a64110abbbaa370fa55ce77dd170c76f257c0d09475e3845e5d1cb5933cf26 is recorded. The external Gemini documentation-semantic refresh was approval-blocked and remains explicitly incomplete.
-    status: verified_local_code_graph_semantic_docs_blocked
-    record: .project/graph-source.sha256, graphify-out/manifest.json, graphify-out/graph.json, graphify-out/GRAPH_REPORT.md, .project/handoff.md
+    claim: The final local Graphify structural rebuild contains 347 nodes, 643 edges, and 24 reviewed communities, removes every deleted JPG node, and binds manifest SHA-256 62db33ee57d4f2e8c2fbb90bcb8bce28c877fcc365c80b0d41871fc5a5825185.
+    status: verified_local_structural_with_limitations
+    record: .project/graph-source.sha256, graphify-out/manifest.json, graphify-out/GRAPH_REPORT.md

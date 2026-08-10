@@ -2,15 +2,13 @@
 
 ## Status and boundary
 
-Status: M10 evaluation strengthening and the corrected visual system are verified in production at application revision `d3e5b103b63a8e222d36084c85eed302f6b35398`. The earlier editorial cream/serif/teal treatment, oversized question headings, repeated eyebrow labels, bordered KPI-card grids, and report-like explanation panels remain superseded and must not be reused. Future deployments remain separately approval-gated.
+Status: the M10 evaluation and visual system are verified in production at application revision `d3e5b103b63a8e222d36084c85eed302f6b35398`. Future deployments remain separately approval-gated.
 
 This product is a retrospective academic research workbench built from the licensed UCI Default of Credit Card Clients dataset. It supports portfolio posture, review-capacity planning, cohort comparison, model validation, governance review, and restricted record simulation. It never approves, denies, determines eligibility, prices, supplies adverse-action reasons, or recommends credit. Protected attributes are excluded from model inputs and public individual analytics.
 
-## Historical rejection and approved correction
+## Design intent
 
-The approved correction presents purpose-built model-validation software used by an internal credit-risk team, not an editorial portfolio page or a recognizable generated dashboard template. It preserves the verified evaluation, contracts, interactions, privacy boundary, accessibility states, and record restrictions while changing only presentation and information hierarchy.
-
-The rejected candidate's screenshots remain historical evidence only. They are not a visual baseline, approval candidate, or source of reusable style tokens.
+The interface should read as purpose-built model-validation software for an internal credit-risk team. Presentation and information hierarchy must preserve the verified evaluation, interactions, privacy boundary, accessibility states, and record restrictions.
 
 ## Stakeholder decision map
 
@@ -33,7 +31,7 @@ The rejected candidate's screenshots remain historical evidence only. They are n
 
 Navigation uses a compact top rail with five functional views: Portfolio, Capacity, Cohorts, Validation, and Records. Desktop favors analytical density; tablet wraps two-column structures; mobile stacks sections, keeps filters usable, and uses a purpose-built compact record list rather than a clipped desktop table.
 
-## Replacement visual direction
+## Visual direction
 
 - **Character:** internal credit-risk validation workstation. It should feel operational, compact, sober, and specific to model review—not editorial, cinematic, lifestyle, or portfolio-marketing oriented.
 - **Shell:** use a cool neutral application canvas, white or near-white data surfaces, charcoal text, and one muted navy/steel interaction color. Amber and red are reserved for warnings and limitations. Do not reuse cream paper, dark-teal accents, or warm editorial contrast.
@@ -46,15 +44,14 @@ Navigation uses a compact top rail with five functional views: Portfolio, Capaci
 - **Responsive behavior:** mobile is a purpose-built review flow: summary first, then essential evidence, then a compact record list and inspector. Wide tables may scroll locally, but the viewport must not present a clipped desktop table as the primary experience.
 - **Motion:** use only short state transitions for focus, hover, selection, loading, and disclosure. No entrance choreography, scroll reveals, parallax, or decorative motion.
 
-### Explicitly prohibited visual fingerprints
+### Avoid
 
 - warm cream canvas plus Georgia/serif headlines plus teal accents;
 - giant question-led hero headings and numbered eyebrow labels;
 - a sea of equal bordered KPI cards;
 - repeated `section label + serif heading + paragraph` panel headers;
 - report-like full-page stacking where every evidence type becomes another card;
-- generic generated-dashboard copy, ornamental status chips, and duplicated explanatory prose;
-- using the rejected screenshots as a visual target.
+- generic dashboard filler, ornamental status chips, and duplicated explanatory prose.
 
 ## KPI glossary and presentation contract
 

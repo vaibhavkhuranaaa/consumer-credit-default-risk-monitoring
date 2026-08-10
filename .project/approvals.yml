@@ -1,5 +1,11 @@
 version: 1
 architecture: approved
+m11_finalization:
+  status: approved_for_packaging
+  approved_on: 2026-08-10
+  authority: project owner
+  allowed_action: complete the M11 case-study package, remove retired repository and GitHub material, keep agent-specific files local and ignored, update the portfolio manifest and resume bullet candidates, commit, push, and verify the resulting branch
+  boundary: no merge, repository visibility change, case-study or portfolio publication, product redeployment, paid resource, provider change, rollback, teardown, or secret transmission
 m10_local_implementation:
   status: approved
   approved_on: 2026-08-10
@@ -42,7 +48,7 @@ public_individual_record_scope:
   authority: project owner
   allowed_content: full UCI Default of Credit Card Clients source rows, including source row ID and demographic fields
   boundary: academic benchmark records only; no credentials, direct identity data, or model binaries
-  effective_implementation_boundary: public artifacts are deliberately narrower; sex, education, marriage, and age remain local and audit-only under AGENTS.md
+  effective_implementation_boundary: public artifacts are deliberately narrower; sex, education, marriage, and age remain local and audit-only under the governed privacy contract
 public_research_score_scope:
   status: approved
   approved_on: 2026-08-05
@@ -85,7 +91,7 @@ graphify_semantic_sync:
   requested_on: 2026-08-09
   approved_on: 2026-08-10
   authority: project owner
-  allowed_action: transmit repository source and governance content to the configured Gemini-backed Graphify semantic service solely to refresh project freshness
+  allowed_action: transmit repository source and governance content to the configured external Graphify semantic service solely to refresh project freshness
   boundary: one project-scoped semantic refresh only; no unrelated repository content, credentials, raw ignored data, deployment, publication, or paid resource
 m10_final_graphify_sync:
   status: approved

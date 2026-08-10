@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "status": "planned",
+  "provider": "Cloudflare Pages and Workers with Neon Postgres",
+  "workflow": null,
+  "deploymentTarget": "consumer-credit-risk-workbench",
+  "publicProject": false,
+  "paidResource": false,
+  "costApprovalRequired": false,
+  "evidenceGates": [
+    "project-manifest-v2-publication-validation",
+    "portfolio-preview-build",
+    "owner-approved-case-study-publication",
+    "default-branch-and-live-revision-alignment"
+  ]
+}

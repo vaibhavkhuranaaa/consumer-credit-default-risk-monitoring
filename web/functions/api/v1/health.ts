@@ -1,12 +1,15 @@
 import { neon } from "@neondatabase/serverless";
 import { jsonResponse, logFailure, type Bindings } from "./http";
 
-type ReleaseHealth = { release_id: string; released_at: string; code_revision: string };
+type ReleaseHealth = { release_id: string; released_at: string | Date; code_revision: string };
 
 function isReleaseHealth(value: unknown): value is ReleaseHealth {
   if (!value || typeof value !== "object") return false;
   const row = value as Record<string, unknown>;
-  return typeof row.release_id === "string" && typeof row.released_at === "string" && typeof row.code_revision === "string";
+  const releasedAt = row.released_at;
+  return typeof row.release_id === "string"
+    && (typeof releasedAt === "string" || releasedAt instanceof Date)
+    && typeof row.code_revision === "string";
 }
 
 export const onRequestGet: PagesFunction<Bindings> = async ({ env, request }) => {

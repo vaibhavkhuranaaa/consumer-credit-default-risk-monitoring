@@ -9,6 +9,7 @@ import urllib.request
 from typing import Any
 
 MAX_RESPONSE_BYTES = 25 * 1024 * 1024
+USER_AGENT = "consumer-credit-release-verifier/1.0"
 PROTECTED_FIELDS = {"SEX", "EDUCATION", "MARRIAGE", "AGE"}
 SECURITY_HEADERS = {
     "content-security-policy",
@@ -21,7 +22,10 @@ SECURITY_HEADERS = {
 
 
 def fetch(url: str) -> tuple[dict[str, str], bytes]:
-    request = urllib.request.Request(url, headers={"Accept": "application/json, text/html"})
+    request = urllib.request.Request(
+        url,
+        headers={"Accept": "application/json, text/html", "User-Agent": USER_AGENT},
+    )
     with urllib.request.urlopen(request, timeout=20) as response:
         body = response.read(MAX_RESPONSE_BYTES + 1)
         if len(body) > MAX_RESPONSE_BYTES:

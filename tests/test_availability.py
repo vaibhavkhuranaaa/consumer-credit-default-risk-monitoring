@@ -1,6 +1,23 @@
+from email.message import Message
+
 import pytest
 
-from scripts.verify_live_release import validate_payloads, validate_security
+from scripts.verify_live_release import USER_AGENT, fetch, validate_payloads, validate_security
+
+
+class _Response:
+    def __init__(self) -> None:
+        self.headers = Message()
+        self.headers["Content-Type"] = "application/json"
+
+    def __enter__(self) -> "_Response":
+        return self
+
+    def __exit__(self, *_args: object) -> None:
+        return None
+
+    def read(self, _size: int) -> bytes:
+        return b"{}"
 
 
 def _payloads() -> tuple[dict, dict, dict]:
@@ -24,3 +41,17 @@ def test_live_contract_rejects_protected_fields() -> None:
 def test_security_contract_requires_every_header() -> None:
     with pytest.raises(ValueError, match="missing security headers"):
         validate_security({"x-content-type-options": "nosniff"}, "site")
+
+
+def test_live_fetch_identifies_the_release_verifier(monkeypatch: pytest.MonkeyPatch) -> None:
+    def _urlopen(request: object, timeout: int) -> _Response:
+        assert request.get_header("User-agent") == USER_AGENT
+        assert timeout == 20
+        return _Response()
+
+    monkeypatch.setattr("urllib.request.urlopen", _urlopen)
+
+    headers, body = fetch("https://example.com")
+
+    assert headers == {"content-type": "application/json"}
+    assert body == b"{}"

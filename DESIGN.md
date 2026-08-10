@@ -2,13 +2,13 @@
 
 ## Status and boundary
 
-Status: M10 evaluation strengthening is verified, but the 2026-08-10 visual candidate is owner-rejected. Its editorial cream/serif/teal treatment, oversized question headings, repeated eyebrow labels, bordered KPI-card grids, and report-like explanation panels are superseded and must not be reused. Public deployment remains prohibited.
+Status: M10 evaluation strengthening is verified, and corrected visual candidate `a92a913573f7352bb95640c9c3ce368468bbe5b3` is owner-approved. The earlier editorial cream/serif/teal treatment, oversized question headings, repeated eyebrow labels, bordered KPI-card grids, and report-like explanation panels remain superseded and must not be reused. Public deployment remains separately prohibited.
 
 This product is a retrospective academic research workbench built from the licensed UCI Default of Credit Card Clients dataset. It supports portfolio posture, review-capacity planning, cohort comparison, model validation, governance review, and restricted record simulation. It never approves, denies, determines eligibility, prices, supplies adverse-action reasons, or recommends credit. Protected attributes are excluded from model inputs and public individual analytics.
 
-## Owner rejection and corrective objective
+## Historical rejection and approved correction
 
-The next M10 pass must look like purpose-built model-validation software used by an internal credit-risk team, not an editorial portfolio page or a recognizable generated dashboard template. Preserve the verified evaluation, contracts, interactions, privacy boundary, accessibility states, and record restrictions; redesign only the presentation and information hierarchy.
+The approved correction presents purpose-built model-validation software used by an internal credit-risk team, not an editorial portfolio page or a recognizable generated dashboard template. It preserves the verified evaluation, contracts, interactions, privacy boundary, accessibility states, and record restrictions while changing only presentation and information hierarchy.
 
 The rejected candidate's screenshots remain historical evidence only. They are not a visual baseline, approval candidate, or source of reusable style tokens.
 
@@ -31,7 +31,7 @@ The rejected candidate's screenshots remain historical evidence only. They are n
 6. **Model validation** is the Credit Risk Model Validation & Review-Capacity Lab. It begins with an explicit evidence-readiness verdict, then compares prevalence/random, repayment-rule, logistic, and candidate references; paired model deltas, split stability, calibration, capacity uncertainty, cohort robustness, feature-group ablations, freshness, data quality, and governance follow. Evidence absent from the governed artifact renders as unavailable rather than inferred.
 7. **Record simulation** retains searchable, sortable, paginated governed rows but displays only academic source ID, retrospective out-of-fold score, score band, deterministic rank/denominator, selected capacity, historical outcome, and `Inside simulated review set` or `Outside simulated review set`. Aggregate portfolio and cohort analysis continues to use the full governed non-demographic artifact.
 
-Navigation uses a compact top rail with five question-led views: Portfolio, Review planning, Cohorts, Model validation, and Record simulation. Desktop favors analytical density; tablet wraps two-column structures; mobile stacks sections, keeps filters usable, and converts wide tables to contained horizontal scrolling.
+Navigation uses a compact top rail with five functional views: Portfolio, Capacity, Cohorts, Validation, and Records. Desktop favors analytical density; tablet wraps two-column structures; mobile stacks sections, keeps filters usable, and uses a purpose-built compact record list rather than a clipped desktop table.
 
 ## Replacement visual direction
 
@@ -84,7 +84,7 @@ Every KPI displays its filter context and exposes a plain-language definition, u
 ## Chart grammar
 
 - Use native responsive SVG with one shared axis, label, tooltip, legend, and accessible-alternative pattern. Do not add a second charting vocabulary or decorative illustration.
-- Chart titles are stakeholder questions. Subtitles name the data source and active filter context.
+- Chart titles are compact functional labels. Subtitles name the evidence type, data source, and active filter context.
 - Population is encoded by bar length or area; observed-default rate and research-score measures use position on a common percentage scale; reported limit uses currency-formatted position.
 - Score bands always order Very low, Low, Moderate, Elevated, High. Delinquency always orders Current or paid, Delayed, Severe. Statement positions always retain `PAY_0, PAY_2...PAY_6` and explicitly say they are historical sequence positions, not dates.
 - Selected marks use a heavy outline and text label. Hover and keyboard focus reveal the same value. Every chart has a `details`-based tabular alternative or adjacent data table.

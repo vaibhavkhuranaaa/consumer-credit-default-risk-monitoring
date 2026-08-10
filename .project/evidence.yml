@@ -82,15 +82,15 @@ evidence:
     record: docs/screenshots/m10/desktop-assurance.jpg, docs/screenshots/m10/desktop-records.jpg, docs/screenshots/m10/tablet-assurance.jpg, docs/screenshots/m10/mobile-records.jpg, scripts/pre_release_gate.py
   - id: M10-DESIGN-REJECTION-01
     claim: The owner rejected the 2026-08-10 M10 visual candidate because its cream/serif/teal editorial system, oversized question hierarchy, bordered KPI grid, repeated eyebrow labels, and report-card composition made the generated design language visibly recognizable. Verified evaluation and product behavior remain reusable; the screenshot set is historical evidence only.
-    status: changes_requested
+    status: resolved_by_M10-DESIGN-CORRECTION-01
     record: DESIGN.md, docs/NEXT-MILESTONE-PLAN.md, .project/state.md, .project/handoff.md
   - id: M10-DESIGN-CORRECTION-01
     claim: The rejected editorial visual language was replaced in place with a cool-neutral internal validation workstation, compact functional hierarchy, continuous evidence ledgers, progressive metric context, and a mobile-specific governed record-review flow while preserving verified product behavior.
-    status: verified_local_pending_owner_visual_review
+    status: verified_owner_approved
     record: DESIGN.md, web/src/App.tsx, web/src/charts.tsx, web/src/styles.css, docs/screenshots/m10/desktop-validation-workstation.png, docs/screenshots/m10/desktop-record-review.png, docs/screenshots/m10/tablet-validation-workstation.png, docs/screenshots/m10/mobile-record-review.png
   - id: M10-VERIFY-03
     claim: The corrected candidate passed governed regeneration and artifact validation, 17 Python tests, TypeScript lint, 15 web tests, production build, project-kit check, and rendered browser verification at 1440x1000, 834x1112, and 390x844 with no document overflow, console/page errors, or automated WCAG A/AA violations. Desktop SVG text contrast remains automated-incomplete because axe cannot infer the background behind SVG text.
-    status: verified_local_pending_owner_visual_review
+    status: verified_local
     record: scripts/pre_release_gate.py, docs/screenshots/m10/desktop-validation-workstation.png, docs/screenshots/m10/desktop-record-review.png, docs/screenshots/m10/tablet-validation-workstation.png, docs/screenshots/m10/mobile-record-review.png
   - id: GRAPH-01
     claim: The owner approved and Graphify completed a project-scoped semantic refresh with a passing endpoint-integrity diagnostic; the unverified workspace node, initial missing-source-file edge warnings, and skill/runtime version mismatch remain disclosed.

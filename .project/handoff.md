@@ -2,7 +2,7 @@
 
 ## Executive status
 
-M0–M9 remain complete. M10's evaluation and governed product behavior are verified locally on `feature/m10-bi-dashboard`. The rejected 2026-08-10 visual candidate has been replaced in place with a compact internal validation-workstation interface and a mobile-specific record-review flow. M10 remains `changes_requested` pending owner review of the new screenshots. The verified public M9 service is unchanged; no deployment, merge, publication, visibility, provider, billing, or rollback action occurred.
+M0–M10 are complete. The owner approved corrected visual candidate `a92a913573f7352bb95640c9c3ce368468bbe5b3` on 2026-08-10. The rejected earlier candidate remains historical evidence only. The verified public M9 service is unchanged; no M10 deployment, merge, publication, visibility, provider, billing, or rollback action occurred.
 
 The immutable evaluated implementation revision is `543dc446c48b2cc2208f2e6362863563a0f7514d`. Final governance, screenshot, and Graphify evidence follows that candidate and is carried by the branch tip; it does not change the evaluated code.
 
@@ -79,4 +79,4 @@ The approval reviewer blocked the Gemini semantic-doc refresh because it would t
 
 This is one historical academic population with one target horizon. There is no calendar-time, out-of-time, external, geographic, prospective, drift, operational, causal, loss, pricing, or lending-decision validation. Repeated folds are correlated views of the same development population. Capacity intervals describe the frozen audit sample, not staffing or business benefit. The approximately 15 MB governed data artifact remains the dominant transfer/load cost. Automated accessibility checks do not replace manual keyboard, zoom, screen-reader, and contrast review. Graphify's final documentation semantics remain pending a more specific external-transmission approval.
 
-Next action is explicit owner review of the four replacement `.png` screenshots. M10 remains `changes_requested` until approval. Visual approval will not authorize deployment; any deployment still requires a separate explicit approval and a matching green GitHub Actions quality run for the future exact candidate revision.
+Next action is M11: package the verified portfolio case study using the approved visual candidate and existing governed evidence. Visual approval does not authorize deployment; any deployment still requires a separate explicit approval and a matching green GitHub Actions quality run for the future exact candidate revision.

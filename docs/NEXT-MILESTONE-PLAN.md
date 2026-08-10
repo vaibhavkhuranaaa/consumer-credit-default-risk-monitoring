@@ -2,15 +2,15 @@
 
 ## Starting point
 
-M0–M9 are complete. M10's evaluation-strengthening contract is implemented and locally verified on `feature/m10-bi-dashboard`, but the 2026-08-10 visual candidate is owner-rejected as recognizably generated/editorial. The public M9 site remains technically verified and unchanged. M10 requires a focused visual correction before another approval request.
+M0–M10 are complete. The owner approved corrected M10 visual candidate `a92a913573f7352bb95640c9c3ce368468bbe5b3` on 2026-08-10. The public M9 site remains technically verified and unchanged; visual approval did not authorize an M10 deployment.
 
-Complete milestones in order. The next task must work only on M10 and must not deploy.
+Complete milestones in order. The next task must work only on M11 and must not deploy or publish.
 
 ## M10 — Evidence-led model validation and BI decision dashboard
 
 **Objective:** make the dashboard answer whether the research model is meaningfully and stably better than simple alternatives, what a score-ranked review simulation includes, and why the evidence is not an individual lending decision.
 
-### Visual corrective pass — implemented locally; owner review pending
+### Visual corrective pass — complete and owner-approved
 
 Preserve all verified evaluation, artifact, API, privacy, availability, filtering, and record-simulation behavior. Do not restart the product or change its data contract.
 
@@ -22,7 +22,7 @@ Preserve all verified evaluation, artifact, API, privacy, availability, filterin
 6. Preserve semantic HTML, keyboard behavior, chart alternatives, loading/empty/error/refusal states, and all decision-language refusals.
 7. Capture a wholly new desktop/tablet/mobile screenshot set. The rejected 2026-08-10 screenshots are historical evidence only and must not be presented for approval again.
 
-All seven corrective steps are implemented and locally verified. The replacement evidence is `desktop-validation-workstation.png`, `desktop-record-review.png`, `tablet-validation-workstation.png`, and `mobile-record-review.png`. M10 remains `changes_requested` until the owner explicitly accepts or rejects this new set.
+All seven corrective steps are implemented, locally verified, and owner-approved. The replacement evidence is `desktop-validation-workstation.png`, `desktop-record-review.png`, `tablet-validation-workstation.png`, and `mobile-record-review.png`.
 
 ### Evaluation work — implemented locally
 
@@ -54,11 +54,19 @@ All seven corrective steps are implemented and locally verified. The replacement
 - Graphify, Git, GitHub, project records, and handoff describe the same revision and status.
 - Stop before deployment, merge, visibility changes, paid resources, rollback, or publication. Obtain explicit visual approval and separate deployment approval.
 
-The implementation uses evaluation schema version 2, analyst artifact version 4, and aggregate release schema version 2. The active next step is owner visual review of the corrected candidate. Deployment, merge, publication, visibility, billing, rollback, and provider changes remain prohibited.
+The implementation uses evaluation schema version 2, analyst artifact version 4, and aggregate release schema version 2. M10 is complete. Deployment, merge, publication, visibility, billing, rollback, and provider changes remain separately prohibited.
 
 ## M11 — Package the verified portfolio case study
 
-Blocked by M10. Public claims must distinguish academic source vintage, evaluation generation time, code revision, and live verification time. They may describe simulated review placement but never a model lending decision.
+**Next unblocked milestone.** Package the approved project as an evidence-linked portfolio case study without changing the product or publishing it.
+
+1. Audit `CASE-STUDY.md`, `portfolio/project.json`, and the case-study standard against the final M10 evidence.
+2. Distinguish the academic source vintage, evaluation generation time, evaluated revision, visual candidate revision, and currently deployed M9 revision.
+3. Use only verified model, calibration, robustness, capacity, accessibility, performance, and lineage claims with adjacent limitations.
+4. Use the owner-approved replacement screenshots; exclude the rejected `.jpg` candidate from presentation evidence.
+5. Preserve the retrospective research-only, no-lending-decision, privacy, and local aggregate-fairness boundaries.
+6. Validate links, artifact hashes, portfolio schema, repository checks, and responsive case-study presentation if applicable.
+7. Stop for owner approval before publication, deployment, merge, or visibility changes.
 
 ## M12 — Exercise rollback and teardown ownership
 

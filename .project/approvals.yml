@@ -7,10 +7,13 @@ m10_local_implementation:
   allowed_action: replace the rejected design contract and implement the detailed M10 KPI, chart, interaction, safety, accessibility, responsive, and verification contract locally
   boundary: no deployment, merge, visibility change, paid resource, rollback, publication, or Graphify transmission
 m10_visual_and_deployment:
-  status: pending_explicit_approval
+  status: visual_approved_deployment_pending
   requested_on: 2026-08-10
-  required_action: review the local desktop, tablet, and mobile screenshots and candidate verification evidence, then separately approve or reject public deployment
-  boundary: local implementation and screenshots do not authorize deployment
+  visual_approved_on: 2026-08-10
+  visual_approved_revision: a92a913573f7352bb95640c9c3ce368468bbe5b3
+  authority: project owner
+  required_action: separately approve or reject public deployment after a matching green GitHub Actions quality run for the exact deployment candidate
+  boundary: visual approval closes the M10 design gate but does not authorize deployment, merge, publication, visibility change, paid resources, provider change, rollback, or secret transmission
 data_acquisition:
   status: approved
   proposed_source: UCI Default of Credit Card Clients (CC BY 4.0)

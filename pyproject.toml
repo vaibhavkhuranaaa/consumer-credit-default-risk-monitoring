@@ -1,0 +1,29 @@
+[project]
+name = "consumer-credit-default-risk-monitoring"
+version = "0.1.0"
+description = "Local-only retrospective consumer-credit benchmark monitoring."
+requires-python = ">=3.11"
+dependencies = [
+  "pandas>=2.2,<3",
+  "pyarrow>=17,<20",
+  "PyYAML>=6.0,<7",
+  "psycopg[binary]>=3.2,<4",
+  "scikit-learn>=1.5,<2",
+  "xlrd>=2.0,<3",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = [
+  "pytest>=8,<9",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

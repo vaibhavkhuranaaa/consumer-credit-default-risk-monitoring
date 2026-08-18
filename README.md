@@ -107,3 +107,7 @@ Before any separately approved release, run the full gate in [docs/RELEASE-CHECK
 ## Limits
 
 This is one historical academic population with one target horizon. It has no calendar-time, external, geographic, prospective, drift, operational, causal, loss, pricing, or lending-decision validation. The public app is a research and portfolio demonstration; it is not a production credit service.
+
+## License
+
+Project code and documentation are available under the [MIT License](LICENSE). The UCI Default of Credit Card Clients dataset remains licensed separately under CC BY 4.0 with attribution.

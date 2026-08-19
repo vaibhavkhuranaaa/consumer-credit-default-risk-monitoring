@@ -1,0 +1,15 @@
+name: neon-migration-validation
+on:
+  workflow_dispatch:
+jobs:
+  migrate-preview-branch:
+    runs-on: ubuntu-latest
+    environment: neon-preview
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked
+      - name: Apply migration to approved Neon preview branch
+        env:
+          NEON_MIGRATION_DATABASE_URL: ${{ secrets.NEON_MIGRATION_DATABASE_URL }}
+        run: psql "$NEON_MIGRATION_DATABASE_URL" -v ON_ERROR_STOP=1 -f db/migrations/001_release_evidence.sql

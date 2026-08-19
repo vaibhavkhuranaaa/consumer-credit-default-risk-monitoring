@@ -1,0 +1,480 @@
+{
+  "version": 2,
+  "slug": "consumer-credit-default-risk-monitoring",
+  "title": "Credit Risk Model Validation & Review-Capacity Lab",
+  "summary": "A retrospective validation workstation over 30,000 licensed academic credit records, built to compare a non-demographic model with simple references, quantify fixed review workloads, and inspect score-ranked sensitivity without making a lending decision.",
+  "outcome": "The selected model clears prevalence/random, repayment-delay, and logistic references on repeated paired development evidence, but ties calibrated Extra Trees because the PR-AUC advantage does not clear the prespecified practical margin. At 10% holdout capacity, 600 historical rows contain 431 observed defaults with 71.8% precision and 3.25× lift, each reported with uncertainty.",
+  "industries": [
+    "Financial services",
+    "Consumer credit"
+  ],
+  "categories": [
+    "Analytics",
+    "Data Engineering"
+  ],
+  "stack": [
+    "Python",
+    "pandas",
+    "scikit-learn",
+    "PyArrow",
+    "TypeScript",
+    "React",
+    "Cloudflare Pages and Workers",
+    "Neon Postgres"
+  ],
+  "githubUrl": "https://github.com/vaibhavkhuranaaa/consumer-credit-default-risk-monitoring",
+  "liveUrl": "https://consumer-credit-risk-workbench.pages.dev",
+  "deployment": {
+    "provider": "Cloudflare Pages and Workers with Neon Postgres",
+    "status": "live",
+    "runtime": "Static React application plus read-only Pages Functions; immutable aggregate evidence in Neon Free",
+    "exposure": "anonymous",
+    "productionClaim": false,
+    "verifiedAt": "2026-08-18T04:08:27Z",
+    "expiresAt": null,
+    "evidenceRefs": [
+      "deployment.live",
+      "delivery.quality",
+      "privacy.boundary"
+    ]
+  },
+  "metrics": [
+    "Frozen-holdout PR-AUC 0.5764, AUROC 0.7916, Brier score 0.1314, and 10-bin ECE 0.0124 across 6,000 untouched audit rows",
+    "Mean development PR-AUC 0.5513 across six paired folds, against 0.2212 prevalence/random, 0.4480 repayment-delay, 0.5006 logistic, and 0.5452 Extra Trees",
+    "Selected-model PR-AUC delta over Extra Trees 0.0061 with paired 95% interval 0.0019–0.0109: reported as a tie against the 0.010 practical margin",
+    "At 10% review capacity, 600 rows include 431 historical defaults with precision 0.7183, recall 0.3248, and lift 3.2479, all with 95% intervals",
+    "Calibration slope 1.0743 and intercept 0.0757, with a governed sparse-bin warning at n=18",
+    "Repayment-status ablation has the largest mean PR-AUC loss, 0.0982 with 95% interval 0.0845–0.1141"
+  ],
+  "stages": [
+    "Validate the integrity-pinned UCI workbook and exclude demographic fields from model inputs",
+    "Lock selection on train and validation data while freezing the 6,000-row holdout under a private integrity record",
+    "Run paired repeated stratified development evaluation against three simple references and Extra Trees",
+    "Measure holdout ranking, calibration, five review workloads, non-demographic cohort robustness, and feature-group reliance",
+    "Build and validate versioned aggregate and 30,000-row non-demographic analyst artifacts",
+    "Serve the read-only validation workstation with immutable release health and fail-closed availability"
+  ],
+  "architecture": [
+    "Local Python pipeline validates the licensed workbook, reproduces model evidence, and records source, split, command, tool, and revision lineage",
+    "A version-4 static analyst artifact contains approved non-demographic fields, derived measures, retrospective out-of-fold scores, and deterministic ranks for all 30,000 rows",
+    "The React workstation computes cohort views client-side and renders model evidence from the immutable evaluation envelope using semantic HTML and native SVG",
+    "Cloudflare Pages serves the application and artifact; read-only Pages Functions expose health and current-release evidence",
+    "Neon stores one immutable aggregate release behind a least-privilege runtime credential; viewers have no write path"
+  ],
+  "evaluation": [
+    "Fixed stratified 60/20/20 split with random state 20260801; model selection is locked before the frozen holdout audit",
+    "Two repeats of three shared stratified folds over 24,000 development rows produce paired deltas and 95% intervals",
+    "Practical margins decide whether superiority is resolved; otherwise the comparison is a tie",
+    "Every approved 5%, 10%, 20%, 35%, and 50% workload reports queue composition, precision, recall, lift, incremental yield, and uncertainty",
+    "Calibration slope/intercept, sparse-bin warnings, sample-size-aware non-demographic cohorts, and feature-group ablations qualify the headline result",
+    "Evaluation schema version 2 binds UTC generation time, source integrity, evaluated revision, split identities, command, and tool versions"
+  ],
+  "operationalTradeoffs": [
+    "The source has one target horizon, so the fixed stratified holdout is not calendar-time or out-of-time validation.",
+    "Repeated folds reduce dependence on one development split but remain correlated views of the same historical academic population.",
+    "Capacity intervals describe one audit sample; they are not staffing, loss, revenue, or benefit forecasts.",
+    "Feature-group ablations show fitted-model reliance and must not be used as causes, consumer explanations, or adverse-action reasons.",
+    "Sex, education, marriage, and age remain local and aggregate-only for fairness review; they are excluded from model inputs and public individual records.",
+    "The approximately 15 MB governed analyst artifact dominates first-load transfer in exchange for full-record, client-side analysis without a per-record API.",
+    "The free-tier deployment has no scheduled monitoring or uptime guarantee; required release and artifact failures are handled with an explicit unavailable state."
+  ],
+  "disclaimer": "This is a public, retrospective academic research demonstration using the UCI Default of Credit Card Clients dataset under CC BY 4.0. It is not validated for lending use and does not make an approval, denial, eligibility, pricing, adverse-action, or lending recommendation.",
+  "dataDisclosure": {
+    "source": "Yeh, I. (2009), Default of Credit Card Clients, UCI Machine Learning Repository, DOI 10.24432/C55S3H; workbook integrity recorded privately",
+    "license": "CC BY 4.0 with attribution",
+    "classification": "public",
+    "permittedUse": "Retrospective research, reproducible evaluation, model validation demonstration, and portfolio presentation",
+    "includedFields": [
+      "academic source ID",
+      "reported credit limit",
+      "six months of repayment status",
+      "six statement amounts",
+      "six payment amounts",
+      "historical default outcome",
+      "deterministic non-demographic derived measures",
+      "retrospective out-of-fold score, band, and rank"
+    ],
+    "excludedFields": [
+      "sex",
+      "education",
+      "marriage",
+      "age",
+      "credentials",
+      "model binaries",
+      "approval or denial outputs",
+      "pricing or adverse-action reasons"
+    ],
+    "deployedArtifactContents": [
+      "30,000 licensed non-demographic research rows",
+      "deterministic derived measures and retrospective scores",
+      "versioned non-demographic evaluation evidence",
+      "source and evaluation integrity records, split identity, evaluated revision, and command/tool lineage"
+    ]
+  },
+  "evidence": [
+    {
+      "id": "data.source",
+      "kind": "disclosure",
+      "claim": "The acquired UCI workbook has 30,000 rows, 25 columns, no missing cells, and no duplicate source IDs; its archive, extracted-file checksum, license, and citation are recorded.",
+      "source": "docs/data-dictionary.md",
+      "method": "Private integrity verification followed by schema, row-count, missing-value, duplicate-ID, target, and range validation",
+      "result": 30000,
+      "scope": "UCI Default of Credit Card Clients",
+      "execution": "deterministic"
+    },
+    {
+      "id": "evaluation.holdout",
+      "kind": "evaluation",
+      "claim": "The validation-locked selected model records holdout PR-AUC 0.5764, AUROC 0.7916, Brier score 0.1314, and 10-bin ECE 0.0124.",
+      "source": "CASE-STUDY.md and docs/metric-glossary.md",
+      "method": "One frozen 6,000-row stratified holdout, excluded from further model and hyperparameter selection",
+      "result": 0.5764,
+      "scope": "Retrospective academic ranking and probability evidence",
+      "observedAt": "2026-08-10T14:20:10.827594Z",
+      "execution": "deterministic",
+      "caveat": "Fixed historical split, not calendar-time or out-of-time validation"
+    },
+    {
+      "id": "evaluation.development",
+      "kind": "evaluation",
+      "claim": "Repeated paired development evidence supports the selected model over prevalence/random, repayment-delay, and logistic references, while the Extra Trees comparison is a tie.",
+      "source": "CASE-STUDY.md and docs/metric-glossary.md",
+      "method": "Two repeats of three shared stratified folds with paired 95% intervals and prespecified practical margins",
+      "result": "tie versus Extra Trees",
+      "scope": "24,000 development rows",
+      "execution": "deterministic",
+      "caveat": "Repeated folds remain correlated views of one historical population"
+    },
+    {
+      "id": "review.capacity",
+      "kind": "evaluation",
+      "claim": "At 10% capacity, 600 holdout rows include 431 historical defaults with precision 0.7183, recall 0.3248, and lift 3.2479, each with a 95% interval.",
+      "source": "CASE-STUDY.md and docs/metric-glossary.md",
+      "method": "Deterministic score ranking with source-ID tie-break and holdout bootstrap intervals",
+      "result": 431,
+      "scope": "Frozen 6,000-row holdout at 10% simulated review capacity",
+      "execution": "deterministic",
+      "caveat": "Historical audit-sample estimate, not staffing or business benefit"
+    },
+    {
+      "id": "validation.calibration",
+      "kind": "evaluation",
+      "claim": "Calibration slope is 1.0743 and intercept is 0.0757; the 0.8–0.9 score bin has only 18 rows and is flagged sparse.",
+      "source": "CASE-STUDY.md and docs/metric-glossary.md",
+      "method": "Holdout calibration regression and governed bin sample-size thresholds",
+      "result": 1.0743,
+      "scope": "Frozen holdout probability diagnostics",
+      "execution": "deterministic"
+    },
+    {
+      "id": "validation.reliance",
+      "kind": "evaluation",
+      "claim": "Removing repayment-status features produces the largest mean PR-AUC loss, 0.0982 with 95% interval 0.0845–0.1141.",
+      "source": "CASE-STUDY.md and docs/metric-glossary.md",
+      "method": "One feature-group removed at a time across the repeated paired development folds",
+      "result": 0.0982,
+      "scope": "Model-reliance and stability evidence",
+      "execution": "deterministic",
+      "caveat": "Not a causal explanation, consumer reason, or adverse-action reason"
+    },
+    {
+      "id": "privacy.boundary",
+      "kind": "disclosure",
+      "claim": "Sex, education, marriage, and age are absent from model inputs and public individual records; local aggregate fairness evidence is stripped from public payloads.",
+      "source": "scripts/validate_public_artifact.py and tests/test_pipeline.py",
+      "method": "Fail-closed schema validation and forbidden-field tests over generated analyst and aggregate-release artifacts",
+      "result": true,
+      "execution": "deterministic"
+    },
+    {
+      "id": "delivery.quality",
+      "kind": "test",
+      "claim": "The publication candidate preserves the governed M10 artifact checks and passes 27 Python tests, TypeScript lint, 16 web tests, the production build, and project record checks.",
+      "source": ".github/workflows/quality.yml and docs/RELEASE-LOG.md",
+      "method": "Clean local checks for this publication candidate; the currently deployed default-branch source separately has a matching green GitHub Actions run",
+      "result": true,
+      "execution": "integration",
+      "counts": {
+        "total": 43,
+        "passed": 43,
+        "failed": 0
+      }
+    },
+    {
+      "id": "deployment.live",
+      "kind": "deployment",
+      "claim": "The live service passed database health, immutable release lineage, security headers, cache policy, 30,000-row artifact integrity, and demographic-field exclusion checks.",
+      "source": "https://consumer-credit-risk-workbench.pages.dev and docs/RELEASE-LOG.md",
+      "method": "Live verification against immutable release f7c0c305-caf8-4003-9f1b-4aeacb37ec63, evaluated revision historical-release, and application source revision historical-release",
+      "result": true,
+      "observedAt": "2026-08-18T04:08:27Z",
+      "environment": "Cloudflare Pages and Workers Free with Neon Free",
+      "execution": "live"
+    }
+  ],
+  "story": {
+    "recruiterSummary": "A model-risk reviewer can compare a non-demographic credit model with simple references, see where evidence is unresolved, test five historical review workloads with uncertainty, and inspect the exact rows behind the simulation without receiving a lending recommendation.",
+    "technicalNarrative": "The central control is separation: model selection stays on train and validation data, the 6,000-row holdout is frozen under a private integrity record, and repeated stability tests run only on the 24,000 development rows. All candidates share the same folds, and a practical-margin rule turns small unresolved differences into ties. A versioned evaluation envelope then carries split identities, uncertainty, calibration warnings, cohort sample sizes, ablations, revision, command, and tool lineage into a 30,000-row non-demographic analyst artifact. The React workstation keeps holdout, development, artifact, and live-health evidence visually distinct, while Cloudflare and Neon provide a zero-dollar read-only serving path.",
+    "scalabilityRoadmap": [
+      "The 15 MB static analyst artifact is the current load constraint. At materially larger row counts, move filtered aggregates and paginated records behind a read-only API while retaining the same public schema and privacy tests.",
+      "The evaluation is offline and batch by design. A recurring validation program would need new time-indexed data, scheduled runs, drift ownership, alert thresholds, and evidence retention before any service automation.",
+      "Neon stores one immutable aggregate release. Multiple concurrent releases would require an explicit release catalog and retention policy rather than overwriting the current snapshot.",
+      "No operational credit workflow should be added until external, out-of-time, prospective, legal, and fair-lending validation supports that change in scope."
+    ],
+    "executiveSummary": "The selected model is useful for retrospective research but not uniquely superior to every credible alternative. Its frozen-holdout PR-AUC is 0.5764, and repeated paired evidence clears prevalence/random, repayment-delay, and logistic references. Against calibrated Extra Trees the PR-AUC gain is 0.0061 with a 95% interval of 0.0019–0.0109, so it does not clear the 0.010 margin and is reported as a tie. At 10% historical review capacity, 600 rows include 431 observed defaults with 71.8% precision and 3.25× lift. The product shows that workload and its uncertainty without treating rank sensitivity as an approval, denial, price, or consumer reason.",
+    "intendedUser": "A credit-risk analyst or model-risk reviewer assessing retrospective model readiness and review-capacity evidence.",
+    "example": {
+      "title": "Reviewing whether a 10% simulated queue is supported",
+      "steps": [
+        "Confirm the evaluation timestamp, private integrity records, and readiness verdict",
+        "Compare the selected model with prevalence/random, repayment-delay, logistic, and Extra Trees references",
+        "Read the paired interval and practical-margin verdict instead of choosing the highest point estimate",
+        "Select 10% capacity and inspect queue size, captured historical defaults, precision, recall, lift, and their intervals",
+        "Check calibration, sparse bins, non-demographic cohort sample sizes, and feature-group reliance before opening a record",
+        "Inspect deterministic rank and minimum simulated capacity alongside the research-only disclaimer"
+      ]
+    },
+    "technologyDecisions": [
+      {
+        "technology": "Repeated paired stratified evaluation",
+        "rationale": "Shared folds measure candidate differences without spending the frozen holdout on further selection.",
+        "alternative": "Compare one score from one development split",
+        "tradeoff": "Six folds cost more compute and are still correlated views of one source population."
+      },
+      {
+        "technology": "Static 30,000-row analyst artifact",
+        "rationale": "Full-record filtering and inspection work without a public per-record query service or viewer credentials.",
+        "alternative": "Server-side record API",
+        "tradeoff": "The approximately 15 MB artifact dominates initial transfer and does not scale to much larger datasets."
+      },
+      {
+        "technology": "Native SVG and semantic HTML",
+        "rationale": "The small set of analytical charts needs linked interaction and accessible tabular alternatives, not a broad charting framework.",
+        "alternative": "A chart-library dependency",
+        "tradeoff": "Chart primitives and accessibility behavior are maintained in the project."
+      },
+      {
+        "technology": "Cloudflare Pages and Neon Free",
+        "rationale": "A static workstation plus one read-only aggregate release fits a zero-dollar public demonstration.",
+        "alternative": "A managed application server and database tier",
+        "tradeoff": "There is no uptime guarantee, scheduled monitoring, write workflow, or multi-release catalog."
+      }
+    ],
+    "evidence": [
+      {
+        "value": "tie",
+        "label": "Selected model versus Extra Trees",
+        "context": "Mean PR-AUC delta 0.0061 with paired 95% interval 0.0019–0.0109, short of the prespecified 0.010 practical margin.",
+        "method": "Two repeats of three shared stratified development folds.",
+        "meaning": "The evidence does not support a practically resolved winner between the two strongest candidates.",
+        "evidenceRefs": [
+          "evaluation.development"
+        ]
+      },
+      {
+        "value": "431 of 600",
+        "label": "Historical defaults inside the 10% simulated review set",
+        "context": "Precision 0.7183, recall 0.3248, and lift 3.2479; each measure carries a 95% interval.",
+        "method": "Deterministic frozen-holdout ranking with bootstrap uncertainty.",
+        "meaning": "What one fixed historical workload contains, not what a lender should do.",
+        "evidenceRefs": [
+          "review.capacity"
+        ]
+      },
+      {
+        "value": "0.0124",
+        "label": "Frozen-holdout 10-bin calibration error",
+        "context": "Calibration slope 1.0743 and intercept 0.0757; one high-score bin is sparse at n=18.",
+        "method": "Holdout calibration curve, slope/intercept fit, and governed sparse-bin thresholds.",
+        "meaning": "Probability quality is strong overall but the thin high-score region is not presented as settled.",
+        "evidenceRefs": [
+          "evaluation.holdout",
+          "validation.calibration"
+        ]
+      },
+      {
+        "value": "30,000 rows",
+        "label": "Validated public research artifact",
+        "context": "All licensed rows are available for non-demographic analysis; protected fields and local fairness evidence are excluded from public records.",
+        "method": "Checksum-pinned source validation and fail-closed public-artifact schema tests.",
+        "meaning": "The portfolio and record views reconcile to the complete approved source population.",
+        "evidenceRefs": [
+          "data.source",
+          "privacy.boundary"
+        ]
+      }
+    ],
+    "limitations": [
+      "One historical academic population with one target horizon; no calendar-time or true out-of-time validation.",
+      "No external, geographic, prospective, drift, operational, causal, loss, pricing, or lending-decision validation.",
+      "Repeated folds remain correlated views of the same development population.",
+      "Capacity intervals describe the frozen audit sample, not staffing needs or financial benefit.",
+      "Cross-cohort PR-AUC values reflect different prevalence levels and are not directly comparable without context.",
+      "Ablations are model-reliance evidence only and cannot be used as consumer explanations or adverse-action reasons.",
+      "The free-tier public demonstration has no uptime guarantee or scheduled monitoring.",
+      "Automated accessibility checks do not replace manual keyboard, zoom, screen-reader, and contrast review."
+    ]
+  },
+  "resume": {
+    "bulletCandidates": [
+      {
+        "role": "Analytics / Model Validation",
+        "bullet": "Built a 30,000-record credit-risk validation lab that kept a 6,000-row holdout frozen, compared the selected model with random, rule-based, logistic, and Extra Trees references across six paired development folds, and reported a tie when the practical margin was not met.",
+        "evidenceRefs": [
+          "data.source",
+          "evaluation.holdout",
+          "evaluation.development"
+        ]
+      },
+      {
+        "role": "Analytics / Decision Support",
+        "bullet": "Designed a five-point review-capacity simulation with confidence intervals; at 10% capacity, the historical queue contained 431 observed defaults among 600 rows with 71.8% precision, 32.5% recall, and 3.25× lift, explicitly bounded as research evidence rather than a lending decision.",
+        "evidenceRefs": [
+          "review.capacity"
+        ]
+      },
+      {
+        "role": "Data Product Engineering",
+        "bullet": "Shipped a privacy-preserving React, Cloudflare, and Neon research workstation with 30,000 full records, no demographic fields in public individual views, immutable release lineage, fail-closed availability, and a clean gate covering 27 Python and 16 web tests.",
+        "evidenceRefs": [
+          "privacy.boundary",
+          "delivery.quality",
+          "deployment.live"
+        ]
+      },
+      {
+        "role": "Model Risk",
+        "bullet": "Added calibration slope/intercept, sparse-bin warnings, sample-size-aware non-demographic cohort checks, and feature-group ablations, framing the outputs as stability and model-reliance evidence rather than causal or adverse-action explanations.",
+        "evidenceRefs": [
+          "validation.calibration",
+          "validation.reliance",
+          "privacy.boundary"
+        ]
+      }
+    ]
+  },
+  "presentation": {
+    "question": "Does the research model clear simple references, and what does a fixed historical review workload contain?",
+    "answer": "It clears prevalence/random, repayment-delay, and logistic references on repeated paired development evidence, but ties calibrated Extra Trees because the PR-AUC advantage does not clear the fixed practical margin. A 10% simulated holdout queue contains 431 historical defaults among 600 rows, with uncertainty shown beside every measure.",
+    "decisionSupported": "Assess retrospective model readiness and compare fixed simulated review workloads without making an individual credit decision.",
+    "architectureAlt": "A checksum-pinned UCI source flows through locked selection, repeated development evaluation and a frozen holdout into versioned artifacts, a React workstation, read-only Cloudflare Functions, and immutable Neon release evidence.",
+    "evaluationMode": "Frozen 6,000-row stratified holdout plus two repeats of three paired stratified development folds",
+    "publicationStatus": "The research lab, portfolio case study, approved-project catalog entry, and four-bullet resume projection are live and verified against exact source lineage.",
+    "licenseNote": "UCI Default of Credit Card Clients is used under CC BY 4.0 with recorded citation and checksums.",
+    "coverImage": "docs/screenshots/m16/desktop-validation-disposition.png",
+    "coverAlt": "Desktop view of the credit-risk model validation workstation showing readiness, review-capacity, calibration, and model-comparison evidence",
+    "technologyRoles": {
+      "Python and pandas": "Source validation, artifact construction, and governed lineage",
+      "scikit-learn": "Locked model selection, repeated paired evaluation, calibration, and ablations",
+      "React and TypeScript": "Linked portfolio, capacity, validation, cohort, and record-review workflows",
+      "Native SVG": "Accessible analytical charts without a chart-library runtime",
+      "Cloudflare Pages and Workers": "Static hosting plus read-only health and release Functions",
+      "Neon Postgres": "Least-privilege immutable aggregate release evidence"
+    },
+    "quickStart": [
+      {
+        "label": "Reproduce evaluation",
+        "command": "uv run python scripts/run_evaluation.py"
+      },
+      {
+        "label": "Build the governed analyst artifact",
+        "command": "uv run python scripts/build_public_dataset.py"
+      },
+      {
+        "label": "Run Python checks",
+        "command": "uv run pytest -q"
+      },
+      {
+        "label": "Build the web application",
+        "command": "cd web && pnpm build"
+      }
+    ],
+    "securityControls": [
+      {
+        "control": "Protected-field exclusion",
+        "implementation": "Public artifact validators reject demographic fields, local fairness evidence, credentials, model binaries, and decision outputs.",
+        "evidenceRefs": [
+          "privacy.boundary"
+        ],
+        "limitation": "The source remains a public academic dataset; this control does not establish operational fair-lending compliance."
+      },
+      {
+        "control": "Read-only release path",
+        "implementation": "Viewers receive static records and read-only release/health responses through a least-privilege Neon role.",
+        "evidenceRefs": [
+          "deployment.live"
+        ],
+        "limitation": "Free-tier availability has no service-level guarantee or scheduled monitor."
+      },
+      {
+        "control": "Immutable candidate verification",
+        "implementation": "The clean local gate and GitHub Actions must pass for the same full Git revision before a separately approved deployment.",
+        "evidenceRefs": [
+          "delivery.quality"
+        ],
+        "limitation": "Private-repository branch protection is unavailable on the current plan, so this remains a compensating manual control."
+      }
+    ],
+    "costBoundaries": [
+      {
+        "component": "Cloudflare Pages and Workers",
+        "boundary": "Existing Free plan, no custom domain or paid capacity",
+        "implication": "The static application and small read-only Functions stay at zero incremental cost without an uptime guarantee."
+      },
+      {
+        "component": "Neon Postgres",
+        "boundary": "Existing Free project with one immutable aggregate release",
+        "implication": "The database is evidence storage, not a per-record serving tier or operational system."
+      },
+      {
+        "component": "Governed analyst artifact",
+        "boundary": "Approximately 15 MB transferred as one static file",
+        "implication": "Full-record client analysis avoids per-record infrastructure but dominates first load."
+      }
+    ],
+    "repositoryStructure": [
+      {
+        "path": "src/credit_risk",
+        "purpose": "Evaluation pipeline and release contracts"
+      },
+      {
+        "path": "scripts",
+        "purpose": "Reproducible evaluation, artifact build, validation, publication, and release gates"
+      },
+      {
+        "path": "web",
+        "purpose": "React workstation and read-only Cloudflare Pages Functions"
+      },
+      {
+        "path": ".project",
+        "purpose": "Governed data, evaluation, approval, evidence, state, and handoff records"
+      },
+      {
+        "path": "docs/screenshots/m16",
+        "purpose": "Current director disposition and mobile rank-sensitivity evidence"
+      }
+    ],
+    "verification": [
+      {
+        "check": "Python evaluation and artifact contracts",
+        "command": "uv run pytest -q",
+        "evidenceRef": "delivery.quality"
+      },
+      {
+        "check": "TypeScript and web behavior",
+        "command": "cd web && pnpm lint && pnpm test",
+        "evidenceRef": "delivery.quality"
+      },
+      {
+        "check": "Production assets",
+        "command": "cd web && pnpm build",
+        "evidenceRef": "delivery.quality"
+      },
+      {
+        "check": "Live availability and immutable lineage",
+        "command": "uv run python scripts/verify_live_release.py --base-url https://consumer-credit-risk-workbench.pages.dev --expected-release-id f7c0c305-caf8-4003-9f1b-4aeacb37ec63 --expected-source-sha <approved-application-commit>",
+        "evidenceRef": "deployment.live"
+      }
+    ]
+  }
+}

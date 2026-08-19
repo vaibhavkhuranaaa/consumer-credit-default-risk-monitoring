@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "status": "enabled",
+  "provider": "Cloudflare Pages and Workers with Neon Postgres",
+  "workflow": "auto-publish-project.yml",
+  "deploymentTarget": "consumer-credit-risk-workbench",
+  "publicProject": true,
+  "paidResource": false,
+  "costApprovalRequired": false,
+  "verification": {
+    "url": "https://consumer-credit-risk-workbench.pages.dev/source.json",
+    "sourceShaField": "source_sha"
+  },
+  "evidenceGates": [
+    "project-manifest-v2-publication-validation",
+    "portfolio-preview-build",
+    "owner-approved-case-study-publication",
+    "default-branch-and-live-revision-alignment"
+  ]
+}
